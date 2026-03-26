@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTL-sait | Tier-6 CS Scene</title>
+    <style>
+        body {
+            background-color: #0b0e13;
+            color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+        }
+
+        /* Шапка */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: #0b0e13;
+            border-bottom: 2px solid #ff9800;
+        }
+
+        .logo {
+            color: #ff9800;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: #adb5bd;
+            cursor: pointer;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: 0.3s;
+            padding: 5px 10px;
+        }
+
+        nav button:hover, nav button.active {
+            color: #ff9800;
+            border-bottom: 2px solid #ff9800;
+        }
+
+        main {
+            padding: 20px 5%;
+        }
+
+        /* Скрытие неактивных вкладок */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Стиль карточек */
+        .card {
+            background-color: #161b22;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #2d333b;
+        }
+
+        h2 { color: #ff9800; margin-top: 0; }
+
+        /* Трансферы */
+        .transfer-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #2d333b;
+        }
+
+        .old-team { color: #8b949e; }
+        .new-team { color: #ff9800; font-weight: bold; }
+
+        /* Команды */
+        .roster-container {
+            background: linear-gradient(180deg, #d1d1d1 0%, #b5b5b5 100%);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .player-item { text-align: center; flex: 1; }
+        .player-icon { width: 100%; max-width: 80px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
+        .player-name { color: #1a1a1a; font-weight: bold; font-size: 13px; margin-top: 5px; }
+
+        .team-block { margin-bottom: 40px; }
+        .tg-link { color: #0088cc; text-decoration: none; font-size: 14px; display: block; margin-top: 10px; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #484f58;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">LTL-sait</div>
+    <nav>
+        <button onclick="openTab('matches')">Матчи</button>
+        <button onclick="openTab('rating')">Рейтинг</button>
+        <button onclick="openTab('teams')" id="defaultOpen">Команды</button>
+        <button onclick="openTab('transfers')">Трансферы</button>
+    </nav>
+</header>
+
+<main>
+    <div id="matches" class="tab-content">
+        <div class="card">
+            <h2>📅 Предстоящие матчи</h2>
+            <p style="color: #8b949e;">Пока нет запланированных матчей.</p>
+        </div>
+    </div>
+
+    <div id="rating" class="tab-content">
+        <div class="card">
+            <h2>📊 Рейтинг команд</h2>
+            <div class="transfer-row"><span>#1 GENERATION ACADEMY</span> <span>1000 pts</span></div>
+            <div class="transfer-row"><span>#2 TEAM 61</span> <span>950 pts</span></div>
+        </div>
+    </div>
+
+    <div id="teams" class="tab-content">
+        <div class="team-block">
+            <h3>Generation Academy</h3>
+            <div class="roster-container">
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">fR0-ST</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">milaps</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Weather</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">KotixxXX</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">N3XXTXD</div></div>
+            </div>
+            <a href="https://t.me/GAteamcs" class="tg-link">✈ Telegram</a>
+        </div>
+
+        <div class="team-block">
+            <h3>Team 61</h3>
+            <div class="roster-container">
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Lov3zzy</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Altreezz</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">farrr</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Kurok1sh1</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">xied1x</div></div>
+            </div>
+            <a href="https://t.me/teamcs61" class="tg-link">✈ Telegram</a>
+        </div>
+    </div>
+
+    <div id="transfers" class="tab-content">
+        <div class="card">
+            <h2>🔄 История трансферов</h2>
+            <div class="transfer-row"><span>fR0-ST</span> <span class="old-team">no team</span> <span>→</span> <span class="new-team">GA</span></div>
+            <div class="transfer-row"><span>milaps</span> <span class="old-team">no team</span> <span>→</span> <span class="new-team">GA</span></div>
+            <div class="transfer-row"><span>Lov3zzy</span> <span class="old-team">no team</span> <span>→</span> <span class="new-team">Team 61</span></div>
+            </div>
+    </div>
+</main>
+
+<footer>
+    © 2026 LTL-sait | Tier-6 CS Scene
+</footer>
+
+<script>
+    function openTab(tabName) {
+        var i, tabcontent, tablinks;
+        // Скрываем все вкладки
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        // Убираем класс active у всех кнопок
+        tablinks = document.getElementsByTagName("button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        // Показываем нужную вкладку и добавляем класс active кнопке
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.classList.add("active");
+    }
+
+    // По умолчанию открываем вкладку Команды
+    document.getElementById("defaultOpen").click();
+</script>
+
+</body>
+</html>
