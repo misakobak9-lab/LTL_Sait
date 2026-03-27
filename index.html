@@ -14,29 +14,42 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Карточки команд */
+        /* Карточки */
+        .card { background-color: #161b22; border-radius: 8px; padding: 20px; border: 1px solid #2d333b; margin-bottom: 20px; }
+        h2 { color: #ff9800; margin-top: 0; font-size: 20px; }
+
+        /* Матчи */
+        .match-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #2d333b; }
+        .match-team { font-weight: bold; font-size: 18px; width: 40%; }
+        .match-info { text-align: center; width: 20%; }
+        .match-time { color: #ff9800; font-size: 20px; font-weight: bold; display: block; }
+        .match-tournament { font-size: 12px; color: #8b949e; text-transform: uppercase; }
+
+        /* Рейтинг */
+        .rating-table { width: 100%; border-collapse: collapse; }
+        .rating-table td { padding: 12px; border-bottom: 1px solid #2d333b; }
+        .rank { color: #ff9800; font-weight: bold; width: 30px; }
+        .pts { text-align: right; font-weight: bold; color: #adb5bd; }
+
+        /* Команды */
         .team-block { margin-bottom: 50px; }
-        .team-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
         .roster-container { background: linear-gradient(180deg, #d1d1d1 0%, #b5b5b5 100%); border-radius: 12px; padding: 20px; display: flex; justify-content: space-around; gap: 10px; }
-        .player-item { text-align: center; flex: 1; cursor: pointer; transition: transform 0.2s; }
+        .player-item { text-align: center; flex: 1; cursor: pointer; transition: 0.2s; }
         .player-item:hover { transform: scale(1.05); }
         .player-icon { width: 100%; max-width: 80px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
         .player-name { color: #1a1a1a; font-weight: bold; font-size: 12px; margin-top: 5px; text-transform: uppercase; }
         .tg-link { color: #0088cc; text-decoration: none; font-size: 13px; display: block; margin-top: 8px; font-weight: bold; }
 
-        /* Модальное окно (Профиль игрока) */
+        /* Модальное окно */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: #161b22; margin: 10% auto; padding: 30px; border: 1px solid #ff9800; width: 400px; border-radius: 15px; position: relative; display: flex; align-items: center; gap: 25px; }
+        .modal-content { background: #161b22; margin: 15% auto; padding: 30px; border: 1px solid #ff9800; width: 400px; border-radius: 15px; position: relative; display: flex; align-items: center; gap: 25px; }
         .close { position: absolute; top: 10px; right: 20px; color: #ff9800; font-size: 28px; cursor: pointer; }
-        .modal-img { width: 120px; filter: drop-shadow(0 0 10px #ff9800); }
-        .stats-box { border-left: 2px solid #2d333b; padding-left: 20px; }
+        .modal-img { width: 120px; }
         .stats-box h2 { margin: 0; color: #ff9800; }
-        .stats-box p { margin: 5px 0; font-size: 14px; color: #adb5bd; }
+        .stats-box p { margin: 5px 0; color: #adb5bd; }
 
         /* Трансферы */
-        .card { background-color: #161b22; border-radius: 8px; padding: 20px; border: 1px solid #2d333b; }
         .transfer-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #2d333b; }
-        .new-team { color: #ff9800; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -52,10 +65,36 @@
 </header>
 
 <main>
+    <div id="matches" class="tab-content">
+        <div class="card">
+            <h2>📅 Расписание матчей</h2>
+            <div class="match-row">
+                <div class="match-team" style="text-align: right;">BPMP TEAM</div>
+                <div class="match-info">
+                    <span class="match-time">18:40</span>
+                    <span class="match-tournament">XTX TEAM CUP</span>
+                </div>
+                <div class="match-team" style="text-align: left;">GA</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="rating" class="tab-content">
+        <div class="card">
+            <h2>📊 Текущий рейтинг</h2>
+            <table class="rating-table">
+                <tr><td class="rank">#1</td><td>GENERATION ACADEMY</td><td class="pts">0 PTS</td></tr>
+                <tr><td class="rank">#2</td><td>TEAM 61</td><td class="pts">0 PTS</td></tr>
+                <tr><td class="rank">#3</td><td>QUANTUM ESPORT</td><td class="pts">0 PTS</td></tr>
+                <tr><td class="rank">#4</td><td>BPMP TEAM</td><td class="pts">0 PTS</td></tr>
+                <tr><td class="rank">#5</td><td>ECHOFALL</td><td class="pts">0 PTS</td></tr>
+            </table>
+        </div>
+    </div>
+
     <div id="teams" class="tab-content">
-        
         <div class="team-block">
-            <div class="team-header"><h3>Generation Academy</h3></div>
+            <h3>Generation Academy</h3>
             <div class="roster-container">
                 <div class="player-item" onclick="showPlayer('fR0-sT', 'GA', 'https://t.me/skaffrosta')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">fR0-sT</div></div>
                 <div class="player-item" onclick="showPlayer('m1laps', 'GA', 'https://t.me/msever15')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">m1laps</div></div>
@@ -63,11 +102,10 @@
                 <div class="player-item" onclick="showPlayer('KotixxXX', 'GA', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">KotixxXX</div></div>
                 <div class="player-item" onclick="showPlayer('N3XXTxd', 'GA', 'https://t.me/N3XXT666')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">N3XXTxd</div></div>
             </div>
-            <a href="https://t.me/GAteamcs" class="tg-link">✈ Командный ТГ</a>
         </div>
 
         <div class="team-block">
-            <div class="team-header"><h3>Quantum ESPORT</h3></div>
+            <h3>Quantum ESPORT</h3>
             <div class="roster-container">
                 <div class="player-item" onclick="showPlayer('matana_VOL', 'Quantum', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">matana_VOL</div></div>
                 <div class="player-item" onclick="showPlayer('bloodshed', 'Quantum', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">bloodshed</div></div>
@@ -75,24 +113,22 @@
                 <div class="player-item" onclick="showPlayer('Batonesy', 'Quantum', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Batonesy</div></div>
                 <div class="player-item" onclick="showPlayer('Agera', 'Quantum', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Agera</div></div>
             </div>
-            <p style="font-size: 11px; color: #ff9800; margin-top: 10px;">Coach: ottykpok | Замена: H2Olazzz, LiL baton, toff, Vero1ksit</p>
-            <a href="https://t.me/quantiumesport" class="tg-link">✈ Командный ТГ</a>
+            <a href="https://t.me/quantiumesport" class="tg-link">✈ Telegram Канал</a>
         </div>
 
         <div class="team-block">
-            <div class="team-header"><h3>Echofall</h3></div>
+            <h3>Echofall</h3>
             <div class="roster-container">
                 <div class="player-item" onclick="showPlayer('spokyso', 'Echofall', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">spokyso</div></div>
-                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.3;"><div class="player-name">?</div></div>
-                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.3;"><div class="player-name">?</div></div>
-                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.3;"><div class="player-name">?</div></div>
-                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.3;"><div class="player-name">?</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.2;"><div class="player-name">?</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.2;"><div class="player-name">?</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.2;"><div class="player-name">?</div></div>
+                <div class="player-item"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon" style="opacity: 0.2;"><div class="player-name">?</div></div>
             </div>
-            <a href="https://t.me/echofallcs" class="tg-link">✈ Командный ТГ</a>
         </div>
 
         <div class="team-block">
-            <div class="team-header"><h3>BPMP TEAM</h3></div>
+            <h3>BPMP TEAM</h3>
             <div class="roster-container">
                 <div class="player-item" onclick="showPlayer('W1rr0U', 'BPMP', 'https://t.me/imW1rr0u')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">W1rr0U</div></div>
                 <div class="player-item" onclick="showPlayer('Gofan!', 'BPMP', 'https://t.me/gofa3nchil')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Gofan!</div></div>
@@ -100,17 +136,14 @@
                 <div class="player-item" onclick="showPlayer('Wanter', 'BPMP', 'https://t.me/hatkawezera')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Wanter</div></div>
                 <div class="player-item" onclick="showPlayer('Hokage', 'BPMP', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Hokage</div></div>
             </div>
-            <p style="font-size: 11px; color: #8b949e; margin-top: 10px;">Замена: Kwezy, ShAr1ks</p>
         </div>
-
     </div>
 
     <div id="transfers" class="tab-content">
         <div class="card">
-            <h2>🔄 Последние переходы</h2>
-            <div class="transfer-row"><span>matana_VOL</span> <span>no team</span> <span>→</span> <span class="new-team">Quantum</span></div>
-            <div class="transfer-row"><span>spokyso</span> <span>no team</span> <span>→</span> <span class="new-team">Echofall</span></div>
-            <div class="transfer-row"><span>W1rr0U</span> <span>no team</span> <span>→</span> <span class="new-team">BPMP</span></div>
+            <h2>🔄 Трансферы</h2>
+            <div class="transfer-row"><span>fR0-sT</span> <span style="color:#8b949e">no team</span> <span>→</span> <span style="color:#ff9800">GA</span></div>
+            <div class="transfer-row"><span>matana_VOL</span> <span style="color:#8b949e">no team</span> <span>→</span> <span style="color:#ff9800">Quantum</span></div>
         </div>
     </div>
 </main>
@@ -123,7 +156,7 @@
             <h2 id="mName">Nickname</h2>
             <p id="mTeam">Команда: -</p>
             <p>Статистика: <b>1.0</b></p>
-            <a id="mTG" href="#" target="_blank" class="tg-link" style="font-size: 16px;">✈ Telegram</a>
+            <a id="mTG" href="#" target="_blank" class="tg-link" style="font-size: 16px;">✈ Telegram игрока</a>
         </div>
     </div>
 </div>
@@ -146,19 +179,10 @@
         document.getElementById('playerModal').style.display = "block";
     }
 
-    function closeModal() {
-        document.getElementById('playerModal').style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('playerModal')) closeModal();
-    }
-
+    function closeModal() { document.getElementById('playerModal').style.display = "none"; }
+    window.onclick = function(e) { if (e.target == document.getElementById('playerModal')) closeModal(); }
     document.getElementById("defaultOpen").click();
 </script>
 
 </body>
 </html>
-</body>
-</html>
-       
