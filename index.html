@@ -16,34 +16,32 @@
 
         /* Карточки */
         .card { background-color: #161b22; border-radius: 8px; padding: 20px; border: 1px solid #2d333b; margin-bottom: 20px; }
-        h2 { color: #ff9800; margin-top: 0; font-size: 20px; }
+        h2 { color: #ff9800; margin-top: 0; font-size: 22px; }
 
-        /* Матчи и Рейтинг */
-        .match-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #2d333b; }
-        .match-time { color: #ff9800; font-size: 20px; font-weight: bold; }
+        /* Турниры */
+        .tournament-card { cursor: pointer; border: 1px solid #ff9800; transition: 0.3s; }
+        .tournament-card:hover { background-color: #1c2128; }
+        .bracket-img { width: 100%; border-radius: 8px; margin-top: 15px; display: none; }
+
+        /* Рейтинг */
         .rating-table { width: 100%; border-collapse: collapse; }
-        .rating-table td { padding: 12px; border-bottom: 1px solid #2d333b; }
-        .rank { color: #ff9800; font-weight: bold; width: 30px; }
+        .rating-table td { padding: 15px; border-bottom: 1px solid #2d333b; }
+        .team-link { color: #ffffff; text-decoration: none; cursor: pointer; font-weight: bold; }
+        .team-link:hover { color: #ff9800; }
 
-        /* Команды */
-        .team-block { margin-bottom: 50px; }
-        .roster-container { background: linear-gradient(180deg, #d1d1d1 0%, #b5b5b5 100%); border-radius: 12px; padding: 20px; display: flex; justify-content: space-around; gap: 10px; }
-        .player-item { text-align: center; flex: 1; cursor: pointer; transition: 0.2s; }
-        .player-item:hover { transform: scale(1.05); }
-        .player-icon { width: 100%; max-width: 80px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
-        .player-name { color: #1a1a1a; font-weight: bold; font-size: 11px; margin-top: 5px; text-transform: uppercase; }
-        .tg-link-small { color: #0088cc; text-decoration: none; font-size: 13px; display: block; margin-top: 8px; font-weight: bold; }
+        /* Профиль команды */
+        .team-profile { display: none; }
+        .profile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #ff9800; padding-bottom: 10px; }
+        .roster-grid { background: #1c2128; border-radius: 12px; padding: 25px; display: flex; justify-content: space-around; gap: 10px; margin-bottom: 20px; }
+        .player-box { text-align: center; flex: 1; }
+        .player-silh { width: 100%; max-width: 90px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+        .player-nick { font-weight: bold; font-size: 14px; margin-top: 10px; color: #ff9800; }
+        .extra-info { display: flex; justify-content: space-between; gap: 20px; }
+        .info-block { flex: 1; background: #161b22; padding: 15px; border-radius: 8px; border: 1px solid #2d333b; }
 
-        /* Модальное окно */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: #161b22; margin: 15% auto; padding: 30px; border: 1px solid #ff9800; width: 400px; border-radius: 15px; position: relative; display: flex; align-items: center; gap: 25px; }
-        .close { position: absolute; top: 10px; right: 20px; color: #ff9800; font-size: 28px; cursor: pointer; }
-        .modal-img { width: 120px; }
-        .stats-box h2 { margin: 0; color: #ff9800; }
-        .stats-box p { margin: 5px 0; color: #adb5bd; }
-
-        /* Трансферы */
-        .transfer-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #2d333b; font-size: 14px; }
+        /* Общее */
+        .tg-link { color: #0088cc; text-decoration: none; font-weight: bold; }
+        .back-btn { background: #ff9800; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -52,118 +50,64 @@
     <div class="logo">LTL-sait</div>
     <nav>
         <button onclick="openTab('matches')">Матчи</button>
-        <button onclick="openTab('rating')">Рейтинг</button>
-        <button onclick="openTab('teams')" id="defaultOpen">Команды</button>
+        <button onclick="openTab('rating')" id="defaultOpen">Рейтинг</button>
+        <button onclick="openTab('tournaments')">Турниры</button>
         <button onclick="openTab('transfers')">Трансферы</button>
     </nav>
 </header>
 
 <main>
-    <div id="matches" class="tab-content">
-        <div class="card">
-            <h2>📅 Расписание</h2>
-            <div class="match-row">
-                <div style="text-align: right; flex: 1;">BPMP TEAM</div>
-                <div style="text-align: center; width: 120px;"><span class="match-time">18:40</span><br><small>XTX TEAM CUP</small></div>
-                <div style="text-align: left; flex: 1;">GA</div>
+    <div id="tournaments" class="tab-content">
+        <div class="card tournament-card" onclick="toggleBracket()">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>🏆 XTX TEAM CUP</h2>
+                <a href="https://t.me/xtx_tounament" class="tg-link" onclick="event.stopPropagation()">✈ Канал турнира</a>
             </div>
+            <p style="color: #8b949e;">Нажми, чтобы посмотреть сетку</p>
+            <img src="https://i.ibb.co/6803aa/bracket.png" id="bracket" class="bracket-img" alt="Сетка турнира">
         </div>
     </div>
 
     <div id="rating" class="tab-content">
         <div class="card">
-            <h2>📊 Рейтинг</h2>
+            <h2>📊 Рейтинг команд</h2>
             <table class="rating-table">
-                <tr><td class="rank">#1</td><td>GENERATION ACADEMY</td><td>0 PTS</td></tr>
-                <tr><td class="rank">#2</td><td>TEAM 61</td><td>0 PTS</td></tr>
-                <tr><td class="rank">#3</td><td>QUANTUM ESPORT</td><td>0 PTS</td></tr>
-                <tr><td class="rank">#4</td><td>BPMP TEAM</td><td>0 PTS</td></tr>
-                <tr><td class="rank">#5</td><td>ECHOFALL</td><td>0 PTS</td></tr>
-                <tr><td class="rank">#6</td><td>EVEREES TEAM</td><td>0 PTS</td></tr>
+                <tr><td>#1</td><td><span class="team-link" onclick="showTeam('ga')">GENERATION ACADEMY</span></td><td>0 PTS</td></tr>
+                <tr><td>#2</td><td><span class="team-link" onclick="showTeam('everees')">EVEREES TEAM</span></td><td>0 PTS</td></tr>
+                <tr><td>#3</td><td><span class="team-link" onclick="showTeam('bpmp')">BPMP TEAM</span></td><td>0 PTS</td></tr>
+                <tr><td>#4</td><td><span class="team-link" onclick="showTeam('quantum')">QUANTUM ESPORT</span></td><td>0 PTS</td></tr>
+                <tr><td>#5</td><td><span class="team-link" onclick="showTeam('echofall')">ECHOFALL</span></td><td>0 PTS</td></tr>
             </table>
         </div>
     </div>
 
-    <div id="teams" class="tab-content">
-        <div class="team-block">
-            <h3>Generation Academy</h3>
-            <div class="roster-container">
-                <div class="player-item" onclick="showPlayer('fR0-sT', 'GA', 'https://t.me/skaffrosta')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">fR0-sT</div></div>
-                <div class="player-item" onclick="showPlayer('m1laps', 'GA', 'https://t.me/msever15')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">m1laps</div></div>
-                <div class="player-item" onclick="showPlayer('Weather', 'GA', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Weather</div></div>
-                <div class="player-item" onclick="showPlayer('KotixxXX', 'GA', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">KotixxXX</div></div>
-                <div class="player-item" onclick="showPlayer('N3XXTxd', 'GA', 'https://t.me/N3XXT666')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">N3XXTxd</div></div>
+    <div id="team-profile-container">
+        <div id="profile-ga" class="team-profile">
+            <button class="back-btn" onclick="hideProfiles()">← Назад в рейтинг</button>
+            <div class="profile-header">
+                <h1>Generation Academy</h1>
+                <a href="https://t.me/GAteamcs" class="tg-link">✈ Telegram Канал</a>
             </div>
-            <a href="https://t.me/GAteamcs" class="tg-link-small">✈ Канал GA</a>
-        </div>
-
-        <div class="team-block">
-            <h3>EVEREES TEAM</h3>
-            <div class="roster-container">
-                <div class="player-item" onclick="showPlayer('D1xer_51', 'EVEREES', 'https://t.me/dixer_51')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">D1xer_51</div></div>
-                <div class="player-item" onclick="showPlayer('w1nlays', 'EVEREES', 'https://t.me/w1nlays')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">w1nlays</div></div>
-                <div class="player-item" onclick="showPlayer('rebornixxx', 'EVEREES', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">rebornixxx</div></div>
-                <div class="player-item" onclick="showPlayer('OneShot', 'EVEREES', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">OneShot</div></div>
-                <div class="player-item" onclick="showPlayer('Kalex', 'EVEREES', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Kalex</div></div>
+            <div class="roster-grid">
+                <div class="player-box"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-silh"><div class="player-nick">fR0-ST</div></div>
+                <div class="player-box"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-silh"><div class="player-nick">milaps</div></div>
+                <div class="player-box"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-silh"><div class="player-nick">Weather</div></div>
+                <div class="player-box"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-silh"><div class="player-nick">KotixxXX</div></div>
+                <div class="player-box"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-silh"><div class="player-nick">N3XXTXD</div></div>
             </div>
-            <p style="font-size: 11px; color: #ff9800; margin-top: 10px;">Coach: Mif | Bench: H0sh1nooo, Lolixx</p>
-            <a href="https://t.me/evereesteam" class="tg-link-small">✈ Канал EVEREES</a>
-        </div>
-
-        <div class="team-block">
-            <h3>BPMP TEAM</h3>
-            <div class="roster-container">
-                <div class="player-item" onclick="showPlayer('W1rr0U', 'BPMP', 'https://t.me/imW1rr0u')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">W1rr0U</div></div>
-                <div class="player-item" onclick="showPlayer('Gofan!', 'BPMP', 'https://t.me/gofa3nchil')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Gofan!</div></div>
-                <div class="player-item" onclick="showPlayer('LeetOnsy', 'BPMP', 'https://t.me/leeetooonsy')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">LeetOnsy</div></div>
-                <div class="player-item" onclick="showPlayer('Wanter', 'BPMP', 'https://t.me/hatkawezera')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Wanter</div></div>
-                <div class="player-item" onclick="showPlayer('Hokage', 'BPMP', '#')"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="player-icon"><div class="player-name">Hokage</div></div>
-            </div>
-            <p style="font-size: 11px; color: #8b949e; margin-top: 10px;">Замена: Kwezy, ShAr1ks</p>
-        </div>
-
-        </div>
-
-    <div id="transfers" class="tab-content">
-        <div class="card">
-            <h2>🔄 История трансферов</h2>
-            <div id="transfer-list">
-                <div class="transfer-row"><span>spokyso</span> <span>no team → Echofall</span></div>
-                <div class="transfer-row"><span>W1rr0U</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>Gofan!</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>LeetOnsy</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>Wanter</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>Hokage</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>Kwezy</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>ShAr1ks</span> <span>no team → BPMP</span></div>
-                <div class="transfer-row"><span>D1xer_51</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>w1nlays</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>rebornixxx</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>OneShot</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>Kalex</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>Mif (Coach)</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>H0sh1nooo (Bench)</span> <span>no team → EVEREES</span></div>
-                <div class="transfer-row"><span>Lolixx (Bench)</span> <span>no team → EVEREES</span></div>
+            <div class="extra-info">
+                <div class="info-block"><h3>🏆 Достижения</h3><p>Пока нет</p></div>
+                <div class="info-block"><h3>📋 Замены и Коуч</h3><p>Тренер: - <br>Замена: -</p></div>
             </div>
         </div>
-    </div>
-</main>
 
-<div id="playerModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="modal-img">
-        <div class="stats-box">
-            <h2 id="mName">Nickname</h2>
-            <p id="mTeam">Команда: -</p>
-            <p>Статистика: <b>1.0</b></p>
-            <a id="mTG" href="#" target="_blank" class="tg-link-small" style="font-size: 16px;">✈ Telegram игрока</a>
         </div>
-    </div>
-</div>
+
+    </main>
 
 <script>
     function openTab(tabName) {
+        hideProfiles();
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tab-content");
         for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
@@ -173,15 +117,24 @@
         event.currentTarget.classList.add("active");
     }
 
-    function showPlayer(name, team, tg) {
-        document.getElementById('mName').innerText = name;
-        document.getElementById('mTeam').innerText = "Команда: " + team;
-        document.getElementById('mTG').href = tg;
-        document.getElementById('playerModal').style.display = "block";
+    function toggleBracket() {
+        var img = document.getElementById("bracket");
+        img.style.display = (img.style.display === "block") ? "none" : "block";
     }
 
-    function closeModal() { document.getElementById('playerModal').style.display = "none"; }
-    window.onclick = function(e) { if (e.target == document.getElementById('playerModal')) closeModal(); }
+    function showTeam(teamId) {
+        document.getElementById('rating').style.display = 'none';
+        document.getElementById('profile-' + teamId).style.display = 'block';
+    }
+
+    function hideProfiles() {
+        var profiles = document.getElementsByClassName("team-profile");
+        for (var i = 0; i < profiles.length; i++) profiles[i].style.display = "none";
+        if (document.getElementById('rating').style.display === 'none') {
+             document.getElementById('rating').style.display = 'block';
+        }
+    }
+
     document.getElementById("defaultOpen").click();
 </script>
 
