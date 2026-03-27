@@ -31,13 +31,16 @@
         .match-res { background: #1c2128; padding: 20px; border-radius: 8px; display: flex; justify-content: center; align-items: center; gap: 30px; font-size: 20px; font-weight: bold; border: 1px solid #2d333b; }
         .score { color: #ff9800; font-size: 24px; }
 
+        /* Трансферы */
+        .transfer-row { display: flex; justify-content: space-between; padding: 12px; background: #1c2128; border-radius: 6px; margin-bottom: 8px; border-left: 4px solid #ff9800; font-size: 14px; }
+        .tr-to { color: #ff9800; font-weight: bold; }
+
         /* Модалка */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: #161b22; margin: 20% auto; padding: 20px; border: 2px solid #ff9800; width: 250px; border-radius: 10px; text-align: center; }
         .modal-tg { display: inline-block; margin-top: 10px; padding: 5px 10px; background: #0088cc; color: #fff; text-decoration: none; border-radius: 4px; }
 
         .back-btn { background: #ff9800; color: #000; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
-        .transfer-row { display: flex; justify-content: space-between; padding: 10px; background: #1c2128; border-radius: 4px; margin-bottom: 5px; border-left: 3px solid #ff9800; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -45,9 +48,10 @@
 <div id="pModal" class="modal">
     <div class="modal-content">
         <h3 id="m-nick" style="color: #ff9800;">Ник</h3>
-        <p id="m-team" style="font-size: 14px;">Команда</p>
-        <a href="#" id="m-tg" class="modal-tg">Telegram</a>
-        <button onclick="closeM()" style="margin-top:15px; background:none; border:1px solid #444; color:#999; cursor:pointer;">Закрыть</button>
+        <p id="m-team" style="font-size: 14px; color: #adb5bd;">Команда</p>
+        <a href="#" id="m-tg" class="modal-tg">Написать в Telegram</a>
+        <br>
+        <button onclick="closeM()" style="margin-top:15px; background:none; border:1px solid #444; color:#999; cursor:pointer; padding: 5px 10px; border-radius: 4px;">Закрыть</button>
     </div>
 </div>
 
@@ -64,7 +68,7 @@
 <main>
     <div id="rating" class="tab-content">
         <div id="r-list" class="card">
-            <h2>📊 Рейтинг</h2>
+            <h2>📊 Рейтинг команд</h2>
             <table class="rating-table">
                 <tr><td>#1</td><td><span class="team-link" onclick="st('ga')">GENERATION ACADEMY</span></td><td class="pts">20 PTS</td></tr>
                 <tr><td>#2</td><td><span class="team-link" onclick="st('bpmp')">BPMP TEAM</span></td><td class="pts">7 PTS</td></tr>
@@ -102,7 +106,7 @@
         <div id="p-everees" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>EVEREES</h2><div class="roster-grid">
             <div class="player-box" onclick="op('D1xer_51','EVEREES')">Игрок<span class="player-nick">D1xer_51</span></div>
             <div class="player-box" onclick="op('w1nlays','EVEREES')">Игрок<span class="player-nick">w1nlays</span></div>
-            <div class="player-box" onclick="op('OneShot','EVEREES')">Игрок<span class="player-nick">OneShot</span></div>
+            <div class="player-box" onclick="op('rebornixxx','EVEREES')">Игрок<span class="player-nick">rebornixxx</span></div>
             <div class="player-box" onclick="op('Kalex','EVEREES')">Игрок<span class="player-nick">Kalex</span></div>
             <div class="player-box" onclick="op('H0sh1nooo','EVEREES')">Игрок<span class="player-nick">H0sh1nooo</span></div>
         </div></div>
@@ -123,7 +127,7 @@
 
     <div id="matches" class="tab-content">
         <div class="card">
-            <h2>📅 Результат</h2>
+            <h2>📅 История матчей</h2>
             <div class="match-res">
                 <span>GA</span> <span class="score">2 : 0</span> <span>BPMP</span>
             </div>
@@ -132,48 +136,63 @@
 
     <div id="transfers" class="tab-content">
         <div class="card">
-            <div style="display:flex; justify-content:space-between;"><h2>🔄 Трансферы</h2><span style="color:#888;">27 марта</span></div>
-            <div class="transfer-row"><span>spokyso</span> <span>→ Echofall</span></div>
-            <div class="transfer-row"><span>W1rr0U</span> <span>→ BPMP</span></div>
-            <div class="transfer-row"><span>Gofan!</span> <span>→ BPMP</span></div>
-            <div class="transfer-row"><span>D1xer_51</span> <span>→ EVEREES</span></div>
+            <div style="display:flex; justify-content:space-between; align-items: baseline; margin-bottom: 15px;">
+                <h2>🔄 Все Трансферы</h2>
+                <span style="color:#8b949e; font-size: 14px;">27 марта</span>
+            </div>
+            <div class="transfer-row"><span>spokyso</span> <span class="tr-to">→ Echofall</span></div>
+            <div class="transfer-row"><span>W1rr0U</span> <span class="tr-to">→ BPMP TEAM</span></div>
+            <div class="transfer-row"><span>Gofan!</span> <span class="tr-to">→ BPMP TEAM</span></div>
+            <div class="transfer-row"><span>LeetOnsy</span> <span class="tr-to">→ BPMP TEAM</span></div>
+            <div class="transfer-row"><span>D1xer_51</span> <span class="tr-to">→ EVEREES TEAM</span></div>
+            <div class="transfer-row"><span>w1nlays</span> <span class="tr-to">→ EVEREES TEAM</span></div>
+            <div class="transfer-row"><span>rebornixxx</span> <span class="tr-to">→ EVEREES TEAM</span></div>
         </div>
     </div>
 
-    <div id="tournaments" class="tab-content card">
-        <h2>🏆 XTX TEAM CUP</h2>
-        <a href="https://t.me/xtx_tounament" style="color:#0088cc; font-weight:bold;">Telegram Канал</a>
+    <div id="tournaments" class="tab-content">
+        <div class="card">
+            <h2>🏆 XTX TEAM CUP</h2>
+            <p>Статус: Плей-офф</p>
+            <a href="https://t.me/xtx_tounament" style="color:#0088cc; font-weight:bold; text-decoration: none;">✈ Telegram Канал</a>
+        </div>
     </div>
 </main>
 
 <script>
     function tab(id) {
         hp();
-        let c = document.getElementsByClassName("tab-content");
-        for (let x of c) x.style.display = "none";
-        let b = document.getElementsByTagName("button");
-        for (let x of b) x.classList.remove("active");
+        let contents = document.getElementsByClassName("tab-content");
+        for (let x of contents) x.style.display = "none";
+        let buttons = document.getElementsByTagName("button");
+        for (let x of buttons) x.classList.remove("active");
         document.getElementById(id).style.display = "block";
         event.currentTarget.classList.add("active");
     }
+
     function st(id) {
         document.getElementById('r-list').style.display = 'none';
         document.getElementById('p-' + id).style.display = 'block';
     }
+
     function hp() {
-        let p = document.getElementsByClassName("team-profile");
-        for (let x of p) x.style.display = "none";
+        let profiles = document.getElementsByClassName("team-profile");
+        for (let x of profiles) x.style.display = "none";
         if(document.getElementById('r-list')) document.getElementById('r-list').style.display = 'block';
     }
-    function op(n, t) {
-        document.getElementById('m-nick').innerText = n;
-        document.getElementById('m-team').innerText = "Команда: " + t;
-        document.getElementById('m-tg').href = "https://t.me/" + n;
+
+    function op(nick, team) {
+        document.getElementById('m-nick').innerText = nick;
+        document.getElementById('m-team').innerText = "Команда: " + team;
+        document.getElementById('m-tg').href = "https://t.me/" + nick.replace('!', '');
         document.getElementById('pModal').style.display = 'block';
     }
+
     function closeM() { document.getElementById('pModal').style.display = 'none'; }
     window.onclick = function(e) { if (e.target == document.getElementById('pModal')) closeM(); }
+
     document.getElementById("defaultOpen").click();
 </script>
+
 </body>
 </html>
