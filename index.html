@@ -8,38 +8,41 @@
         body { background-color: #0b0e13; color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #0b0e13; border-bottom: 2px solid #ff9800; position: sticky; top: 0; z-index: 100; }
         .logo { color: #ff9800; font-weight: bold; font-size: 24px; text-decoration: none; }
-        nav button { background: none; border: none; color: #adb5bd; cursor: pointer; margin-left: 20px; font-size: 16px; transition: 0.3s; padding: 5px 10px; }
+        nav button { background: none; border: none; color: #adb5bd; cursor: pointer; margin-left: 15px; font-size: 14px; transition: 0.3s; padding: 5px; }
         nav button:hover, nav button.active { color: #ff9800; border-bottom: 2px solid #ff9800; }
         main { padding: 20px 5%; }
         .tab-content { display: none; }
         .card { background-color: #161b22; border-radius: 8px; padding: 20px; border: 1px solid #2d333b; margin-bottom: 20px; }
-        h2 { color: #ff9800; margin: 0 0 15px 0; }
+        h2, h3 { color: #ff9800; margin-top: 0; }
 
-        /* Рейтинг */
-        .rating-table { width: 100%; border-collapse: collapse; }
-        .rating-table td { padding: 15px; border-bottom: 1px solid #2d333b; }
+        /* Рейтинг и Топ */
+        .rating-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .rating-table td { padding: 12px; border-bottom: 1px solid #2d333b; }
         .team-link { color: #ffffff; text-decoration: underline; cursor: pointer; font-weight: bold; }
-        .pts { color: #ff9800; font-weight: bold; }
+        .pts { color: #ff9800; font-weight: bold; text-align: right; }
 
         /* Профили */
         .team-profile { display: none; }
-        .roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; background: #1c2128; padding: 15px; border-radius: 8px; }
-        .player-box { text-align: center; border: 1px solid #2d333b; padding: 10px; border-radius: 6px; cursor: pointer; }
-        .player-nick { color: #ff9800; font-weight: bold; display: block; margin-top: 5px; }
+        .roster-section { margin-bottom: 20px; }
+        .roster-label { color: #8b949e; font-size: 12px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        .player-box { background: #1c2128; border: 1px solid #2d333b; padding: 10px; border-radius: 6px; text-align: center; cursor: pointer; }
+        .player-box:hover { border-color: #ff9800; }
+        .player-nick { color: #ff9800; font-weight: bold; display: block; }
+        .player-rate { font-size: 11px; color: #8b949e; }
 
         /* Матчи */
-        .match-res { background: #1c2128; padding: 20px; border-radius: 8px; display: flex; justify-content: center; align-items: center; gap: 30px; font-size: 20px; font-weight: bold; border: 1px solid #2d333b; }
-        .score { color: #ff9800; font-size: 24px; }
+        .match-card { background: #1c2128; border: 1px solid #2d333b; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .match-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; margin-bottom: 10px; }
+        .match-info { font-size: 13px; color: #adb5bd; line-height: 1.6; }
 
         /* Трансферы */
-        .transfer-row { display: flex; justify-content: space-between; padding: 12px; background: #1c2128; border-radius: 6px; margin-bottom: 8px; border-left: 4px solid #ff9800; font-size: 14px; }
-        .tr-to { color: #ff9800; font-weight: bold; }
+        .transfer-row { display: flex; justify-content: space-between; padding: 10px; background: #1c2128; border-radius: 4px; margin-bottom: 5px; border-left: 3px solid #ff9800; font-size: 13px; }
+        .tr-tag { font-size: 10px; background: #2d333b; padding: 2px 5px; border-radius: 3px; color: #ff9800; }
 
         /* Модалка */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: #161b22; margin: 20% auto; padding: 20px; border: 2px solid #ff9800; width: 250px; border-radius: 10px; text-align: center; }
-        .modal-tg { display: inline-block; margin-top: 10px; padding: 5px 10px; background: #0088cc; color: #fff; text-decoration: none; border-radius: 4px; }
-
+        .modal-content { background: #161b22; margin: 20% auto; padding: 20px; border: 1px solid #ff9800; width: 260px; border-radius: 10px; text-align: center; }
         .back-btn { background: #ff9800; color: #000; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
     </style>
 </head>
@@ -47,11 +50,10 @@
 
 <div id="pModal" class="modal">
     <div class="modal-content">
-        <h3 id="m-nick" style="color: #ff9800;">Ник</h3>
-        <p id="m-team" style="font-size: 14px; color: #adb5bd;">Команда</p>
-        <a href="#" id="m-tg" class="modal-tg">Написать в Telegram</a>
-        <br>
-        <button onclick="closeM()" style="margin-top:15px; background:none; border:1px solid #444; color:#999; cursor:pointer; padding: 5px 10px; border-radius: 4px;">Закрыть</button>
+        <h3 id="m-nick" style="margin-bottom:5px;">Ник</h3>
+        <p id="m-team" style="font-size:14px; color:#adb5bd;">Команда</p>
+        <p id="m-stat" style="color:#ff9800; font-weight:bold;">Rating: 1.0</p>
+        <button onclick="closeM()" style="background:#2d333b; color:#fff; border:none; padding:5px 15px; cursor:pointer; border-radius:4px;">Закрыть</button>
     </div>
 </div>
 
@@ -67,130 +69,164 @@
 
 <main>
     <div id="rating" class="tab-content">
-        <div id="r-list" class="card">
-            <h2>📊 Рейтинг команд</h2>
-            <table class="rating-table">
-                <tr><td>#1</td><td><span class="team-link" onclick="st('ga')">GENERATION ACADEMY</span></td><td class="pts">20 PTS</td></tr>
-                <tr><td>#2</td><td><span class="team-link" onclick="st('bpmp')">BPMP TEAM</span></td><td class="pts">7 PTS</td></tr>
-                <tr><td>#3</td><td><span class="team-link" onclick="st('t61')">TEAM 61</span></td><td class="pts">0 PTS</td></tr>
-                <tr><td>#4</td><td><span class="team-link" onclick="st('everees')">EVEREES TEAM</span></td><td class="pts">0 PTS</td></tr>
-                <tr><td>#5</td><td><span class="team-link" onclick="st('quantum')">QUANTUM ESPORT</span></td><td class="pts">0 PTS</td></tr>
-                <tr><td>#6</td><td><span class="team-link" onclick="st('echofall')">ECHOFALL</span></td><td class="pts">0 PTS</td></tr>
-            </table>
+        <div id="r-list">
+            <div class="card">
+                <h2>📊 Рейтинг команд</h2>
+                <table class="rating-table">
+                    <tr><td>#1</td><td><span class="team-link" onclick="st('ga')">GENERATION ACADEMY</span></td><td class="pts">20 PTS</td></tr>
+                    <tr><td>#2</td><td><span class="team-link" onclick="st('bpmp')">BPMP TEAM</span></td><td class="pts">7 PTS</td></tr>
+                    <tr><td>#3</td><td><span class="team-link" onclick="st('t61')">TEAM 61</span></td><td class="pts">0 PTS</td></tr>
+                    <tr><td>#4</td><td><span class="team-link" onclick="st('everees')">EVEREES TEAM</span></td><td class="pts">0 PTS</td></tr>
+                    <tr><td>#5</td><td><span class="team-link" onclick="st('quantum')">QUANTUM ESPORT</span></td><td class="pts">0 PTS</td></tr>
+                    <tr><td>#6</td><td><span class="team-link" onclick="st('echofall')">ECHOFALL</span></td><td class="pts">0 PTS</td></tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h2>⭐ TOP Players LTL 1.0</h2>
+                <table class="rating-table">
+                    <tr><td>1. Weather (GA)</td><td class="pts">1.43</td></tr>
+                    <tr><td>2. Gofan (BPMP)</td><td class="pts">1.25</td></tr>
+                    <tr><td>3. N3XXT (GA)</td><td class="pts">1.15</td></tr>
+                    <tr><td>4. xWrr0ux (BPMP)</td><td class="pts">1.15</td></tr>
+                    <tr><td>5. FRoST (GA)</td><td class="pts">1.07</td></tr>
+                </table>
+            </div>
         </div>
 
-        <div id="p-ga" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>GA</h2><div class="roster-grid">
-            <div class="player-box" onclick="op('Weather','GA')">Игрок<span class="player-nick">Weather</span></div>
-            <div class="player-box" onclick="op('N3XXT','GA')">Игрок<span class="player-nick">N3XXT</span></div>
-            <div class="player-box" onclick="op('FRoST','GA')">Игрок<span class="player-nick">FRoST</span></div>
-            <div class="player-box" onclick="op('Kot1x','GA')">Игрок<span class="player-nick">Kot1x</span></div>
-            <div class="player-box" onclick="op('milaps','GA')">Игрок<span class="player-nick">milaps</span></div>
-        </div></div>
+        <div id="p-ga" class="team-profile card">
+            <button class="back-btn" onclick="hp()">← Назад</button>
+            <h2>GA</h2>
+            <div class="roster-section">
+                <span class="roster-label">Основа</span>
+                <div class="roster-grid">
+                    <div class="player-box" onclick="op('Weather','GA','1.43')"><span class="player-nick">Weather</span><span class="player-rate">1.43</span></div>
+                    <div class="player-box" onclick="op('N3XXT','GA','1.15')"><span class="player-nick">N3XXT</span><span class="player-rate">1.15</span></div>
+                    <div class="player-box" onclick="op('FRoST','GA','1.07')"><span class="player-nick">FRoST</span><span class="player-rate">1.07</span></div>
+                    <div class="player-box" onclick="op('Kot1x','GA','0.95')"><span class="player-nick">Kot1x</span><span class="player-rate">0.95</span></div>
+                    <div class="player-box" onclick="op('milaps','GA','1.0')"><span class="player-nick">milaps</span><span class="player-rate">1.0</span></div>
+                </div>
+            </div>
+            <div class="roster-section"><span class="roster-label">Bench</span><div class="roster-grid"><div class="player-box">—</div></div></div>
+        </div>
 
-        <div id="p-bpmp" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>BPMP</h2><div class="roster-grid">
-            <div class="player-box" onclick="op('W1rr0U','BPMP')">Игрок<span class="player-nick">W1rr0U</span></div>
-            <div class="player-box" onclick="op('Gofan!','BPMP')">Игрок<span class="player-nick">Gofan!</span></div>
-            <div class="player-box" onclick="op('LeetOnsy','BPMP')">Игрок<span class="player-nick">LeetOnsy</span></div>
-            <div class="player-box" onclick="op('Hokage','BPMP')">Игрок<span class="player-nick">Hokage</span></div>
-            <div class="player-box" onclick="op('wanter','BPMP')">Игрок<span class="player-nick">wanter</span></div>
-        </div></div>
+        <div id="p-bpmp" class="team-profile card">
+            <button class="back-btn" onclick="hp()">← Назад</button>
+            <h2>BPMP</h2>
+            <div class="roster-section">
+                <span class="roster-label">Основа</span>
+                <div class="roster-grid">
+                    <div class="player-box" onclick="op('Gofan','BPMP','1.25')"><span class="player-nick">Gofan</span><span class="player-rate">1.25</span></div>
+                    <div class="player-box" onclick="op('xWrr0ux','BPMP','1.15')"><span class="player-nick">xWrr0ux</span><span class="player-rate">1.15</span></div>
+                    <div class="player-box" onclick="op('wanter','BPMP','0.99')"><span class="player-nick">wanter</span><span class="player-rate">0.99</span></div>
+                    <div class="player-box" onclick="op('Hokage','BPMP','1.01')"><span class="player-nick">Hokage</span><span class="player-rate">1.01</span></div>
+                    <div class="player-box" onclick="op('LeetOnsy','BPMP','1.0')"><span class="player-nick">LeetOnsy</span><span class="player-rate">1.0</span></div>
+                </div>
+            </div>
+            <div class="roster-section"><span class="roster-label">Bench</span><div class="roster-grid"><div class="player-box" onclick="op('W1rr0U','BPMP','1.0')"><span class="player-nick">W1rr0U</span></div></div></div>
+        </div>
 
-        <div id="p-t61" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>TEAM 61</h2><div class="roster-grid">
-            <div class="player-box" onclick="op('Lov3zzy','T61')">Игрок<span class="player-nick">Lov3zzy</span></div>
-            <div class="player-box" onclick="op('Altreezz','T61')">Игрок<span class="player-nick">Altreezz</span></div>
-            <div class="player-box" onclick="op('farrr','T61')">Игрок<span class="player-nick">farrr</span></div>
-            <div class="player-box" onclick="op('Kurok1sh1','T61')">Игрок<span class="player-nick">Kurok1sh1</span></div>
-            <div class="player-box" onclick="op('xied1x','T61')">Игрок<span class="player-nick">xied1x</span></div>
-        </div></div>
+        <div id="p-quantum" class="team-profile card">
+            <button class="back-btn" onclick="hp()">← Назад</button>
+            <h2>Quantum</h2>
+            <div class="roster-section">
+                <span class="roster-label">Основа</span>
+                <div class="roster-grid">
+                    <div class="player-box" onclick="op('Batonesy','Quantum','1.0')"><span class="player-nick">Batonesy</span></div>
+                    <div class="player-box" onclick="op('Agera','Quantum','1.0')"><span class="player-nick">Agera</span></div>
+                    <div class="player-box" onclick="op('bloodshed','Quantum','1.0')"><span class="player-nick">bloodshed</span></div>
+                    <div class="player-box" onclick="op('dalbanzik','Quantum','1.0')"><span class="player-nick">dalbanzik</span></div>
+                    <div class="player-box" onclick="op('matana_VOL','Quantum','1.0')"><span class="player-nick">matana_VOL</span></div>
+                </div>
+            </div>
+            <div class="roster-section"><span class="roster-label">Coach</span><div class="roster-grid"><div class="player-box" onclick="op('ottykpok','Coach','-')"><span class="player-nick">ottykpok</span></div></div></div>
+            <div class="roster-section"><span class="roster-label">Bench</span><div class="roster-grid"><div class="player-box">—</div></div></div>
+        </div>
 
-        <div id="p-everees" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>EVEREES</h2><div class="roster-grid">
-            <div class="player-box" onclick="op('D1xer_51','EVEREES')">Игрок<span class="player-nick">D1xer_51</span></div>
-            <div class="player-box" onclick="op('w1nlays','EVEREES')">Игрок<span class="player-nick">w1nlays</span></div>
-            <div class="player-box" onclick="op('rebornixxx','EVEREES')">Игрок<span class="player-nick">rebornixxx</span></div>
-            <div class="player-box" onclick="op('Kalex','EVEREES')">Игрок<span class="player-nick">Kalex</span></div>
-            <div class="player-box" onclick="op('H0sh1nooo','EVEREES')">Игрок<span class="player-nick">H0sh1nooo</span></div>
-        </div></div>
-
-        <div id="p-quantum" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>Quantum</h2><div class="roster-grid">
-            <div class="player-box" onclick="op('Batonesy','Quantum')">Игрок<span class="player-nick">Batonesy</span></div>
-            <div class="player-box" onclick="op('Agera','Quantum')">Игрок<span class="player-nick">Agera</span></div>
-            <div class="player-box" onclick="op('bloodshed','Quantum')">Игрок<span class="player-nick">bloodshed</span></div>
-            <div class="player-box" onclick="op('dalbanzik','Quantum')">Игрок<span class="player-nick">dalbanzik</span></div>
-            <div class="player-box" onclick="op('oTtykpok','Quantum')">Игрок<span class="player-nick">oTtykpok</span></div>
-        </div></div>
-
-        <div id="p-echofall" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>Echofall</h2><div class="roster-grid">
-            <div class="player-box" onclick="op('spokyso','Echofall')">Игрок<span class="player-nick">spokyso</span></div>
-            <div class="player-box">?</div><div class="player-box">?</div><div class="player-box">?</div><div class="player-box">?</div>
-        </div></div>
+        <div id="p-echofall" class="team-profile card">
+            <button class="back-btn" onclick="hp()">← Назад</button>
+            <h2>Echofall</h2>
+            <div class="roster-section">
+                <span class="roster-label">Основа (Test)</span>
+                <div class="roster-grid">
+                    <div class="player-box" onclick="op('m0rb1e','Echofall','1.0')"><span class="player-nick">m0rb1e</span><span class="player-rate">IGL</span></div>
+                    <div class="player-box" onclick="op('Deyoshi','Echofall','1.0')"><span class="player-nick">Deyoshi</span></div>
+                    <div class="player-box" onclick="op('CarteZ','Echofall','1.0')"><span class="player-nick">CarteZ</span></div>
+                    <div class="player-box" onclick="op('luvmenight','Echofall','1.0')"><span class="player-nick">luvmenight</span></div>
+                    <div class="player-box" onclick="op('h1to','Echofall','1.0')"><span class="player-nick">h1to</span></div>
+                </div>
+            </div>
+            <div class="roster-section"><span class="roster-label">Bench</span><div class="roster-grid"><div class="player-box" onclick="op('spokyso','Echofall','1.0')"><span class="player-nick">spokyso</span></div></div></div>
+        </div>
     </div>
 
     <div id="matches" class="tab-content">
         <div class="card">
-            <h2>📅 История матчей</h2>
-            <div class="match-res">
-                <span>GA</span> <span class="score">2 : 0</span> <span>BPMP</span>
+            <h2>📅 Предстоящие игры</h2>
+            <div class="match-card">
+                <div class="match-header"><span>GA</span> <span>vs</span> <span>ex-Echofall AC</span></div>
+                <div class="match-info">
+                    🕒 Время: 16:00 по МСК<br>
+                    🗺 Карты: Anubis (GA), Overpass (ex-Echofall), Nuke (Decider)
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>✅ Прошедшие игры</h2>
+            <div class="match-card" style="text-align:center;">
+                <span style="font-weight:bold;">GA 2 : 0 BPMP</span>
             </div>
         </div>
     </div>
 
     <div id="transfers" class="tab-content">
         <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items: baseline; margin-bottom: 15px;">
-                <h2>🔄 Все Трансферы</h2>
-                <span style="color:#8b949e; font-size: 14px;">27 марта</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                <h2>🔄 Трансферы</h2>
+                <span style="color:#8b949e;">27-28 марта</span>
             </div>
-            <div class="transfer-row"><span>spokyso</span> <span class="tr-to">→ Echofall</span></div>
-            <div class="transfer-row"><span>W1rr0U</span> <span class="tr-to">→ BPMP TEAM</span></div>
-            <div class="transfer-row"><span>Gofan!</span> <span class="tr-to">→ BPMP TEAM</span></div>
-            <div class="transfer-row"><span>LeetOnsy</span> <span class="tr-to">→ BPMP TEAM</span></div>
-            <div class="transfer-row"><span>D1xer_51</span> <span class="tr-to">→ EVEREES TEAM</span></div>
-            <div class="transfer-row"><span>w1nlays</span> <span class="tr-to">→ EVEREES TEAM</span></div>
-            <div class="transfer-row"><span>rebornixxx</span> <span class="tr-to">→ EVEREES TEAM</span></div>
+            <div class="transfer-row"><span>m0rb1e (IGL)</span> <span>no team → Echofall <span class="tr-tag">Test</span></span></div>
+            <div class="transfer-row"><span>Deyoshi</span> <span>no team → Echofall <span class="tr-tag">Test</span></span></div>
+            <div class="transfer-row"><span>CarteZ</span> <span>no team → Echofall <span class="tr-tag">Test</span></span></div>
+            <div class="transfer-row"><span>luvmenight</span> <span>no team → Echofall <span class="tr-tag">Test</span></span></div>
+            <div class="transfer-row"><span>h1to</span> <span>no team → Echofall <span class="tr-tag">Test</span></span></div>
+            <div class="transfer-row"><span>W1rr0U</span> <span>no team → BPMP (Bench)</span></div>
         </div>
     </div>
 
-    <div id="tournaments" class="tab-content">
-        <div class="card">
-            <h2>🏆 XTX TEAM CUP</h2>
-            <p>Статус: Плей-офф</p>
-            <a href="https://t.me/xtx_tounament" style="color:#0088cc; font-weight:bold; text-decoration: none;">✈ Telegram Канал</a>
-        </div>
+    <div id="tournaments" class="tab-content card">
+        <h2>🏆 XTX TEAM CUP</h2>
+        <a href="https://t.me/xtx_tounament" style="color:#0088cc; font-weight:bold; text-decoration:none;">✈ Telegram Канал</a>
     </div>
 </main>
 
 <script>
     function tab(id) {
         hp();
-        let contents = document.getElementsByClassName("tab-content");
-        for (let x of contents) x.style.display = "none";
-        let buttons = document.getElementsByTagName("button");
-        for (let x of buttons) x.classList.remove("active");
+        let cs = document.getElementsByClassName("tab-content");
+        for (let x of cs) x.style.display = "none";
+        let bs = document.getElementsByTagName("button");
+        for (let x of bs) x.classList.remove("active");
         document.getElementById(id).style.display = "block";
         event.currentTarget.classList.add("active");
     }
-
     function st(id) {
         document.getElementById('r-list').style.display = 'none';
         document.getElementById('p-' + id).style.display = 'block';
     }
-
     function hp() {
-        let profiles = document.getElementsByClassName("team-profile");
-        for (let x of profiles) x.style.display = "none";
+        let ps = document.getElementsByClassName("team-profile");
+        for (let x of ps) x.style.display = "none";
         if(document.getElementById('r-list')) document.getElementById('r-list').style.display = 'block';
     }
-
-    function op(nick, team) {
-        document.getElementById('m-nick').innerText = nick;
-        document.getElementById('m-team').innerText = "Команда: " + team;
-        document.getElementById('m-tg').href = "https://t.me/" + nick.replace('!', '');
+    function op(n, t, s) {
+        document.getElementById('m-nick').innerText = n;
+        document.getElementById('m-team').innerText = "Team: " + t;
+        document.getElementById('m-stat').innerText = "Rating LTL: " + s;
         document.getElementById('pModal').style.display = 'block';
     }
-
     function closeM() { document.getElementById('pModal').style.display = 'none'; }
     window.onclick = function(e) { if (e.target == document.getElementById('pModal')) closeM(); }
-
     document.getElementById("defaultOpen").click();
 </script>
 
