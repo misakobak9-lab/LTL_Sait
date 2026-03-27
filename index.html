@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LTL-sait | Киберспортивный портал</title>
     <style>
-        body { background-color: #0b0e13; color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; }
+        body { background-color: #0b0e13; color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; overflow-x: hidden; }
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #0b0e13; border-bottom: 2px solid #ff9800; position: sticky; top: 0; z-index: 100; }
         .logo { color: #ff9800; font-weight: bold; font-size: 24px; text-decoration: none; }
+        
         nav button { background: none; border: none; color: #adb5bd; cursor: pointer; margin-left: 20px; font-size: 16px; transition: 0.3s; padding: 5px 10px; }
         nav button:hover, nav button.active { color: #ff9800; border-bottom: 2px solid #ff9800; }
+        
         main { padding: 20px 5%; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -19,79 +21,63 @@
         h2 { color: #ff9800; margin: 0; }
         .card-date { color: #8b949e; font-size: 14px; }
 
-        /* Рейтинг */
+        /* Таблица рейтинга */
         .rating-table { width: 100%; border-collapse: collapse; }
         .rating-table td { padding: 15px; border-bottom: 1px solid #2d333b; }
-        .team-link { color: #ffffff; text-decoration: underline; cursor: pointer; font-weight: bold; }
+        .team-link { color: #ffffff; text-decoration: underline; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .team-link:hover { color: #ff9800; }
         .pts { color: #ff9800; font-weight: bold; }
 
-        /* Профили и Игроки */
+        /* Сетка игроков */
         .team-profile { display: none; }
-        .roster-grid { display: flex; justify-content: space-around; background: #1c2128; padding: 20px; border-radius: 8px; gap: 10px; flex-wrap: wrap; }
-        .player-box { text-align: center; border: 1px solid #2d333b; padding: 10px; border-radius: 5px; min-width: 100px; cursor: pointer; transition: 0.2s; }
-        .player-box:hover { border-color: #ff9800; background: #252d37; }
-        .player-nick { color: #ff9800; font-weight: bold; display: block; margin-top: 5px; }
+        .roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; background: #1c2128; padding: 20px; border-radius: 8px; }
+        .player-box { text-align: center; border: 1px solid #2d333b; padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .player-box:hover { border-color: #ff9800; background: #252d37; transform: translateY(-3px); }
+        .player-nick { color: #ff9800; font-weight: bold; display: block; margin-top: 5px; font-size: 18px; }
 
         /* Матчи */
-        .match-item { background: #1c2128; border-radius: 8px; border: 1px solid #2d333b; margin-bottom: 15px; overflow: hidden; cursor: pointer; transition: 0.2s; }
-        .match-item:hover { border-color: #ff9800; }
+        .match-item { background: #1c2128; border-radius: 8px; border: 1px solid #2d333b; margin-bottom: 15px; overflow: hidden; cursor: pointer; }
         .match-summary { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
         .match-details { display: none; padding: 20px; border-top: 1px solid #2d333b; background: #161b22; }
-        .stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2d333b; font-size: 14px; cursor: pointer; }
-        .stat-row:hover { background: #1c2128; }
-        .stat-val { color: #ff9800; font-weight: bold; }
+        .stat-line { display: flex; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid #2d333b; cursor: pointer; }
+        .stat-line:hover { background: #2d333b; }
 
         /* Трансферы */
         .transfer-row { display: flex; justify-content: space-between; padding: 12px; background: #1c2128; border-radius: 6px; margin-bottom: 8px; border-left: 4px solid #ff9800; }
-        
-        .back-btn { background: #ff9800; color: #000; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
+        .tr-to { color: #ff9800; font-weight: bold; }
+
+        /* Модальное окно (Маленькое окно игрока) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: #161b22; margin: 15% auto; padding: 20px; border: 2px solid #ff9800; width: 280px; border-radius: 12px; text-align: center; position: relative; }
+        .close-modal { position: absolute; right: 10px; top: 5px; color: #adb5bd; cursor: pointer; font-size: 20px; }
+        .modal-tg { display: inline-block; margin-top: 15px; padding: 8px 15px; background: #0088cc; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+
+        .back-btn { background: #ff9800; color: #000; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
+        .tg-big-btn { display: block; text-align: center; background: #0088cc; color: #fff; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
+<div id="playerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h3 id="m-nick" style="color: #ff9800; margin-bottom: 5px;">Ник</h3>
+        <p id="m-team" style="margin: 5px 0; color: #adb5bd;">Команда</p>
+        <a href="#" id="m-tg" class="modal-tg">Написать в TG</a>
+    </div>
+</div>
+
 <header>
     <div class="logo">LTL-sait</div>
     <nav>
-        <button onclick="openTab('matches')" id="defaultOpen">Матчи</button>
-        <button onclick="openTab('rating')">Рейтинг</button>
-        <button onclick="openTab('tournaments')">Турниры</button>
+        <button onclick="openTab('rating')" id="defaultOpen">Рейтинг</button>
+        <button onclick="openTab('matches')">Матчи</button>
         <button onclick="openTab('transfers')">Трансферы</button>
+        <button onclick="openTab('tournaments')">Турниры</button>
     </nav>
 </header>
 
 <main>
-    <div id="matches" class="tab-content">
-        <div class="card">
-            <h2>📅 История матчей</h2>
-            <div class="match-item" onclick="toggleMatchDetails('details-1')">
-                <div class="match-summary">
-                    <div style="flex:1; text-align: right; font-weight: bold;">BPMP</div>
-                    <div style="width: 100px; text-align: center; color: #ff9800; font-weight: bold; font-size: 20px;">0 : 2</div>
-                    <div style="flex:1; font-weight: bold;">GA</div>
-                </div>
-                <div id="details-1" class="match-details" onclick="event.stopPropagation()">
-                    <h4 style="color: #ff9800;">Статистика игроков (кликни на игрока)</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <p style="font-weight: bold;">GA 2</p>
-                            <div class="stat-row" onclick="playerInfo('Weather')"><span>Weather</span> <span class="stat-val">1.43</span></div>
-                            <div class="stat-row" onclick="playerInfo('N3XXT')"><span>N3XXT</span> <span class="stat-val">1.15</span></div>
-                            <div class="stat-row" onclick="playerInfo('FRoST')"><span>FRoST</span> <span class="stat-val">1.07</span></div>
-                            <div class="stat-row" onclick="playerInfo('Kot1x')"><span>Kot1x</span> <span class="stat-val">0.95</span></div>
-                        </div>
-                        <div>
-                            <p style="font-weight: bold;">BPMP 0</p>
-                            <div class="stat-row" onclick="playerInfo('Gofan')"><span>Gofan</span> <span class="stat-val">1.25</span></div>
-                            <div class="stat-row" onclick="playerInfo('xWrr0ux')"><span>xWrr0ux</span> <span class="stat-val">1.15</span></div>
-                            <div class="stat-row" onclick="playerInfo('wanter')"><span>wanter</span> <span class="stat-val">0.99</span></div>
-                            <div class="stat-row" onclick="playerInfo('Hokage')"><span>Hokage</span> <span class="stat-val">1.01</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="rating" class="tab-content">
         <div id="rating-list" class="card">
             <h2>📊 Рейтинг команд</h2>
@@ -105,18 +91,57 @@
             </table>
         </div>
 
+        <div id="profile-ga" class="team-profile card">
+            <button class="back-btn" onclick="hideProfiles()">← Назад</button>
+            <h2>GENERATION ACADEMY</h2>
+            <div class="roster-grid">
+                <div class="player-box" onclick="openPlayer('Weather', 'GA')">Игрок<span class="player-nick">Weather</span></div>
+                <div class="player-box" onclick="openPlayer('N3XXT', 'GA')">Игрок<span class="player-nick">N3XXT</span></div>
+                <div class="player-box" onclick="openPlayer('FRoST', 'GA')">Игрок<span class="player-nick">FRoST</span></div>
+                <div class="player-box" onclick="openPlayer('Kot1x', 'GA')">Игрок<span class="player-nick">Kot1x</span></div>
+                <div class="player-box" onclick="openPlayer('milaps', 'GA')">Игрок<span class="player-nick">milaps</span></div>
+            </div>
+        </div>
+
         <div id="profile-bpmp" class="team-profile card">
             <button class="back-btn" onclick="hideProfiles()">← Назад</button>
             <h2>BPMP TEAM</h2>
             <div class="roster-grid">
-                <div class="player-box" onclick="playerInfo('W1rr0U')">Игрок<span class="player-nick">W1rr0U</span></div>
-                <div class="player-box" onclick="playerInfo('Gofan!')">Игрок<span class="player-nick">Gofan!</span></div>
-                <div class="player-box" onclick="playerInfo('LeetOnsy')">Игрок<span class="player-nick">LeetOnsy</span></div>
-                <div class="player-box" onclick="playerInfo('Hokage')">Игрок<span class="player-nick">Hokage</span></div>
-                <div class="player-box" onclick="playerInfo('wanter')">Игрок<span class="player-nick">wanter</span></div>
+                <div class="player-box" onclick="openPlayer('W1rr0U', 'BPMP')">Игрок<span class="player-nick">W1rr0U</span></div>
+                <div class="player-box" onclick="openPlayer('Gofan!', 'BPMP')">Игрок<span class="player-nick">Gofan!</span></div>
+                <div class="player-box" onclick="openPlayer('LeetOnsy', 'BPMP')">Игрок<span class="player-nick">LeetOnsy</span></div>
+                <div class="player-box" onclick="openPlayer('Hokage', 'BPMP')">Игрок<span class="player-nick">Hokage</span></div>
+                <div class="player-box" onclick="openPlayer('wanter', 'BPMP')">Игрок<span class="player-nick">wanter</span></div>
             </div>
         </div>
+    </div>
+
+    <div id="matches" class="tab-content">
+        <div class="card">
+            <h2>📅 История игр</h2>
+            <div class="match-item" onclick="toggleMatch('m1')">
+                <div class="match-summary">
+                    <span style="flex:1; text-align:right;">BPMP</span>
+                    <span style="width:80px; text-align:center; color:#ff9800; font-weight:bold; font-size:18px;">0 : 2</span>
+                    <span style="flex:1; text-align:left;">GA</span>
+                </div>
+                <div id="m1" class="match-details" onclick="event.stopPropagation()">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <p style="color:#ff9800; font-size:12px;">GA (Winner)</p>
+                            <div class="stat-line" onclick="openPlayer('Weather', 'GA')">Weather <span>1.43</span></div>
+                            <div class="stat-line" onclick="openPlayer('N3XXT', 'GA')">N3XXT <span>1.15</span></div>
+                        </div>
+                        <div>
+                            <p style="color:#adb5bd; font-size:12px;">BPMP</p>
+                            <div class="stat-line" onclick="openPlayer('Gofan!', 'BPMP')">Gofan! <span>1.25</span></div>
+                            <div class="stat-line" onclick="openPlayer('wanter', 'BPMP')">wanter <span>0.99</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
     <div id="transfers" class="tab-content">
         <div class="card">
@@ -124,52 +149,67 @@
                 <h2>🔄 Трансферы</h2>
                 <span class="card-date">27 марта</span>
             </div>
-            <div class="transfer-row"><div>spokyso</div> <div>no team → Echofall</div></div>
-            <div class="transfer-row"><div>W1rr0U</div> <div>no team → BPMP</div></div>
-            <div class="transfer-row"><div>Gofan!</div> <div>no team → BPMP</div></div>
+            <div class="transfer-row"><span>spokyso</span> <span class="tr-to">no team → Echofall</span></div>
+            <div class="transfer-row"><span>W1rr0U</span> <span class="tr-to">→ BPMP TEAM</span></div>
+            <div class="transfer-row"><span>Gofan!</span> <span class="tr-to">→ BPMP TEAM</span></div>
+            <div class="transfer-row"><span>D1xer_51</span> <span class="tr-to">→ EVEREES</span></div>
+            <div class="transfer-row"><span>w1nlays</span> <span class="tr-to">→ EVEREES</span></div>
+            <div class="transfer-row"><span>rebornixxx</span> <span class="tr-to">→ EVEREES</span></div>
         </div>
     </div>
 
     <div id="tournaments" class="tab-content">
         <div class="card">
             <h2>🏆 XTX TEAM CUP</h2>
-            <p>Статус: Плей-офф</p>
+            <p>Следите за сеткой и анонсами в официальном канале:</p>
+            <a href="https://t.me/xtx_tounament" class="tg-big-btn">Перейти в Telegram Турнира</a>
         </div>
     </div>
 </main>
 
 <script>
-    function openTab(tabName) {
+    function openTab(name) {
         hideProfiles();
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
-        tablinks = document.getElementsByTagName("button");
-        for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
-        document.getElementById(tabName).style.display = "block";
+        let contents = document.getElementsByClassName("tab-content");
+        for (let c of contents) c.style.display = "none";
+        let buttons = document.getElementsByTagName("button");
+        for (let b of buttons) b.classList.remove("active");
+        document.getElementById(name).style.display = "block";
         event.currentTarget.classList.add("active");
     }
 
     function showTeam(id) {
         document.getElementById('rating-list').style.display = 'none';
-        var profile = document.getElementById('profile-' + id);
-        if(profile) profile.style.display = 'block';
-        else alert('Профиль команды в разработке');
+        let p = document.getElementById('profile-' + id);
+        if (p) p.style.display = 'block';
+        else alert("Профиль этой команды скоро будет добавлен!");
     }
 
     function hideProfiles() {
-        var profiles = document.getElementsByClassName("team-profile");
-        for (var i = 0; i < profiles.length; i++) profiles[i].style.display = "none";
+        let profiles = document.getElementsByClassName("team-profile");
+        for (let p of profiles) p.style.display = "none";
         document.getElementById('rating-list').style.display = 'block';
     }
 
-    function toggleMatchDetails(id) {
-        var el = document.getElementById(id);
-        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    function toggleMatch(id) {
+        let m = document.getElementById(id);
+        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
     }
 
-    function playerInfo(name) {
-        alert("Профиль игрока: " + name + "\nСтатус: Активен");
+    // Логика маленького окна игрока
+    function openPlayer(nick, team) {
+        document.getElementById('m-nick').innerText = nick;
+        document.getElementById('m-team').innerText = "Команда: " + team;
+        document.getElementById('m-tg').href = "https://t.me/" + nick.replace('!', '');
+        document.getElementById('playerModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('playerModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('playerModal')) closeModal();
     }
 
     document.getElementById("defaultOpen").click();
