@@ -30,11 +30,10 @@
         .player-rate { font-size: 11px; color: #8b949e; }
 
         .transfer-row { display: flex; justify-content: space-between; padding: 10px; background: #1c2128; border-radius: 4px; margin-bottom: 5px; border-left: 3px solid #ff9800; font-size: 13px; }
-
+        
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: #161b22; margin: 20% auto; padding: 20px; border: 1px solid #ff9800; width: 260px; border-radius: 10px; text-align: center; }
         .back-btn { background: #ff9800; color: #000; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
-        
         .tourney-link { display: inline-block; margin-top: 10px; color: #0088cc; font-weight: bold; text-decoration: none; border: 1px solid #0088cc; padding: 5px 10px; border-radius: 4px; transition: 0.3s; }
         .tourney-link:hover { background: #0088cc; color: #fff; }
     </style>
@@ -75,6 +74,16 @@
                     <tr><td>#7</td><td><span class="team-link" onclick="st('echofall')">ECHOFALL</span></td><td class="pts">0 PTS</td></tr>
                 </table>
             </div>
+            <div class="card">
+                <h2>⭐ TOP Players LTL 1.0</h2>
+                <table class="rating-table">
+                    <tr><td>1. Weather (GA)</td><td class="pts">1.43</td></tr>
+                    <tr><td>2. Gofan (BPMP)</td><td class="pts">1.25</td></tr>
+                    <tr><td>3. N3XXT (GA)</td><td class="pts">1.15</td></tr>
+                    <tr><td>4. xWrr0ux (BPMP)</td><td class="pts">1.15</td></tr>
+                    <tr><td>5. FRoST (GA)</td><td class="pts">1.07</td></tr>
+                </table>
+            </div>
         </div>
 
         <div id="p-ga" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>GA</h2>
@@ -95,7 +104,9 @@
                 <div class="player-box" onclick="op('W1rr0U','BPMP','1.0')"><span class="player-nick">W1rr0U</span><span class="player-rate">1.0</span></div>
                 <div class="player-box" onclick="op('LeetOnsy','BPMP','1.0')"><span class="player-nick">LeetOnsy</span><span class="player-rate">1.0</span></div>
             </div></div>
-            <div class="roster-section"><span class="roster-label">Bench</span><div class="roster-grid"><div class="player-box" onclick="op('Hokage','BPMP','1.01')"><span class="player-nick">Hokage</span><span class="player-rate">1.01</span></div></div></div>
+            <div class="roster-section"><span class="roster-label">Bench</span><div class="roster-grid">
+                <div class="player-box" onclick="op('Hokage','BPMP','1.01')"><span class="player-nick">Hokage</span><span class="player-rate">1.01</span></div>
+            </div></div>
         </div>
 
         <div id="p-gen3" class="team-profile card"><button class="back-btn" onclick="hp()">← Назад</button><h2>GENERATION 3</h2>
@@ -105,13 +116,6 @@
                 <div class="player-box" onclick="op('pupap1','GEN 3','1.0')"><span class="player-nick">pupap1</span></div>
                 <div class="player-box" onclick="op('yanimagu','GEN 3','1.0')"><span class="player-nick">yanimagu</span></div>
                 <div class="player-box" onclick="op('chydno1','GEN 3','1.0')"><span class="player-nick">chydno1</span></div>
-            </div></div>
-            <div class="roster-section"><span class="roster-label">Replacement</span><div class="roster-grid">
-                <div class="player-box" onclick="op('m1fexx','GEN 3','1.0')"><span class="player-nick">m1fexx</span></div>
-                <div class="player-box" onclick="op('wakeri666','GEN 3','1.0')"><span class="player-nick">wakeri666</span></div>
-                <div class="player-box" onclick="op('FOsor31','GEN 3','1.0')"><span class="player-nick">FOsor31</span></div>
-                <div class="player-box" onclick="op('Tapik','GEN 3','1.0')"><span class="player-nick">Tapik</span></div>
-                <div class="player-box" onclick="op('ka1yat0','GEN 3','1.0')"><span class="player-nick">ka1yat0</span></div>
             </div></div>
         </div>
     </div>
@@ -142,7 +146,7 @@
         hp();
         let cs = document.getElementsByClassName("tab-content");
         for (let x of cs) x.style.display = "none";
-        let bs = document.getElementsByTagName("button");
+        let bs = document.querySelectorAll("nav button");
         for (let x of bs) x.classList.remove("active");
         document.getElementById(id).style.display = "block";
         event.currentTarget.classList.add("active");
