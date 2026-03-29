@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL Prestige Sovereign | Match Day</title>
+    <title>LTL Prestige Sovereign | Official Rosters</title>
     
     <style>
         :root {
             --brand: #ff9800;
-            --brand-rgb: 255, 152, 0;
             --bg-deep: #020406;
             --bg-card: #080b10;
             --bg-inner: #0f141b;
@@ -16,9 +15,9 @@
             --border: #1f2835;
             --text-h: #ffffff;
             --text-m: #9ea7b4;
-            --text-l: #626b78;
-            --radius-main: 40px;
-            --transit: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            --radius-main: 45px;
+            --radius-inner: 25px;
+            --transit: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             --font-nick: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
@@ -27,104 +26,87 @@
             background-color: var(--bg-deep);
             color: var(--text-h);
             font-family: var(--font-nick);
-            line-height: 1.8;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
         header {
             position: sticky; top: 0; z-index: 9999;
             background: rgba(2, 4, 6, 0.96);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(25px);
             border-bottom: 5px solid var(--brand);
-            padding: 25px 8%;
+            padding: 30px 8%;
             display: flex; justify-content: space-between; align-items: center;
         }
 
         .logo-wrap h1 {
-            font-size: 36px; font-weight: 900; color: var(--brand);
+            font-size: 38px; font-weight: 1000; color: var(--brand);
             text-transform: uppercase; letter-spacing: 12px; cursor: pointer;
         }
 
-        .nav-links { display: flex; gap: 12px; }
+        .nav-links { display: flex; gap: 15px; }
+
         .btn-nav {
             background: rgba(255,255,255,0.03); border: 1px solid transparent;
             color: var(--text-m); font-weight: 900; font-size: 11px;
-            text-transform: uppercase; padding: 16px 26px; border-radius: 16px; cursor: pointer;
-            transition: var(--transit); font-family: var(--font-nick);
+            text-transform: uppercase; letter-spacing: 2px;
+            padding: 16px 28px; border-radius: 18px; cursor: pointer;
+            transition: var(--transit);
         }
-        .btn-nav.active { background: var(--brand); color: #000; box-shadow: 0 10px 30px rgba(255,152,0,0.4); }
+
+        .btn-nav.active { background: var(--brand); color: #000; box-shadow: 0 10px 40px rgba(255,152,0,0.4); }
 
         main { padding: 60px 8% 120px 8%; max-width: 1800px; margin: 0 auto; }
-        .content-view { display: none; animation: viewIn 0.6s ease-out; }
-        @keyframes viewIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-view { display: none; animation: fadeIn 0.8s var(--transit); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
         .card-mod {
             background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius-main); padding: 55px; margin-bottom: 50px;
-            position: relative; overflow: hidden;
+            border-radius: var(--radius-main); padding: 60px; margin-bottom: 55px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8); position: relative;
         }
 
-        .mod-h-row { display: flex; align-items: center; gap: 20px; margin-bottom: 45px; }
-        .decor-pill { width: 10px; height: 45px; background: var(--brand); border-radius: 5px; }
-        .mod-h-row h2 { font-size: 32px; font-weight: 900; text-transform: uppercase; }
+        .mod-h-row { display: flex; align-items: center; gap: 25px; margin-bottom: 55px; }
+        .decor-pill { width: 12px; height: 50px; background: var(--brand); border-radius: 6px; }
+        .mod-h-row h2 { font-size: 36px; font-weight: 1000; text-transform: uppercase; }
 
-        /* МАТЧ: GA vs GEN3 */
-        .match-display {
-            display: flex; align-items: center; justify-content: space-around;
-            padding: 80px 40px; background: var(--bg-inner); border-radius: 30px;
-            border: 2px solid var(--border); position: relative;
-        }
-        .t-side { text-align: center; width: 35%; }
-        .t-name { font-size: 50px; font-weight: 1000; text-transform: uppercase; display: block; }
-        .t-sub { font-size: 14px; color: var(--brand); letter-spacing: 4px; margin-top: 10px; }
-        
-        .vs-center { text-align: center; }
-        .vs-text { font-size: 80px; font-weight: 1000; color: var(--border); font-style: italic; line-height: 1; }
-        .match-time { 
-            background: var(--brand); color: #000; padding: 10px 30px; 
-            border-radius: 50px; font-weight: 900; font-size: 24px; margin-top: 20px;
-            display: inline-block;
-        }
+        .grid-mvp { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
-        /* ТАБЛИЦА РЕЙТИНГА */
-        .ltl-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
-        .ltl-table tr { background: var(--bg-inner); transition: 0.3s; cursor: pointer; }
-        .ltl-table tr:hover { background: var(--bg-accent); transform: scale(1.01); }
-        .ltl-table td { padding: 30px; font-weight: 900; font-size: 20px; font-family: var(--font-nick); }
-        .ltl-table td:first-child { color: var(--brand); border-radius: 20px 0 0 20px; width: 100px; text-align: center; font-size: 28px; }
-        .ltl-table td:last-child { border-radius: 0 20px 20px 0; text-align: right; }
-
-        /* КАРТОЧКИ TOP 5 */
-        .grid-mvp { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .mvp-box {
-            background: var(--bg-inner); padding: 70px 30px; border-radius: 30px;
-            text-align: center; border-bottom: 6px solid var(--border); transition: 0.4s;
+            background: var(--bg-inner); padding: 85px 35px; border-radius: var(--radius-inner);
+            text-align: center; border-bottom: 8px solid var(--border); transition: 0.5s;
         }
-        .mvp-box:hover { border-color: var(--brand); transform: translateY(-15px); }
-        .mvp-nick { font-size: 38px; font-weight: 900; text-transform: uppercase; display: block; font-family: var(--font-nick); }
-        .mvp-org { font-size: 13px; color: var(--text-m); text-transform: uppercase; margin-top: 15px; display: block; letter-spacing: 2px; }
 
-        /* ПРОФИЛИ КОМАНД */
+        .mvp-box:hover { border-color: var(--brand); transform: translateY(-20px); }
+        .mvp-nick { font-size: 44px; font-weight: 1000; text-transform: uppercase; display: block; }
+        .mvp-org { font-size: 13px; color: var(--text-m); text-transform: uppercase; margin-top: 15px; display: block; letter-spacing: 4px; }
+
+        .ltl-table { width: 100%; border-collapse: separate; border-spacing: 0 20px; }
+        .ltl-table tr { background: var(--bg-inner); transition: 0.4s; cursor: pointer; }
+        .ltl-table tr:hover { background: var(--bg-accent); transform: scale(1.02) translateX(20px); }
+        .ltl-table td { padding: 35px 50px; font-weight: 900; font-size: 24px; }
+        .ltl-table td:first-child { color: var(--brand); border-radius: 20px 0 0 20px; width: 120px; text-align: center; font-size: 36px; }
+        .ltl-table td:last-child { border-radius: 0 20px 20px 0; text-align: right; color: var(--brand); }
+
         .team-profile { display: none; }
         .btn-back {
             background: var(--bg-inner); color: #fff; border: 2px solid var(--border);
-            padding: 20px 50px; border-radius: 15px; font-weight: 900; cursor: pointer;
-            margin-bottom: 40px; text-transform: uppercase; transition: 0.3s;
+            padding: 24px 60px; border-radius: 20px; font-weight: 1000; cursor: pointer;
+            margin-bottom: 60px; text-transform: uppercase;
         }
-        .roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .player-card {
-            background: var(--bg-inner); padding: 80px 30px; border-radius: 40px;
-            text-align: center; border: 2px solid transparent;
+
+        .roster-grid-full { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        .player-unit {
+            background: var(--bg-inner); padding: 95px 40px; border-radius: 45px;
+            text-align: center; border: 3px solid transparent; transition: 0.5s;
         }
-        .u-nick { font-size: 36px; font-weight: 1000; text-transform: uppercase; display: block; font-family: var(--font-nick); }
-        .u-role { font-size: 12px; color: var(--brand); text-transform: uppercase; margin-top: 15px; display: block; }
+        .player-unit:hover { border-color: var(--brand); transform: translateY(-15px); }
+        .u-nick { font-size: 46px; font-weight: 1000; text-transform: uppercase; display: block; }
+        .u-role { font-size: 14px; color: var(--brand); text-transform: uppercase; margin-top: 20px; display: block; letter-spacing: 4px; }
 
-        /* ТРАНСФЕРЫ */
-        .transfer-block { text-align: center; padding: 120px 0; }
-        .transfer-block h1 { font-size: 50px; font-weight: 900; margin-bottom: 20px; }
-        .discord-link { color: #7289da; text-decoration: none; font-weight: 900; border: 2px solid #7289da; padding: 15px 35px; border-radius: 12px; }
-
-        footer { background: #000; padding: 100px; text-align: center; border-top: 4px solid var(--border); color: var(--text-l); letter-spacing: 5px; text-transform: uppercase; }
+        footer { background: #000; padding: 130px 8%; text-align: center; border-top: 6px solid var(--border); }
+        .f-copy { color: var(--text-m); font-size: 16px; letter-spacing: 10px; text-transform: uppercase; opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -140,121 +122,126 @@
     </header>
 
     <main>
+        
         <div id="view-rating" class="content-view">
-            <div id="dash-home">
+            <div id="home-dash">
                 <div class="card-mod">
                     <div class="mod-h-row"><div class="decor-pill"></div><h2>TOP 5 PLAYERS</h2></div>
                     <div class="grid-mvp">
                         <div class="mvp-box"><span class="mvp-nick">1ntER</span><span class="mvp-org">ex-echofall ac</span></div>
-                        <div class="mvp-box" style="border-color: var(--brand);"><span class="mvp-nick">ANTIKYLA</span><span class="mvp-org">GA</span></div>
-                        <div class="mvp-box"><span class="mvp-nick">weather</span><span class="mvp-org">GA</span></div>
+                        <div class="mvp-box"><span class="mvp-nick">ANTIKYLA</span><span class="mvp-org">ex-echofall ac</span></div>
+                        <div class="mvp-box"><span class="mvp-nick">weather</span><span class="mvp-org">Generation Academy</span></div>
                         <div class="mvp-box"><span class="mvp-nick">x1no</span><span class="mvp-org">GEN3</span></div>
-                        <div class="mvp-box"><span class="mvp-nick">N3XXTXD</span><span class="mvp-org">GA</span></div>
+                        <div class="mvp-box" style="border-color: var(--brand);"><span class="mvp-nick">FRoST</span><span class="mvp-org">Generation Academy</span></div>
                     </div>
                 </div>
 
                 <div class="card-mod">
-                    <div class="mod-h-row"><div class="decor-pill"></div><h2>ТАБЛИЦА ЛИГИ</h2></div>
+                    <div class="mod-h-row"><div class="decor-pill"></div><h2>XTX RANKING</h2></div>
                     <table class="ltl-table">
-                        <tr onclick="openT('ex')"><td>#1</td><td>ex-echofall ac</td><td>35 PTS</td></tr>
-                        <tr onclick="openT('ga')"><td>#2</td><td>GA (GENERATION ACADEMY)</td><td>20 PTS</td></tr>
-                        <tr onclick="openT('gen3')"><td>#3</td><td>GENERATION 3</td><td>12 PTS</td></tr>
-                        <tr onclick="openT('bpmp')"><td>#4</td><td>BPMP TEAM</td><td>7 PTS</td></tr>
-                        <tr onclick="openTeamList()"><td>...</td><td>Смотреть все организации</td><td>→</td></tr>
+                        <tr onclick="openProf('ex')"><td>#1</td><td>ex-echofall ac</td><td>35 PTS</td></tr>
+                        <tr onclick="openProf('ga')"><td>#2</td><td>GA (GENERATION ACADEMY)</td><td>20 PTS</td></tr>
+                        <tr onclick="openProf('gen3')"><td>#3</td><td>GENERATION 3</td><td>12 PTS</td></tr>
+                        <tr onclick="openProf('bpmp')"><td>#4</td><td>BPMP TEAM</td><td>7 PTS</td></tr>
                     </table>
                 </div>
             </div>
 
-            <div id="p-ga" class="team-profile">
-                <button class="btn-back" onclick="closeT()">← Назад</button>
+            <div id="prof-ga" class="team-profile">
+                <button class="btn-back" onclick="closeProf()">← Назад</button>
                 <div class="card-mod">
                     <div class="mod-h-row"><h2>GA | GENERATION ACADEMY</h2></div>
-                    <div class="roster-grid">
-                        <div class="player-card"><span class="u-nick">ANTIKYLA</span><span class="u-role">Sniper</span></div>
-                        <div class="player-card"><span class="u-nick">weather</span><span class="u-role">Rifler</span></div>
-                        <div class="player-card"><span class="u-nick">N3XXTXD</span><span class="u-role">IGL / Captain</span></div>
-                        <div class="player-card"><span class="u-nick">Kot1x</span><span class="u-role">Entry</span></div>
-                        <div class="player-card"><span class="u-nick">milaps</span><span class="u-role">Support</span></div>
+                    <div class="roster-grid-full">
+                        <div class="player-unit" style="border-color: var(--brand);"><span class="u-nick">FRoST</span><span class="u-role">IGL / Captain</span></div>
+                        <div class="player-unit"><span class="u-nick">weather</span><span class="u-role">Rifler</span></div>
+                        <div class="player-unit"><span class="u-nick">N3XXTXD</span><span class="u-role">Entry Frag</span></div>
+                        <div class="player-unit"><span class="u-nick">Kot1x</span><span class="u-role">Support</span></div>
+                        <div class="player-unit"><span class="u-nick">milaps</span><span class="u-role">Lurker</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="prof-ex" class="team-profile">
+                <button class="btn-back" onclick="closeProf()">← Назад</button>
+                <div class="card-mod">
+                    <div class="mod-h-row"><h2>EX-ECHOFALL AC</h2></div>
+                    <div class="roster-grid-full">
+                        <div class="player-unit"><span class="u-nick">1ntER</span><span class="u-role">Main Sniper</span></div>
+                        <div class="player-unit" style="border-color: var(--brand);"><span class="u-nick">ANTIKYLA</span><span class="u-role">Rifler</span></div>
                     </div>
                 </div>
             </div>
             
-            <div id="p-ex" class="team-profile"><button class="btn-back" onclick="closeT()">← Назад</button><div class="card-mod"><h2>EX-ECHOFALL AC</h2><div class="roster-grid"><div class="player-card"><span class="u-nick">1ntER</span></div></div></div></div>
-            <div id="p-gen3" class="team-profile"><button class="btn-back" onclick="closeT()">← Назад</button><div class="card-mod"><h2>GENERATION 3</h2><div class="roster-grid"><div class="player-card"><span class="u-nick">x1no</span></div></div></div></div>
-            <div id="p-bpmp" class="team-profile"><button class="btn-back" onclick="closeT()">← Назад</button><div class="card-mod"><h2>BPMP TEAM</h2><div class="roster-grid"><div class="player-card">wanter</div><div class="player-card">Hokage</div></div></div></div>
-            </div>
+            <div id="prof-gen3" class="team-profile"><button class="btn-back" onclick="closeProf()">← Назад</button><div class="card-mod"><h2>GENERATION 3</h2><div class="roster-grid-full"><div class="player-unit"><span class="u-nick">x1no</span></div></div></div></div>
+            <div id="prof-bpmp" class="team-profile"><button class="btn-back" onclick="closeProf()">← Назад</button><div class="card-mod"><h2>BPMP TEAM</h2><div class="roster-grid-full"><div class="player-unit">wanter</div></div></div></div>
+        </div>
 
         <div id="view-matches" class="content-view">
             <div class="card-mod">
-                <div class="mod-h-row"><div class="decor-pill"></div><h2>БЛИЖАЙШЕЕ ПРОТИВОСТОЯНИЕ</h2></div>
-                <div class="match-display">
-                    <div class="t-side">
-                        <span class="t-name" style="color: var(--brand);">GA</span>
-                        <span class="t-sub">Home Team</span>
-                    </div>
-                    <div class="vs-center">
-                        <div class="vs-text">VS</div>
-                        <div class="match-time">18:00 MSK</div>
-                    </div>
-                    <div class="t-side">
-                        <span class="t-name">GEN3</span>
-                        <span class="t-sub">Challenger</span>
-                    </div>
+                <div class="mod-h-row"><div class="decor-pill"></div><h2>NEXT MATCH</h2></div>
+                <div style="text-align: center; padding: 100px;">
+                    <span style="font-size: 80px; font-weight: 1000; color: var(--brand);">GA</span>
+                    <span style="font-size: 60px; font-style: italic; margin: 0 50px;">VS</span>
+                    <span style="font-size: 80px; font-weight: 1000;">GEN3</span>
+                    <div style="margin-top: 40px;"><span style="background: var(--brand); color: #000; padding: 15px 40px; border-radius: 50px; font-weight: 1000; font-size: 30px;">18:00 MSK</span></div>
                 </div>
             </div>
         </div>
 
         <div id="view-teams" class="content-view">
             <div class="card-mod">
-                <div class="mod-h-row"><h2>ВСЕ ОРГАНИЗАЦИИ (9)</h2></div>
                 <table class="ltl-table">
-                    <tr onclick="jumpT('ga')"><td>1</td><td>GA (GENERATION ACADEMY)</td><td>→</td></tr>
-                    <tr onclick="jumpT('ex')"><td>2</td><td>ex-echofall ac</td><td>→</td></tr>
-                    <tr onclick="jumpT('gen3')"><td>3</td><td>GENERATION 3</td><td>→</td></tr>
-                    <tr onclick="jumpT('bpmp')"><td>4</td><td>BPMP TEAM</td><td>→</td></tr>
-                    <tr onclick="jumpT('plohishi')"><td>5</td><td>PLOHISHI</td><td>→</td></tr>
-                    <tr onclick="jumpT('echo')"><td>6</td><td>ECHOFALL ❤️</td><td>→</td></tr>
-                    <tr onclick="jumpT('everees')"><td>7</td><td>EVEREES</td><td>→</td></tr>
-                    <tr onclick="jumpT('quantum')"><td>8</td><td>QUANTUM</td><td>→</td></tr>
-                    <tr onclick="jumpT('team61')"><td>9</td><td>TEAM 61</td><td>→</td></tr>
+                    <tr onclick="jumpProf('ga')"><td>1</td><td>GA (GENERATION ACADEMY)</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('ex')"><td>2</td><td>ex-echofall ac</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('gen3')"><td>3</td><td>GENERATION 3</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('bpmp')"><td>4</td><td>BPMP TEAM</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('plohishi')"><td>5</td><td>PLOHISHI</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('echo')"><td>6</td><td>ECHOFALL ❤️</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('everees')"><td>7</td><td>EVEREES</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('quantum')"><td>8</td><td>QUANTUM</td><td>VIEW</td></tr>
+                    <tr onclick="jumpProf('team61')"><td>9</td><td>TEAM 61</td><td>VIEW</td></tr>
                 </table>
             </div>
         </div>
 
         <div id="view-transfers" class="content-view">
-            <div class="card-mod">
-                <div class="transfer-block">
-                    <h1>ТРАНСФЕРНОЕ ОКНО ЗАКРЫТО</h1>
-                    <p style="margin-bottom: 40px; color: var(--text-m);">Следите за анонсами новых игроков в нашем сообществе.</p>
-                    <a href="#" class="discord-link">JOIN DISCORD</a>
-                </div>
+            <div class="card-mod" style="text-align: center; padding: 150px 0;">
+                <h1 style="font-size: 60px; font-weight: 1000; margin-bottom: 30px;">ТРАНСФЕРНОЕ ОКНО ЗАКРЫТО</h1>
+                <p style="color: var(--text-m); letter-spacing: 2px;">СОСТАВЫ УКОМПЛЕКТОВАНЫ</p>
             </div>
         </div>
+
     </main>
 
-    <footer>&copy; 2026 LTL ESPORTS | GENERATION ACADEMY LEGACY</footer>
+    <footer>
+        <p class="f-copy">&copy; 2026 LTL ESPORTS | SOVEREIGN FINAL</p>
+    </footer>
 
     <script>
         function setView(id) {
             document.querySelectorAll('.content-view').forEach(v => v.style.display = 'none');
             document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
             document.getElementById(id).style.display = 'block';
-            document.getElementById('n-' + id.replace('view-', '')).classList.add('active');
-            closeT();
-            window.scrollTo(0,0);
+            const btn = document.getElementById('n-' + id.replace('view-', ''));
+            if(btn) btn.classList.add('active');
+            closeProf();
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
-        function openT(slug) {
-            document.getElementById('dash-home').style.display = 'none';
+
+        function openProf(slug) {
+            document.getElementById('home-dash').style.display = 'none';
             document.querySelectorAll('.team-profile').forEach(p => p.style.display = 'none');
-            const target = document.getElementById('p-' + slug);
+            const target = document.getElementById('prof-' + slug);
             if(target) target.style.display = 'block';
         }
-        function closeT() {
+
+        function closeProf() {
             document.querySelectorAll('.team-profile').forEach(p => p.style.display = 'none');
-            document.getElementById('dash-home').style.display = 'block';
+            const dash = document.getElementById('home-dash');
+            if(dash) dash.style.display = 'block';
         }
-        function jumpT(slug) { setView('view-rating'); openT(slug); }
-        function openTeamList() { setView('view-teams'); }
+
+        function jumpProf(slug) { setView('view-rating'); openProf(slug); }
         document.addEventListener('DOMContentLoaded', () => setView('view-rating'));
     </script>
 </body>
