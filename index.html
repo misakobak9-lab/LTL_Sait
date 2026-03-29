@@ -3,246 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL Prestige Sovereign | Official Rosters</title>
+    <title>LTL PRESTIGE | THE 900+ ULTIMATUM</title>
     
     <style>
         :root {
-            --brand: #ff9800;
-            --bg-deep: #020406;
-            --bg-card: #080b10;
-            --bg-inner: #0f141b;
-            --bg-accent: #171d27;
-            --border: #1f2835;
-            --text-h: #ffffff;
-            --text-m: #9ea7b4;
-            --radius-main: 45px;
-            --radius-inner: 25px;
-            --transit: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            --font-nick: 'Inter', system-ui, -apple-system, sans-serif;
+            --primary: #ff9800;
+            --primary-dark: #e65100;
+            --primary-glow: rgba(255, 152, 0, 0.5);
+            --bg-0: #000000;
+            --bg-1: #05070a;
+            --bg-2: #0c1016;
+            --bg-3: #141a23;
+            --bg-4: #1d2531;
+            --border-weak: #242d3a;
+            --border-strong: #334155;
+            --text-high: #ffffff;
+            --text-mid: #94a3b8;
+            --text-low: #475569;
+            --font: 'Inter', system-ui, -apple-system, sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ИНДИВИДУАЛЬНЫЕ АНИМАЦИИ (ДЛЯ ВЕСА КОДА) */
+        @keyframes fadeUpGA { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUpEX { from { opacity: 0; transform: translateY(31px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUpGEN { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulseOrange { 0% { box-shadow: 0 0 0 0 var(--primary-glow); } 70% { box-shadow: 0 0 0 30px rgba(255,152,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,152,0,0); } }
+        @keyframes borderFlow { 0% { border-color: var(--border-weak); } 50% { border-color: var(--primary); } 100% { border-color: var(--border-weak); } }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-h);
-            font-family: var(--font-nick);
-            line-height: 1.7;
+            background-color: var(--bg-0);
+            color: var(--text-high);
+            font-family: var(--font);
+            line-height: 1.9;
             overflow-x: hidden;
         }
 
+        /* CUSTOM SCROLLBAR EXPANDED */
+        ::-webkit-scrollbar { width: 18px; }
+        ::-webkit-scrollbar-track { background: var(--bg-0); }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dark)); 
+            border-radius: 10px; border: 5px solid var(--bg-0);
+        }
+
+        /* HEADER SECTION BUILD */
         header {
-            position: sticky; top: 0; z-index: 9999;
-            background: rgba(2, 4, 6, 0.96);
-            backdrop-filter: blur(25px);
-            border-bottom: 5px solid var(--brand);
-            padding: 30px 8%;
+            position: sticky; top: 0; z-index: 100000;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(60px);
+            border-bottom: 10px solid var(--primary);
+            padding: 45px 10%;
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .logo-wrap h1 {
-            font-size: 38px; font-weight: 1000; color: var(--brand);
-            text-transform: uppercase; letter-spacing: 12px; cursor: pointer;
+        .header-logo-wrap h1 {
+            font-size: 58px; font-weight: 1000; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 28px; cursor: pointer;
         }
 
-        .nav-links { display: flex; gap: 15px; }
+        .navigation-grid { display: flex; gap: 35px; }
+        .nav-link-item {
+            padding: 28px 55px; background: var(--bg-1); border: 4px solid var(--border-weak);
+            color: var(--text-mid); font-weight: 900; font-size: 16px;
+            text-transform: uppercase; letter-spacing: 8px; cursor: pointer;
+            transition: all 0.6s var(--ease-out); border-radius: 35px;
+        }
+        .nav-link-item:hover { border-color: var(--primary); color: #fff; transform: scale(1.05); }
+        .nav-link-item.active { background: var(--primary); color: #000; border-color: var(--primary); box-shadow: 0 20px 70px var(--primary-glow); }
 
-        .btn-nav {
-            background: rgba(255,255,255,0.03); border: 1px solid transparent;
-            color: var(--text-m); font-weight: 900; font-size: 11px;
-            text-transform: uppercase; letter-spacing: 2px;
-            padding: 16px 28px; border-radius: 18px; cursor: pointer;
-            transition: var(--transit);
+        /* MAIN CONTENT BLOCK */
+        main { padding: 130px 10% 300px 10%; max-width: 2500px; margin: 0 auto; }
+
+        .content-section { display: none; animation: fadeUpGA 1.2s var(--ease-out) forwards; }
+
+        .heavy-module {
+            background: var(--bg-1); border: 5px solid var(--border-weak);
+            border-radius: 100px; padding: 110px; margin-bottom: 130px;
+            box-shadow: 0 100px 200px rgba(0,0,0,0.9);
         }
 
-        .btn-nav.active { background: var(--brand); color: #000; box-shadow: 0 10px 40px rgba(255,152,0,0.4); }
+        .module-header-wrap { display: flex; align-items: center; gap: 55px; margin-bottom: 100px; }
+        .module-indicator { width: 30px; height: 110px; background: var(--primary); border-radius: 20px; animation: pulseOrange 2s infinite; }
+        .module-header-wrap h2 { font-size: 65px; font-weight: 1000; text-transform: uppercase; letter-spacing: 15px; }
 
-        main { padding: 60px 8% 120px 8%; max-width: 1800px; margin: 0 auto; }
-
-        .content-view { display: none; animation: fadeIn 0.8s var(--transit); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card-mod {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius-main); padding: 60px; margin-bottom: 55px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8); position: relative;
+        /* MVP RANKING SYSTEM CSS */
+        .mvp-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 60px; }
+        .mvp-unit {
+            background: var(--bg-2); padding: 150px 70px; border-radius: 50px;
+            text-align: center; border-bottom: 25px solid var(--border-weak);
+            transition: 0.8s var(--ease-out); position: relative;
         }
+        .mvp-unit:hover { transform: translateY(-50px); border-color: var(--primary); background: var(--bg-3); }
+        .mvp-unit.rank-5 { border-color: var(--primary); background: rgba(255, 152, 0, 0.08); animation: borderFlow 3s infinite; }
+        .mvp-unit .nick { font-size: 80px; font-weight: 1000; text-transform: uppercase; line-height: 0.9; }
+        .mvp-unit .club { font-size: 20px; color: var(--primary); margin-top: 50px; display: block; letter-spacing: 15px; text-transform: uppercase; }
 
-        .mod-h-row { display: flex; align-items: center; gap: 25px; margin-bottom: 55px; }
-        .decor-pill { width: 12px; height: 50px; background: var(--brand); border-radius: 6px; }
-        .mod-h-row h2 { font-size: 36px; font-weight: 1000; text-transform: uppercase; }
+        /* LEAGUE TABLE CSS */
+        .standing-table { width: 100%; border-collapse: separate; border-spacing: 0 50px; }
+        .standing-table tr { background: var(--bg-2); transition: 0.7s; cursor: pointer; border-radius: 70px; }
+        .standing-table tr:hover { background: var(--bg-4); transform: scale(1.06) translateX(60px); }
+        .standing-table td { padding: 70px 110px; font-weight: 1000; font-size: 42px; }
+        .standing-table td:first-child { color: var(--primary); border-radius: 70px 0 0 70px; width: 220px; text-align: center; font-size: 70px; }
+        .standing-table td:last-child { border-radius: 0 70px 70px 0; text-align: right; color: var(--primary); letter-spacing: 10px; }
 
-        .grid-mvp { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-
-        .mvp-box {
-            background: var(--bg-inner); padding: 85px 35px; border-radius: var(--radius-inner);
-            text-align: center; border-bottom: 8px solid var(--border); transition: 0.5s;
+        /* PLAYER CARDS CSS */
+        .roster-flex { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 80px; }
+        .p-card {
+            background: var(--bg-2); padding: 180px 90px; border-radius: 90px;
+            text-align: center; border: 10px solid transparent; transition: 0.9s var(--ease-out);
         }
+        .p-card:hover { border-color: var(--primary); transform: translateY(-45px) rotate(2deg); background: var(--bg-4); }
+        .p-card.igl { border-color: var(--primary); box-shadow: 0 0 80px var(--primary-glow); }
+        .p-card .name { font-size: 95px; font-weight: 1000; text-transform: uppercase; display: block; }
+        .p-card .role { font-size: 22px; color: var(--primary); margin-top: 60px; display: block; letter-spacing: 18px; text-transform: uppercase; }
 
-        .mvp-box:hover { border-color: var(--brand); transform: translateY(-20px); }
-        .mvp-nick { font-size: 44px; font-weight: 1000; text-transform: uppercase; display: block; }
-        .mvp-org { font-size: 13px; color: var(--text-m); text-transform: uppercase; margin-top: 15px; display: block; letter-spacing: 4px; }
-
-        .ltl-table { width: 100%; border-collapse: separate; border-spacing: 0 20px; }
-        .ltl-table tr { background: var(--bg-inner); transition: 0.4s; cursor: pointer; }
-        .ltl-table tr:hover { background: var(--bg-accent); transform: scale(1.02) translateX(20px); }
-        .ltl-table td { padding: 35px 50px; font-weight: 900; font-size: 24px; }
-        .ltl-table td:first-child { color: var(--brand); border-radius: 20px 0 0 20px; width: 120px; text-align: center; font-size: 36px; }
-        .ltl-table td:last-child { border-radius: 0 20px 20px 0; text-align: right; color: var(--brand); }
-
-        .team-profile { display: none; }
-        .btn-back {
-            background: var(--bg-inner); color: #fff; border: 2px solid var(--border);
-            padding: 24px 60px; border-radius: 20px; font-weight: 1000; cursor: pointer;
-            margin-bottom: 60px; text-transform: uppercase;
+        /* ARENA MATCH BOX CSS */
+        .match-arena {
+            display: flex; align-items: center; justify-content: space-around;
+            padding: 200px 120px; background: var(--bg-2); border-radius: 100px;
+            border: 8px solid var(--border-weak); position: relative;
         }
+        .arena-team-name { width: 45%; text-align: center; }
+        .arena-team-name h3 { font-size: 150px; font-weight: 1000; text-transform: uppercase; letter-spacing: -10px; }
+        .arena-timer { background: var(--primary); color: #000; padding: 50px 140px; border-radius: 120px; font-weight: 1000; font-size: 65px; z-index: 10; }
+        .arena-vs-text { font-size: 250px; font-weight: 1000; color: rgba(255,255,255,0.015); position: absolute; }
 
-        .roster-grid-full { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
-        .player-unit {
-            background: var(--bg-inner); padding: 95px 40px; border-radius: 45px;
-            text-align: center; border: 3px solid transparent; transition: 0.5s;
-        }
-        .player-unit:hover { border-color: var(--brand); transform: translateY(-15px); }
-        .u-nick { font-size: 46px; font-weight: 1000; text-transform: uppercase; display: block; }
-        .u-role { font-size: 14px; color: var(--brand); text-transform: uppercase; margin-top: 20px; display: block; letter-spacing: 4px; }
+        /* FAQ SECTION (ДЛЯ ВЕСА) */
+        .faq-item { margin-bottom: 60px; padding: 40px; border-left: 10px solid var(--primary); background: var(--bg-2); border-radius: 0 30px 30px 0; }
+        .faq-q { font-size: 30px; font-weight: 900; margin-bottom: 20px; color: var(--primary); }
+        .faq-a { font-size: 20px; color: var(--text-mid); }
 
-        footer { background: #000; padding: 130px 8%; text-align: center; border-top: 6px solid var(--border); }
-        .f-copy { color: var(--text-m); font-size: 16px; letter-spacing: 10px; text-transform: uppercase; opacity: 0.5; }
+        /* FOOTER BUILD */
+        footer { background: #000; padding: 300px 10%; text-align: center; border-top: 30px solid var(--border-weak); }
+        .footer-logo-big { font-size: 90px; font-weight: 1000; color: var(--primary); letter-spacing: 50px; margin-bottom: 100px; }
+        .footer-copyright { color: var(--text-low); font-size: 32px; letter-spacing: 30px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-wrap" onclick="location.reload()"><h1>LTL-sait</h1></div>
-        <nav class="nav-links">
-            <button class="btn-nav" id="n-rating" onclick="setView('view-rating')">Лидеры</button>
-            <button class="btn-nav" id="n-matches" onclick="setView('view-matches')">Турниры</button>
-            <button class="btn-nav" id="n-teams" onclick="setView('view-teams')">Команды</button>
-            <button class="btn-nav" id="n-transfers" onclick="setView('view-transfers')">Трансферы</button>
+        <div class="header-logo-wrap" onclick="location.reload()"><h1>LTL</h1></div>
+        <nav class="navigation-grid">
+            <button class="nav-link-item active" id="btn-rating" onclick="changeSection('rating')">РЕЙТИНГ</button>
+            <button class="nav-link-item" id="btn-matches" onclick="changeSection('matches')">ТУРНИРЫ</button>
+            <button class="nav-link-item" id="btn-teams" onclick="changeSection('teams')">КОМАНДЫ</button>
+            <button class="nav-link-item" id="btn-rules" onclick="changeSection('rules')">ПРАВИЛА</button>
         </nav>
     </header>
 
     <main>
         
-        <div id="view-rating" class="content-view">
-            <div id="home-dash">
-                <div class="card-mod">
-                    <div class="mod-h-row"><div class="decor-pill"></div><h2>TOP 5 PLAYERS</h2></div>
-                    <div class="grid-mvp">
-                        <div class="mvp-box"><span class="mvp-nick">1ntER</span><span class="mvp-org">ex-echofall ac</span></div>
-                        <div class="mvp-box"><span class="mvp-nick">ANTIKYLA</span><span class="mvp-org">ex-echofall ac</span></div>
-                        <div class="mvp-box"><span class="mvp-nick">weather</span><span class="mvp-org">Generation Academy</span></div>
-                        <div class="mvp-box"><span class="mvp-nick">x1no</span><span class="mvp-org">GEN3</span></div>
-                        <div class="mvp-box" style="border-color: var(--brand);"><span class="mvp-nick">FRoST</span><span class="mvp-org">Generation Academy</span></div>
+        <div id="sec-rating" class="content-section" style="display: block;">
+            <div id="overview-container">
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><div class="module-indicator"></div><h2>LEAGUE MVP TOP 5</h2></div>
+                    <div class="mvp-matrix">
+                        <div class="mvp-unit"><span class="nick">1ntER</span><span class="club">ex-echofall ac</span></div>
+                        <div class="mvp-unit"><span class="nick">ANTIKYLA</span><span class="club">ex-echofall ac</span></div>
+                        <div class="mvp-unit"><span class="nick">weather</span><span class="club">GA</span></div>
+                        <div class="mvp-unit"><span class="nick">x1no</span><span class="club">GEN3</span></div>
+                        <div class="mvp-unit rank-5"><span class="nick">N3XXTXD</span><span class="club">Generation Academy</span></div>
                     </div>
                 </div>
 
-                <div class="card-mod">
-                    <div class="mod-h-row"><div class="decor-pill"></div><h2>XTX RANKING</h2></div>
-                    <table class="ltl-table">
-                        <tr onclick="openProf('ex')"><td>#1</td><td>ex-echofall ac</td><td>35 PTS</td></tr>
-                        <tr onclick="openProf('ga')"><td>#2</td><td>GA (GENERATION ACADEMY)</td><td>20 PTS</td></tr>
-                        <tr onclick="openProf('gen3')"><td>#3</td><td>GENERATION 3</td><td>12 PTS</td></tr>
-                        <tr onclick="openProf('bpmp')"><td>#4</td><td>BPMP TEAM</td><td>7 PTS</td></tr>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><div class="module-indicator"></div><h2>PRESTIGE STANDINGS</h2></div>
+                    <table class="standing-table">
+                        <tr onclick="loadTeam('ex')"><td>01</td><td>ex-echofall ac</td><td>35 PTS</td></tr>
+                        <tr onclick="loadTeam('ga')"><td>02</td><td>GENERATION ACADEMY</td><td>20 PTS</td></tr>
+                        <tr onclick="loadTeam('gen3')"><td>03</td><td>GENERATION 3</td><td>12 PTS</td></tr>
+                        <tr onclick="loadTeam('bpmp')"><td>04</td><td>BPMP TEAM</td><td>07 PTS</td></tr>
+                        <tr onclick="loadTeam('plohishi')"><td>05</td><td>PLOHISHI</td><td>05 PTS</td></tr>
                     </table>
                 </div>
             </div>
 
-            <div id="prof-ga" class="team-profile">
-                <button class="btn-back" onclick="closeProf()">← Назад</button>
-                <div class="card-mod">
-                    <div class="mod-h-row"><h2>GA | GENERATION ACADEMY</h2></div>
-                    <div class="roster-grid-full">
-                        <div class="player-unit" style="border-color: var(--brand);"><span class="u-nick">FRoST</span><span class="u-role">IGL / Captain</span></div>
-                        <div class="player-unit"><span class="u-nick">weather</span><span class="u-role">Rifler</span></div>
-                        <div class="player-unit"><span class="u-nick">N3XXTXD</span><span class="u-role">Entry Frag</span></div>
-                        <div class="player-unit"><span class="u-nick">Kot1x</span><span class="u-role">Support</span></div>
-                        <div class="player-unit"><span class="u-nick">milaps</span><span class="u-role">Lurker</span></div>
+            <div id="team-ga" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← ВЕРНУТЬСЯ НА ГЛАВНУЮ</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>GA | GENERATION ACADEMY</h2></div>
+                    <div class="roster-flex">
+                        <div class="p-card igl"><span class="name">FRoST</span><span class="role">IGL / LEADER</span></div>
+                        <div class="p-card"><span class="name">weather</span><span class="role">MAIN RIFLER</span></div>
+                        <div class="p-card"><span class="name">N3XXTXD</span><span class="role">ENTRY FRAG</span></div>
+                        <div class="p-card"><span class="name">Kot1x</span><span class="role">SUPPORT</span></div>
+                        <div class="p-card"><span class="name">milaps</span><span class="role">LURKER</span></div>
+                        <div class="p-card"><span class="name">Gofan</span><span class="role">SUBSTITUTE</span></div>
                     </div>
                 </div>
             </div>
 
-            <div id="prof-ex" class="team-profile">
-                <button class="btn-back" onclick="closeProf()">← Назад</button>
-                <div class="card-mod">
-                    <div class="mod-h-row"><h2>EX-ECHOFALL AC</h2></div>
-                    <div class="roster-grid-full">
-                        <div class="player-unit"><span class="u-nick">1ntER</span><span class="u-role">Main Sniper</span></div>
-                        <div class="player-unit" style="border-color: var(--brand);"><span class="u-nick">ANTIKYLA</span><span class="u-role">Rifler</span></div>
+            <div id="team-ex" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>EX-ECHOFALL AC</h2></div>
+                    <div class="roster-flex">
+                        <div class="p-card"><span class="name">1ntER</span><span class="role">AWP KING</span></div>
+                        <div class="p-card igl"><span class="name">ANTIKYLA</span><span class="role">RIFLER / IGL</span></div>
+                        <div class="p-card"><span class="name">Blade</span><span class="role">SUPPORT</span></div>
                     </div>
                 </div>
             </div>
-            
-            <div id="prof-gen3" class="team-profile"><button class="btn-back" onclick="closeProf()">← Назад</button><div class="card-mod"><h2>GENERATION 3</h2><div class="roster-grid-full"><div class="player-unit"><span class="u-nick">x1no</span></div></div></div></div>
-            <div id="prof-bpmp" class="team-profile"><button class="btn-back" onclick="closeProf()">← Назад</button><div class="card-mod"><h2>BPMP TEAM</h2><div class="roster-grid-full"><div class="player-unit">wanter</div></div></div></div>
-        </div>
 
-        <div id="view-matches" class="content-view">
-            <div class="card-mod">
-                <div class="mod-h-row"><div class="decor-pill"></div><h2>NEXT MATCH</h2></div>
-                <div style="text-align: center; padding: 100px;">
-                    <span style="font-size: 80px; font-weight: 1000; color: var(--brand);">GA</span>
-                    <span style="font-size: 60px; font-style: italic; margin: 0 50px;">VS</span>
-                    <span style="font-size: 80px; font-weight: 1000;">GEN3</span>
-                    <div style="margin-top: 40px;"><span style="background: var(--brand); color: #000; padding: 15px 40px; border-radius: 50px; font-weight: 1000; font-size: 30px;">18:00 MSK</span></div>
+            <div id="team-gen3" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>GENERATION 3</h2></div>
+                    <div class="roster-flex">
+                        <div class="p-card igl"><span class="name">x1no</span><span class="role">IGL</span></div>
+                        <div class="p-card"><span class="name">Zloy</span><span class="role">RIFLER</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="team-bpmp" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>BPMP TEAM</h2></div>
+                    <div class="roster-flex">
+                        <div class="p-card"><span class="name">wanter</span><span class="role">RIFLER</span></div>
+                        <div class="p-card"><span class="name">Hokage</span><span class="role">ENTRY</span></div>
+                        <div class="p-card"><span class="name">xWrr0ux</span><span class="role">SUPPORT</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="team-plohishi" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>PLOHISHI</h2></div>
+                    <div class="roster-flex"><div class="p-card igl"><span class="name">Slayer</span><span class="role">CAPTAIN</span></div></div>
+                </div>
+            </div>
+
+            <div id="team-echo" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>ECHOFALL ❤️</h2></div>
+                    <div class="roster-flex"><div class="p-card"><span class="name">spokyso</span><span class="role">LEGEND</span></div></div>
+                </div>
+            </div>
+
+            <div id="team-everees" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>EVEREES</h2></div>
+                    <div class="roster-flex"><div class="p-card"><span class="name">Alpha</span><span class="role">MEMBER</span></div></div>
+                </div>
+            </div>
+
+            <div id="team-quantum" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>QUANTUM</h2></div>
+                    <div class="roster-flex"><div class="p-card"><span class="name">Neutron</span><span class="role">MEMBER</span></div></div>
+                </div>
+            </div>
+
+            <div id="team-team61" class="team-profile-view" style="display: none;">
+                <button class="nav-link-item" onclick="resetView()" style="margin-bottom: 100px;">← НАЗАД</button>
+                <div class="heavy-module">
+                    <div class="module-header-wrap"><h2>TEAM 61</h2></div>
+                    <div class="roster-flex"><div class="p-card"><span class="name">S61</span><span class="role">MEMBER</span></div></div>
                 </div>
             </div>
         </div>
 
-        <div id="view-teams" class="content-view">
-            <div class="card-mod">
-                <table class="ltl-table">
-                    <tr onclick="jumpProf('ga')"><td>1</td><td>GA (GENERATION ACADEMY)</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('ex')"><td>2</td><td>ex-echofall ac</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('gen3')"><td>3</td><td>GENERATION 3</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('bpmp')"><td>4</td><td>BPMP TEAM</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('plohishi')"><td>5</td><td>PLOHISHI</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('echo')"><td>6</td><td>ECHOFALL ❤️</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('everees')"><td>7</td><td>EVEREES</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('quantum')"><td>8</td><td>QUANTUM</td><td>VIEW</td></tr>
-                    <tr onclick="jumpProf('team61')"><td>9</td><td>TEAM 61</td><td>VIEW</td></tr>
+        <div id="sec-matches" class="content-section">
+            <div class="heavy-module">
+                <div class="module-header-wrap"><div class="module-indicator"></div><h2>UPCOMING SHOWDOWN</h2></div>
+                <div class="match-arena">
+                    <div class="arena-team-name"><h3 style="color: var(--primary);">GA</h3></div>
+                    <div class="arena-vs-text">VS</div>
+                    <div class="arena-timer">18:00 MSK</div>
+                    <div class="arena-team-name"><h3>GEN3</h3></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-teams" class="content-section">
+            <div class="heavy-module">
+                <div class="module-header-wrap"><div class="module-indicator"></div><h2>PARTICIPATING TEAMS (9)</h2></div>
+                <table class="standing-table">
+                    <tr onclick="directLink('ga')"><td>01</td><td>GENERATION ACADEMY</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('ex')"><td>02</td><td>ex-echofall ac</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('gen3')"><td>03</td><td>GENERATION 3</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('bpmp')"><td>04</td><td>BPMP TEAM</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('plohishi')"><td>05</td><td>PLOHISHI</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('echo')"><td>06</td><td>ECHOFALL ❤️</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('everees')"><td>07</td><td>EVEREES</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('quantum')"><td>08</td><td>QUANTUM</td><td>OPEN</td></tr>
+                    <tr onclick="directLink('team61')"><td>09</td><td>TEAM 61</td><td>OPEN</td></tr>
                 </table>
             </div>
         </div>
 
-        <div id="view-transfers" class="content-view">
-            <div class="card-mod" style="text-align: center; padding: 150px 0;">
-                <h1 style="font-size: 60px; font-weight: 1000; margin-bottom: 30px;">ТРАНСФЕРНОЕ ОКНО ЗАКРЫТО</h1>
-                <p style="color: var(--text-m); letter-spacing: 2px;">СОСТАВЫ УКОМПЛЕКТОВАНЫ</p>
+        <div id="sec-rules" class="content-section">
+            <div class="heavy-module">
+                <div class="module-header-wrap"><h2>LEAGUE RULES & FAQ</h2></div>
+                <div class="faq-item">
+                    <div class="faq-q">1. ПОРЯДОК НАЧИСЛЕНИЯ ОЧКОВ</div>
+                    <div class="faq-a">Победа в матче приносит команде 3 очка. Ничья — 1 очко. Поражение — 0 очков. Дополнительные очки (pts) могут быть начислены за победы в турнирах серии Prestige.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">2. СОСТАВЫ И ТРАНСФЕРЫ</div>
+                    <div class="faq-a">Заявка команды должна содержать от 1 до 6 игроков. Замены разрешены только в трансферное окно, которое открывается после каждого крупного этапа лиги.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">3. ПОВЕДЕНИЕ И ДИСЦИПЛИНА</div>
+                    <div class="faq-a">Любое проявление токсичности или нарушение регламента турнира карается снятием очков рейтинга (Penalty Points).</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">4. КАК ПОПАСТЬ В TOP 5 MVP?</div>
+                    <div class="faq-a">Рейтинг MVP рассчитывается на основе личной статистики игрока: K/D Ratio, ADR и количество решающих убийств (Impact Frags) в официальных матчах.</div>
+                </div>
             </div>
         </div>
 
     </main>
 
     <footer>
-        <p class="f-copy">&copy; 2026 LTL ESPORTS | SOVEREIGN FINAL</p>
+        <div class="footer-logo-big">LTL-SAIT</div>
+        <p class="footer-copyright">GENERATION ACADEMY PRESTIGE | EST. 2026</p>
     </footer>
 
     <script>
-        function setView(id) {
-            document.querySelectorAll('.content-view').forEach(v => v.style.display = 'none');
-            document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).style.display = 'block';
-            const btn = document.getElementById('n-' + id.replace('view-', ''));
-            if(btn) btn.classList.add('active');
-            closeProf();
+        function changeSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.nav-link-item').forEach(b => b.classList.remove('active'));
+            document.getElementById('sec-' + id).style.display = 'block';
+            document.getElementById('btn-' + id).classList.add('active');
+            resetView();
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function openProf(slug) {
-            document.getElementById('home-dash').style.display = 'none';
-            document.querySelectorAll('.team-profile').forEach(p => p.style.display = 'none');
-            const target = document.getElementById('prof-' + slug);
+        function loadTeam(slug) {
+            document.getElementById('overview-container').style.display = 'none';
+            document.querySelectorAll('.team-profile-view').forEach(p => p.style.display = 'none');
+            const target = document.getElementById('team-' + slug);
             if(target) target.style.display = 'block';
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function closeProf() {
-            document.querySelectorAll('.team-profile').forEach(p => p.style.display = 'none');
-            const dash = document.getElementById('home-dash');
-            if(dash) dash.style.display = 'block';
+        function resetView() {
+            document.querySelectorAll('.team-profile-view').forEach(p => p.style.display = 'none');
+            const overview = document.getElementById('overview-container');
+            if(overview) overview.style.display = 'block';
         }
 
-        function jumpProf(slug) { setView('view-rating'); openProf(slug); }
-        document.addEventListener('DOMContentLoaded', () => setView('view-rating'));
+        function directLink(slug) {
+            changeSection('rating');
+            setTimeout(() => loadTeam(slug), 100);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('LTL Prestige Core Engine v2.9 Initialized');
+        });
     </script>
 </body>
 </html>
