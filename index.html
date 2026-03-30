@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | OFFICIAL HUB</title>
+    <title>LTL PRESTIGE | PROFESSIONAL</title>
     <style>
         :root {
-            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 50%, #e91e63 100%);
-            --brand-neon: 0 0 35px rgba(255, 87, 34, 0.6);
+            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            --brand-neon: 0 0 30px rgba(255, 87, 34, 0.5);
             --bg-deep: #020406;
             --glass: rgba(255, 255, 255, 0.05);
             --text-h: #ffffff;
@@ -20,7 +20,6 @@
             color: var(--text-h);
             background: radial-gradient(circle at 50% -20%, #1e2a3a 0%, #020406 80%);
             background-attachment: fixed;
-            overflow-x: hidden;
         }
 
         header {
@@ -33,7 +32,6 @@
         .logo h1 { 
             font-size: 28px; font-weight: 1000; letter-spacing: 4px; 
             background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            filter: drop-shadow(var(--brand-neon));
         }
 
         .nav-btn {
@@ -43,60 +41,38 @@
         }
         .nav-btn.active { background: var(--brand-g); color: #000; border: none; box-shadow: var(--brand-neon); }
 
-        main { padding: 30px 8%; max-width: 1400px; margin: 0 auto; }
+        main { padding: 30px 8%; max-width: 1200px; margin: 0 auto; }
         .view { display: none; animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ОТДЕЛЬНОЕ ОКНО ТРАНСФЕРОВ */
-        .transfer-window {
-            background: var(--glass); border: 2px solid #ff5722; border-radius: 20px;
-            padding: 25px; margin-bottom: 40px; position: relative; overflow: hidden;
-            box-shadow: var(--brand-neon);
-        }
-        .transfer-window::before {
-            content: "ACTIVE WINDOW"; position: absolute; top: 15px; right: 25px;
-            font-size: 11px; font-weight: 1000; color: #ff5722; animation: blink 1.5s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0.3; } }
-        
-        .t-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-        .t-card { 
-            background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; 
-            border-left: 5px solid #ff9800; font-weight: 900; font-size: 15px;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .m-title { font-size: 24px; font-weight: 1000; margin: 30px 0 15px; text-transform: uppercase; color: #ff9800; }
 
-        .m-title { font-size: 26px; font-weight: 1000; margin: 35px 0 20px; text-transform: uppercase; color: #ff9800; letter-spacing: 2px; }
-
-        /* ТАБЛИЦЫ РЕЙТИНГА */
+        /* ТАБЛИЦЫ */
         .table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        .tr { background: var(--glass); transition: 0.2s; }
-        .tr:hover { background: rgba(255,255,255,0.08); }
-        .td { padding: 15px 25px; font-weight: 900; text-transform: uppercase; }
-        .td-val { text-align: right; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 18px; }
+        .tr { background: var(--glass); transition: 0.2s; cursor: pointer; }
+        .tr:hover { background: rgba(255,255,255,0.1); transform: scale(1.01); box-shadow: var(--brand-neon); }
+        .td { padding: 18px; font-weight: 900; text-transform: uppercase; }
+        .td-val { text-align: right; color: #ff9800; }
 
         /* СЕТКА КОМАНД */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
-        .team-card {
-            background: var(--glass); border-radius: 15px; padding: 45px 25px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; font-weight: 1000; cursor: pointer; text-transform: uppercase;
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .card {
+            background: var(--glass); border-radius: 15px; padding: 40px 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; font-weight: 1000; cursor: pointer;
         }
-        .team-card:hover { border-color: #ff9800; box-shadow: var(--brand-neon); transform: translateY(-5px); }
+        .card:hover { border-color: #ff9800; box-shadow: var(--brand-neon); transform: translateY(-5px); }
 
-        /* ОКНО СОСТАВА (МОДАЛКА) */
+        /* МОДАЛКА */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(10px);
         }
         .modal-content {
-            background: #0a0c10; border: 2px solid #ff5722; border-radius: 25px;
-            width: 95%; max-width: 550px; padding: 40px; box-shadow: var(--brand-neon);
-            max-height: 90vh; overflow-y: auto;
+            background: #0a0c10; border: 2px solid #ff5722; border-radius: 20px;
+            width: 90%; max-width: 450px; padding: 30px; box-shadow: var(--brand-neon);
         }
-        .p-group { margin-bottom: 25px; }
-        .p-label { font-size: 11px; color: #ff5722; font-weight: 1000; margin-bottom: 10px; display: block; letter-spacing: 1px; }
-        .p-row { background: rgba(255,255,255,0.03); padding: 14px 20px; margin-bottom: 6px; border-radius: 10px; display: flex; justify-content: space-between; font-weight: 900; font-size: 15px; }
-        .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 18px; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 15px; text-transform: uppercase; }
+        .p-row { background: rgba(255,255,255,0.03); padding: 12px; margin-bottom: 5px; border-radius: 8px; display: flex; justify-content: space-between; font-weight: 800; }
+        .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -106,47 +82,53 @@
     <nav>
         <button class="nav-btn active" onclick="v('home', this)">Главная</button>
         <button class="nav-btn" onclick="v('teams', this)">Команды</button>
-        <button class="nav-btn" onclick="v('rank', this)">Статистика</button>
+        <button class="nav-btn" onclick="v('transfers', this)">Трансферы</button>
+        <button class="nav-btn" onclick="v('rank', this)">Рейтинг</button>
     </nav>
 </header>
 
 <main>
     <div id="v-home" class="view" style="display: block;">
-        <div class="transfer-window">
-            <h2 class="m-title" style="margin-top:0; color:#fff; font-size:30px;">TRANSFERS</h2>
-            <div class="t-grid">
-                <div class="t-card">ex-Echofall ac ➔ Plaxon Team</div>
-                <div class="t-card">Cubo ➔ BPMP (Coach)</div>
-            </div>
-        </div>
-
-        <div style="background: var(--brand-g); padding: 60px 40px; border-radius: 25px; color: #000; text-align: center; box-shadow: var(--brand-neon); position: relative;">
-            <h2 style="font-size: 52px; font-weight: 1000; line-height: 0.9;">GEN3<br><span style="font-size: 28px;">CHAMPIONS OF THE SEASON</span></h2>
-            <p style="font-weight: 900; font-size: 22px; margin-top: 20px; letter-spacing: 3px;">LTL BLAST LOADING...</p>
+        <div style="background: var(--brand-g); padding: 60px; border-radius: 25px; color: #000; text-align: center; box-shadow: var(--brand-neon);">
+            <h2 style="font-size: 42px; font-weight: 1000;">GEN3 — CHAMPIONS</h2>
+            <p style="font-weight: 900; letter-spacing: 2px;">LTL BLAST COMING SOON</p>
         </div>
     </div>
 
     <div id="v-teams" class="view">
         <h2 class="m-title">Организации</h2>
-        <div class="team-grid" id="t-grid"></div>
+        <div class="grid" id="t-grid"></div>
+    </div>
+
+    <div id="v-transfers" class="view">
+        <h2 class="m-title">Transfer Window</h2>
+        <table class="table">
+            <tr class="tr" onclick="sp('Transfer Info', 'ex-Echofall ac ➔ Plaxon Team', 'OFFICIAL')">
+                <td class="td">ex-Echofall ac ➔ Plaxon Team</td>
+                <td class="td td-val">OFFICIAL</td>
+            </tr>
+            <tr class="tr" onclick="sp('Transfer Info', 'Cubo ➔ BPMP', 'COACH SIGNING')">
+                <td class="td">Cubo ➔ BPMP (Coach)</td>
+                <td class="td td-val">OFFICIAL</td>
+            </tr>
+        </table>
     </div>
 
     <div id="v-rank" class="view">
         <h2 class="m-title">Top Teams</h2>
         <table class="table" id="r-table"></table>
-
-        <h2 class="m-title" style="margin-top: 60px;">Top 5 Players (Rating 1.0)</h2>
+        <h2 class="m-title" style="margin-top: 40px;">Top 5 Players</h2>
         <table class="table" id="p-table"></table>
     </div>
 </main>
 
-<div id="tModal" class="modal"><div class="modal-content"><h2 id="m-tname" style="color:#ff9800; font-size:32px; margin-bottom:25px; font-weight:1000; text-align:center;"></h2><div id="m-plist"></div><button onclick="closeM()" class="close-btn">Вернуться</button></div></div>
+<div id="tModal" class="modal"><div class="modal-content"><h2 id="m-tname" style="color:#ff9800; margin-bottom:15px; text-transform: uppercase;"></h2><div id="m-plist"></div><button onclick="closeM()" class="close-btn">ЗАКРЫТЬ</button></div></div>
 
 <script>
     const teams = [
         { n: "GEN3", p: 37, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"], sub: ["FOsor31", "Tapik", "ka1yat0"] },
         { n: "Plaxon Team", p: 35, pl: ["1ntER", "soj", "antikyla", "x1no"] },
-        { n: "GENERATION ACADEMY", p: 20, pl: ["FRoST", "milaps", "Weather", "KotixxXX", "N3XXTXD"] },
+        { n: "GA", p: 20, pl: ["FRoST", "milaps", "Weather", "KotixxXX", "N3XXTXD"] },
         { n: "Quantum ESPORT", p: 18, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"], coach: "ottykpok", sub: ["H2Olazzz", "LiL baton", "toff", "Vero1ksit"] },
         { n: "ECHOFALL", p: 15, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"], sub: ["luvmenight"] },
         { n: "PLOHISHI", p: 7, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"], sub: ["Savimen23", "Samson"] },
@@ -158,7 +140,11 @@
     ];
 
     const players = [
-        { n: "1ntER", v: "1.71" }, { n: "antikyla", v: "1.65" }, { n: "weather", v: "1.43" }, { n: "x1no", v: "1.25" }, { n: "N3XXTXD", v: "1.20" }
+        { n: "1ntER", v: "1.71", t: "Plaxon" },
+        { n: "antikyla", v: "1.65", t: "Plaxon" },
+        { n: "weather", v: "1.43", t: "GA" },
+        { n: "x1no", v: "1.25", t: "Plaxon" },
+        { n: "N3XXTXD", v: "1.20", t: "GA" }
     ];
 
     function v(id, btn) {
@@ -171,22 +157,27 @@
     }
 
     function rt() {
-        document.getElementById('t-grid').innerHTML = teams.map(t => `<div class="team-card" onclick="st('${t.n}')">${t.n}</div>`).join('');
+        document.getElementById('t-grid').innerHTML = teams.map(t => `<div class="card" onclick="st('${t.n}')">${t.n}</div>`).join('');
     }
 
     function rr() {
-        document.getElementById('r-table').innerHTML = teams.sort((a,b)=>b.p-a.p).map((t,i)=>`<tr class="tr"><td class="td" style="width:70px;">${i+1}</td><td class="td">${t.n}</td><td class="td td-val">${t.p} PTS</td></tr>`).join('');
-        document.getElementById('p-table').innerHTML = players.map((p,i)=>`<tr class="tr"><td class="td" style="width:70px;">${i+1}</td><td class="td">${p.n}</td><td class="td td-val">${p.v}</td></tr>`).join('');
+        document.getElementById('r-table').innerHTML = teams.sort((a,b)=>b.p-a.p).map((t,i)=>`<tr class="tr" onclick="st('${t.n}')"><td class="td">${i+1}</td><td class="td">${t.n}</td><td class="td td-val">${t.p} PTS</td></tr>`).join('');
+        document.getElementById('p-table').innerHTML = players.map((p,i)=>`<tr class="tr" onclick="sp('${p.n}','${p.v}','${p.t}')"><td class="td">${i+1}</td><td class="td">${p.n}</td><td class="td td-val">${p.v}</td></tr>`).join('');
     }
 
     function st(n) {
         const t = teams.find(x => x.n === n);
         document.getElementById('m-tname').innerText = t.n;
-        let html = '<div class="p-group"><span class="p-label">MAIN ROSTER</span>';
-        html += t.pl.map(p => `<div class="p-row"><span>${p}</span><span style="color:#ff9800">●</span></div>`).join('');
-        if(t.coach) html += `</div><div class="p-group"><span class="p-label">COACH</span><div class="p-row"><span>${t.coach}</span><span style="color:#4caf50">STRAT</span></div>`;
-        if(t.sub && t.sub.length > 0) html += `</div><div class="p-group"><span class="p-label">SUBSTITUTES / RESERVE</span>` + t.sub.map(s => `<div class="p-row"><span>${s}</span><span style="color:#a5adb9">SUB</span></div>`).join('');
-        document.getElementById('m-plist').innerHTML = html + '</div>';
+        let h = t.pl.map(p => `<div class="p-row"><span>${p}</span><span style="color:#ff9800">PLAYER</span></div>`).join('');
+        if(t.coach) h += `<div class="p-row"><span>${t.coach}</span><span style="color:#4caf50">COACH</span></div>`;
+        if(t.sub) h += t.sub.map(s => `<div class="p-row"><span>${s}</span><span style="color:#a5adb9">SUB</span></div>`).join('');
+        document.getElementById('m-plist').innerHTML = h;
+        document.getElementById('tModal').style.display = 'flex';
+    }
+
+    function sp(n, v, t) {
+        document.getElementById('m-tname').innerText = n;
+        document.getElementById('m-plist').innerHTML = `<div class="p-row"><span>Status/Rating</span><span>${v}</span></div><div class="p-row"><span>Info/Team</span><span>${t}</span></div>`;
         document.getElementById('tModal').style.display = 'flex';
     }
 
