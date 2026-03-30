@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | CHAMPIONS UPDATE</title>
+    <title>LTL PRESTIGE | HUB 30.03</title>
     
     <style>
+        /* [1] ГЛОБАЛЬНЫЙ ДИЗАЙН */
         :root {
             --brand: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
             --bg-deep: #020406;
             --bg-card: linear-gradient(180deg, #0a1119 0%, #05080c 100%);
             --bg-inner: linear-gradient(145deg, #151d29 0%, #0d121a 100%);
             --border: rgba(255, 255, 255, 0.05);
+            
             --gold: linear-gradient(180deg, #ffd700 0%, #daa520 100%);
             --silver: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
             --bronze: linear-gradient(180deg, #ff8c00 0%, #8b4513 100%);
+            
             --text-h: #ffffff;
             --text-m: #a5adb9;
             --transit: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
@@ -29,12 +32,12 @@
             overflow-x: hidden;
         }
 
-        /* МЕДАЛИ */
+        /* [2] ШРИФТЫ И ЦВЕТА ТОПА */
         .rank-1 { background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6)); font-weight: 1000; }
         .rank-2 { background: var(--silver); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)); font-weight: 1000; }
         .rank-3 { background: var(--bronze); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.4)); font-weight: 1000; }
 
-        /* НАВИГАЦИЯ */
+        /* [3] НАВИГАЦИЯ */
         header {
             position: sticky; top: 0; z-index: 1000;
             background: rgba(2, 4, 6, 0.96);
@@ -43,7 +46,7 @@
             padding: 25px 8%;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .logo h1 { font-size: 38px; font-weight: 1000; letter-spacing: 12px; background: var(--brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .logo h1 { font-size: 38px; font-weight: 1000; letter-spacing: 12px; background: var(--brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; text-transform: uppercase; }
         .nav { display: flex; gap: 12px; }
         .nav-btn {
             background: rgba(255,255,255,0.03); border: 1px solid var(--border);
@@ -53,7 +56,7 @@
         }
         .nav-btn.active { background: var(--brand); color: #000; border: none; box-shadow: 0 8px 25px rgba(255,152,0,0.4); }
 
-        /* КОНТЕНТ */
+        /* [4] ОСНОВНОЙ КОНТЕНТ */
         main { padding: 60px 8%; max-width: 1600px; margin: 0 auto; }
         .view { display: none; animation: slideUp 0.8s var(--transit); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
@@ -63,27 +66,36 @@
             border-radius: 40px; padding: 55px; margin-bottom: 50px;
             box-shadow: 0 35px 70px rgba(0,0,0,0.6);
         }
-        .m-title { font-size: 34px; font-weight: 1000; margin-bottom: 40px; text-transform: uppercase; color: #ff9800; }
+        .m-title { font-size: 34px; font-weight: 1000; margin-bottom: 40px; text-transform: uppercase; color: #ff9800; letter-spacing: 2px; }
 
-        /* ТАБЛИЦЫ */
+        /* [5] ТАБЛИЦЫ (ЕДИНЫЙ ЖИРНЫЙ ШРИФТ) */
         .table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
         .tr { background: var(--bg-inner); border-radius: 25px; transition: 0.4s; }
+        .tr:hover { transform: translateX(15px); background: rgba(255,152,0,0.08); }
         .td { padding: 30px; font-weight: 1000; font-size: 24px; text-transform: uppercase; }
         .td:first-child { border-radius: 25px 0 0 25px; width: 100px; text-align: center; }
         .td:last-child { border-radius: 0 25px 25px 0; text-align: right; color: #ff9800; }
 
-        /* КОМАНДЫ */
+        /* [6] РОСТЕРЫ КОМАНД */
         .roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
         .team-box {
             background: var(--bg-inner); border-radius: 30px; padding: 40px;
             border: 1px solid var(--border); transition: 0.4s;
         }
+        .team-box:hover { border-color: #ff9800; transform: translateY(-10px); }
         .team-h { font-size: 24px; font-weight: 1000; color: #ff9800; margin-bottom: 25px; text-transform: uppercase; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
         .p-ul { list-style: none; }
         .p-ul li { margin-bottom: 10px; font-weight: 800; font-size: 19px; display: flex; align-items: center; gap: 12px; }
-        .p-coach { color: #4caf50; font-size: 16px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
+        .p-coach { color: #4caf50; font-size: 16px; font-weight: 1000; margin-top: 15px; text-transform: uppercase; }
 
-        /* МАТЧИ */
+        /* [7] ТРАНСФЕРЫ */
+        .trans-row {
+            background: rgba(255,255,255,0.03); padding: 30px; border-radius: 25px;
+            margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
+            border-left: 6px solid #ff9800;
+        }
+
+        /* [8] МАТЧИ */
         .hero-banner {
             background: linear-gradient(135deg, #0a1119 0%, #1c2a3d 100%);
             border-radius: 60px; padding: 100px 40px; text-align: center;
@@ -91,14 +103,7 @@
         }
         .score-box { font-size: 110px; font-weight: 1000; color: #fff; margin: 30px 0; letter-spacing: 15px; }
 
-        /* ТРАНСФЕРЫ */
-        .trans-row {
-            background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px;
-            margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;
-            border-left: 5px solid #ff9800;
-        }
-
-        footer { padding: 100px 8%; text-align: center; opacity: 0.6; }
+        footer { padding: 100px 8%; text-align: center; opacity: 0.6; font-weight: 900; letter-spacing: 5px; }
     </style>
 </head>
 <body>
@@ -119,15 +124,15 @@
             <div class="card">
                 <h2 class="m-title">ПОСЛЕДНИЕ СОБЫТИЯ</h2>
                 <div class="roster-grid">
-                    <div class="team-box" style="grid-column: span 2; border: 2px solid #ffd700; background: rgba(255,215,0,0.05);">
-                        <span class="rank-1" style="font-size:20px;">🏆 CHAMPIONS FOUND</span>
-                        <h3 style="font-size:36px; margin:15px 0; color:#ffd700;">GEN3 — ЧЕМПИОНЫ XTX!</h3>
-                        <p style="color:var(--text-m); font-size:18px;">В тяжелейшем финале команда GEN3 одержала победу над GA со счетом 2:0, забрав титул и первое место в лиге.</p>
+                    <div class="team-box" style="grid-column: span 2; border: 3px solid #ffd700; background: rgba(255,215,0,0.05);">
+                        <span class="rank-1" style="font-size:20px;">🏆 XTX CHAMPIONS</span>
+                        <h3 style="font-size:38px; margin:15px 0; color:#ffd700;">GEN3 — НОВЫЕ ЛИДЕРЫ ЛИГИ!</h3>
+                        <p style="color:var(--text-m); font-size:18px;">После победы в финале команда GEN3 официально заняла первую строчку рейтинга с 37 очками.</p>
                     </div>
                     <div class="team-box">
-                        <span style="color:#ff9800; font-weight:1000;">LTL BLAST</span>
-                        <h3 style="font-size:26px; margin:10px 0;">СКОРО</h3>
-                        <p style="color:var(--text-m);">Следите за анонсами Blast турнира.</p>
+                        <span style="color:#ff9800; font-weight:1000;">ANNOUNCEMENT</span>
+                        <h3 style="font-size:26px; margin:10px 0;">LTL BLAST</h3>
+                        <p style="color:var(--text-m);">Подготовка к новому турниру идет полным ходом.</p>
                     </div>
                 </div>
             </div>
@@ -137,9 +142,9 @@
             <div class="card">
                 <h2 class="m-title">ТОП КОМАНД</h2>
                 <table class="table">
-                    <tr class="tr"><td class="td rank-1">1</td><td class="td">GENERATION 3</td><td class="td">25 PTS</td></tr>
-                    <tr class="tr"><td class="td rank-2">2</td><td class="td">GENERATION ACADEMY</td><td class="td">20 PTS</td></tr>
-                    <tr class="tr"><td class="td rank-3">3</td><td class="td">EX-ECHOFALL AC</td><td class="td">15 PTS</td></tr>
+                    <tr class="tr"><td class="td rank-1">1</td><td class="td">GENERATION 3</td><td class="td">37 PTS</td></tr>
+                    <tr class="tr"><td class="td rank-2">2</td><td class="td">EX-ECHOFALL AC</td><td class="td">35 PTS</td></tr>
+                    <tr class="tr"><td class="td rank-3">3</td><td class="td">GENERATION ACADEMY</td><td class="td">20 PTS</td></tr>
                     <tr class="tr"><td class="td">4</td><td class="td">PLOHISHI</td><td class="td">7 PTS</td></tr>
                     <tr class="tr"><td class="td">5</td><td class="td">BPMP</td><td class="td">5 PTS</td></tr>
                 </table>
@@ -162,58 +167,95 @@
                 <h2 class="m-title">ТРАНСФЕРНОЕ ОКНО</h2>
                 <div class="trans-row">
                     <div>
-                        <span style="color:#ff9800; font-weight:900;">29 МАРТА</span>
-                        <h3 style="font-size:24px;">CUBO</h3>
+                        <span style="color:#ff9800; font-weight:1000;">30 МАРТА (СЕГОДНЯ)</span>
+                        <h3 style="font-size:28px;">CUBO</h3>
                     </div>
                     <div style="text-align:right;">
-                        <span style="color:#4caf50;">➜ COACH</span>
-                        <h3 style="font-size:24px;">BPMP TEAM</h3>
+                        <span style="color:#4caf50; font-weight:1000;">➜ ПОДПИСАН КАК COACH</span>
+                        <h3 style="font-size:28px;">BPMP TEAM</h3>
                     </div>
                 </div>
-                <p style="text-align:center; opacity:0.3; margin-top:30px; font-weight:800;">БОЛЬШЕ ТРАНСФЕРОВ НЕТУ</p>
+                <p style="text-align:center; opacity:0.3; margin-top:40px; font-weight:1000; letter-spacing:5px;">БОЛЬШЕ ТРАНСФЕРОВ НЕТУ</p>
             </div>
         </div>
 
         <div id="v-teams" class="view">
             <div class="roster-grid">
-                <div class="team-box">
-                    <div class="team-h">GA (GENERATION ACADEMY)</div>
-                    <ul class="p-ul"><li>🇺🇦 fR0-ST</li><li>🇷🇺 milaps</li><li>🇷🇺 Weather</li><li>🇷🇺 KotixxXX</li><li>🇷🇺 N3XXTXD</li></ul>
-                </div>
+                
                 <div class="team-box" style="border-color:#ffd700;">
                     <div class="team-h" style="color:#ffd700;">GEN3 🏆</div>
                     <ul class="p-ul"><li>🇷🇸 RaZzychka</li><li>🇷🇺 Gho1l</li><li>🇷🇺 pupap1</li><li>🇷🇺 yanimagu</li><li>🇷🇺 chydno1</li></ul>
-                    <div class="p-sub">Замена: FOsor31, Tapik, ka1yat0</div>
+                    <div class="p-coach" style="color:#ffd700;">CHAMPIONS</div>
                 </div>
+
                 <div class="team-box">
-                    <div class="team-h">BPMP</div>
+                    <div class="team-h">GENERATION ACADEMY</div>
+                    <ul class="p-ul"><li>🇺🇦 fR0-ST</li><li>🇷🇺 milaps</li><li>🇷🇺 Weather</li><li>🇷🇺 KotixxXX</li><li>🇷🇺 N3XXTXD</li></ul>
+                </div>
+
+                <div class="team-box">
+                    <div class="team-h">BPMP TEAM</div>
                     <ul class="p-ul"><li>LeetOnsy</li><li>wanter</li><li>W1rr0U</li><li>Gofan!</li><li>Hokage</li></ul>
                     <div class="p-coach">COACH: Cubo 👑</div>
                 </div>
+
                 <div class="team-box">
                     <div class="team-h">Quantum ESPORT</div>
                     <ul class="p-ul"><li>🇷🇺 matana_VOL</li><li>🇷🇺 bloodshed</li><li>🇷🇺 dalbanzik</li><li>🇰🇿 Batonesy</li><li>🇷🇺 Agera</li></ul>
                     <div class="p-coach">COACH: 🇱🇹 ottykpok</div>
                 </div>
+
+                <div class="team-box">
+                    <div class="team-h">PLOHISHI</div>
+                    <ul class="p-ul"><li>Patemon</li><li>Turbo</li><li>C1t1Q</li><li>Waravmax</li><li>Markbon</li></ul>
                 </div>
+
+                <div class="team-box">
+                    <div class="team-h">EVEREES TEAM</div>
+                    <ul class="p-ul"><li>D1xer_51</li><li>w1nlays</li><li>rebornixxx</li><li>OneShot</li><li>Kalex</li></ul>
+                    <div class="p-coach">COACH: Mif</div>
+                </div>
+
+                <div class="team-box">
+                    <div class="team-h">team 61</div>
+                    <ul class="p-ul"><li>Lov3zzy</li><li>Altreezz</li><li>farrr</li><li>Kurok1sh1</li><li>xied1x</li></ul>
+                </div>
+
+                <div class="team-box">
+                    <div class="team-h">Echofall</div>
+                    <ul class="p-ul"><li>spokyso</li><li>AVR1x</li><li>m0rb1e</li><li>Deyoshi</li><li>CarteZ</li></ul>
+                </div>
+
+                <div class="team-box">
+                    <div class="team-h">Mentality team</div>
+                    <ul class="p-ul"><li>SKV1ZERD</li><li>Lixozen</li><li>Moccastar</li><li>Instalfreim</li><li>C1cn1</li></ul>
+                </div>
+
+                <div class="team-box">
+                    <div class="team-h">FRACTAL TEAM</div>
+                    <ul class="p-ul"><li>s1to666</li><li>Nixie</li><li>Vero1ksit</li><li>Fridar_fair</li><li>kayserrr</li></ul>
+                    <div class="p-coach">COACH: damo4ka</div>
+                </div>
+
+            </div>
         </div>
 
         <div id="v-matches" class="view">
             <div class="hero-banner">
-                <span style="background:#ff9800; color:#000; padding:8px 25px; border-radius:30px; font-weight:1000;">FINALS RESULT</span>
+                <span style="background:#ff9800; color:#000; padding:8px 25px; border-radius:30px; font-weight:1000;">FINAL SCORE</span>
                 <div style="display:flex; justify-content:center; align-items:center; gap:60px; margin-top:30px;">
                     <h1 style="font-size:80px;">GA</h1>
                     <div class="score-box">0:2</div>
                     <h1 style="font-size:80px;">GEN3</h1>
                 </div>
-                <p style="font-size:24px; font-weight:900; color:#4caf50;">MATCH ENDED</p>
+                <p style="font-size:24px; font-weight:1000; color:#4caf50;">CONGRATULATIONS TO GEN3</p>
             </div>
         </div>
     </main>
 
     <footer>
-        <h2 class="rank-1">LTL PRESTIGE</h2>
-        <p>ADMINISTRATION: FRoST</p>
+        <h2>LTL PRESTIGE 2026</h2>
+        <p>CHIEF ADMIN: FRoST</p>
     </footer>
 
     <script>
