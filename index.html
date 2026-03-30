@@ -3,39 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | CHAMPIONS EDITION</title>
+    <title>LTL PRESTIGE | PRO EDITION</title>
     <style>
         :root {
-            /* Градиентный взрыв */
-            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 50%, #e91e63 100%);
-            --brand-neon: 0 0 30px rgba(255, 87, 34, 0.5);
+            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            --brand-neon: 0 0 35px rgba(255, 87, 34, 0.6);
             --bg-deep: #020406;
             --glass: rgba(255, 255, 255, 0.03);
             --text-h: #ffffff;
             --text-m: #a5adb9;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         body {
             background-color: var(--bg-deep);
             color: var(--text-h);
             font-family: 'Inter', sans-serif;
-            /* Анимированный фон */
-            background: radial-gradient(circle at 0% 0%, #1a237e 0%, transparent 25%),
-                        radial-gradient(circle at 100% 100%, #311b92 0%, transparent 25%),
-                        radial-gradient(circle at 50% 50%, #020406 0%, #020406 100%);
+            background: radial-gradient(circle at 50% -20%, #1e2a3a 0%, #020406 80%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
         header {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(2, 4, 6, 0.8); backdrop-filter: blur(20px);
+            background: rgba(2, 4, 6, 0.85); backdrop-filter: blur(25px);
             border-bottom: 2px solid transparent; border-image: var(--brand-g) 1;
             padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
         }
-
         .logo h1 { 
-            font-size: 32px; font-weight: 1000; letter-spacing: 4px; 
+            font-size: 30px; font-weight: 1000; letter-spacing: 5px; 
             background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
             filter: drop-shadow(var(--brand-neon));
         }
@@ -43,60 +39,54 @@
         .nav-btn {
             background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
             color: var(--text-m); font-weight: 900; font-size: 11px; text-transform: uppercase;
-            padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-left: 10px;
+            padding: 12px 22px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-left: 10px;
         }
         .nav-btn.active { background: var(--brand-g); color: #000; border: none; box-shadow: var(--brand-neon); }
 
-        main { padding: 40px 8%; max-width: 1400px; margin: 0 auto; }
-        .view { display: none; animation: fadeIn 0.5s ease; }
+        main { padding: 40px 8%; max-width: 1300px; margin: 0 auto; }
+        .view { display: none; animation: fadeIn 0.5s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .m-title { 
-            font-size: 35px; font-weight: 1000; margin-bottom: 30px; 
-            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            text-transform: uppercase;
+        /* БАННЕРЫ И КАРТОЧКИ */
+        .info-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; margin-bottom: 50px; }
+        .news-banner { 
+            background: var(--brand-g); border-radius: 25px; padding: 45px; color: #000; 
+            box-shadow: var(--brand-neon); position: relative;
         }
+        .news-banner h2 { font-size: 45px; font-weight: 1000; line-height: 1; margin-bottom: 15px; }
+        .side-box { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 30px; }
+        .m-title { font-size: 26px; font-weight: 1000; margin-bottom: 25px; text-transform: uppercase; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* ГРАДИЕНТНЫЕ КАРТОЧКИ НОВОСТЕЙ */
-        .info-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; margin-bottom: 40px; }
-        .news-main { 
-            background: var(--brand-g); border-radius: 25px; padding: 40px; color: #000;
-            position: relative; overflow: hidden; box-shadow: var(--brand-neon);
-        }
-        .news-main h2 { font-size: 48px; font-weight: 1000; line-height: 1; margin-bottom: 15px; }
-        
-        .side-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 30px; }
-        .transfer-item { 
-            padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 10px; 
-            border-left: 4px solid #ff5722; font-weight: 800;
-        }
-
-        /* ТАБЛИЦА С ГРАДИЕНТОМ */
-        .rank-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-        .rank-tr { background: var(--glass); transition: 0.3s; }
-        .rank-tr:hover { background: rgba(255,255,255,0.08); transform: scale(1.01); }
-        .rank-td { padding: 20px; font-weight: 1000; border-top: 1px solid rgba(255,255,255,0.05); }
-        .rank-td:last-child { background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: right; }
+        /* ТАБЛИЦЫ */
+        .table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-bottom: 40px; }
+        .tr { background: rgba(255,255,255,0.02); transition: 0.3s; border-radius: 15px; }
+        .tr:hover { background: rgba(255,255,255,0.07); transform: scale(1.01); }
+        .td { padding: 22px; font-weight: 900; text-transform: uppercase; font-size: 18px; }
+        .td-val { color: #ff9800; text-align: right; }
 
         /* КОМАНДЫ */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
         .team-card {
-            background: var(--glass); border-radius: 20px; padding: 40px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; font-weight: 1000;
+            background: var(--glass); border-radius: 20px; padding: 45px 25px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; font-weight: 1000; cursor: pointer; text-transform: uppercase;
         }
-        .team-card:hover { border-color: #ff9800; box-shadow: var(--brand-neon); transform: translateY(-5px); }
+        .team-card:hover { border-color: #ff9800; transform: translateY(-8px); box-shadow: var(--brand-neon); }
 
         /* МОДАЛКА */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(15px);
         }
         .modal-content {
             background: #0d1117; border: 2px solid #ff5722; border-radius: 30px;
-            width: 90%; max-width: 500px; padding: 40px; box-shadow: var(--brand-neon);
+            width: 90%; max-width: 450px; padding: 40px; box-shadow: var(--brand-neon);
         }
-        .p-row { background: rgba(255,255,255,0.03); padding: 15px; margin-bottom: 8px; border-radius: 10px; display: flex; justify-content: space-between; font-weight: 900; }
-        .coach-tag { color: #4caf50; font-size: 10px; border: 1px solid #4caf50; padding: 2px 5px; border-radius: 4px; }
+        .player-row { background: rgba(255,255,255,0.03); padding: 18px; margin-bottom: 10px; border-radius: 12px; display: flex; justify-content: space-between; font-weight: 900; }
+        .tag { font-size: 11px; padding: 4px 8px; border-radius: 5px; font-weight: 1000; }
+        .tag-coach { background: #4caf50; color: #fff; }
+        .tag-player { border: 1px solid #ff9800; color: #ff9800; }
+
+        .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 18px; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 25px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -104,85 +94,102 @@
 <header>
     <div class="logo"><h1>LTL-PRESTIGE</h1></div>
     <nav>
-        <button class="nav-btn active" id="b-home" onclick="v('home')">Главная</button>
-        <button class="nav-btn" id="b-teams" onclick="v('teams')">Команды</button>
-        <button class="nav-btn" id="b-rank" onclick="v('rank')">Рейтинг</button>
+        <button class="nav-btn active" onclick="v('home', this)">Главная</button>
+        <button class="nav-btn" onclick="v('teams', this)">Команды</button>
+        <button class="nav-btn" onclick="v('rank', this)">Статистика</button>
     </nav>
 </header>
 
 <main>
     <div id="v-home" class="view" style="display: block;">
         <div class="info-grid">
-            <div class="news-main">
-                <span style="font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">Breaking News</span>
-                <h2>GEN3 — ЧЕМПИОНЫ СЕЗОНА!</h2>
-                <p style="font-weight: 800; font-size: 18px; margin-top: 10px;">Команда забирает титул. На очереди — <b>LTL BLAST</b>. Ждите анонсов!</p>
+            <div class="news-banner">
+                <p style="text-transform: uppercase; font-weight: 1000; font-size: 14px; letter-spacing: 2px;">Latest News</p>
+                <h2>GEN3 — ЧЕМПИОНЫ!</h2>
+                <p style="font-weight: 800; margin-top: 10px; font-size: 20px;">Подготовка к <b>LTL BLAST</b> официально началась.</p>
             </div>
-            <div class="side-card">
-                <h3 style="margin-bottom: 15px; text-transform: uppercase; font-weight: 1000;">Трансферы</h3>
-                <div class="transfer-item">m1laps ➔ GA</div>
-                <div class="transfer-item">Gofan ➔ BPMP</div>
-                <div class="transfer-item">Plaxon ➔ NEW ORG</div>
+            <div class="side-box">
+                <h3 class="m-title" style="font-size: 20px;">Трансферы</h3>
+                <div class="player-row" style="font-size: 13px;"><span>ex-Echofall ac ➔ Plaxon Team</span></div>
+                <div class="player-row" style="font-size: 13px;"><span>Cubo ➔ BPMP (Coach)</span></div>
             </div>
         </div>
     </div>
 
     <div id="v-teams" class="view">
         <h2 class="m-title">Организации</h2>
-        <div class="team-grid" id="t-list"></div>
+        <div class="team-grid" id="t-grid"></div>
     </div>
 
     <div id="v-rank" class="view">
-        <h2 class="m-title">Таблица Лидеров</h2>
-        <table class="rank-table" id="r-table"></table>
+        <h2 class="m-title">Top 10 Rankings</h2>
+        <table class="table" id="r-table"></table>
+
+        <h2 class="m-title" style="margin-top: 50px;">Top 5 Players (Rating 1.0)</h2>
+        <table class="table" id="p-table"></table>
     </div>
 </main>
 
-<div id="teamModal" class="modal"><div class="modal-content"><h2 id="m-tname" style="color:#ff9800; margin-bottom:20px;"></h2><div id="m-plist"></div><button onclick="closeModal()" class="nav-btn" style="width:100%; margin-top:20px; background:var(--brand-g); color:#000;">Закрыть</button></div></div>
+<div id="tModal" class="modal"><div class="modal-content"><h2 id="m-tname" style="background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom:25px; font-size:32px; font-weight:1000;"></h2><div id="m-plist"></div><button onclick="closeM()" class="close-btn">Вернуться</button></div></div>
 
 <script>
-    const data = [
+    const teams = [
         { n: "GEN3", p: 37, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"] },
         { n: "Plaxon Team", p: 35, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"] },
         { n: "GENERATION ACADEMY", p: 20, pl: ["FRoST", "Weather", "N3XXT", "Kot1x", "m1laps"] },
-        { n: "ECHOFALL", p: 15, pl: ["D1xer", "w1nlays", "L0v3zzy", "x1no", "antikyla"] },
+        { n: "ECHOFALL", p: 15, pl: ["1ntER", "antikyla", "x1no", "TBA", "TBA"] },
         { n: "BPMP", p: 5, pl: ["LeetOnsy", "wanter", "W1rr0ux", "Hokage", "Gofan", "Cubo (C)"] },
-        { n: "PLOHISHI", p: 7, pl: ["Patemon", "Turbo", "Sky", "Blade", "Swift"] },
-        { n: "QUANTUM", p: 3, pl: ["bloodshed", "matana_VOL", "Rage", "Volt", "Neon"] },
-        { n: "EVEREES", p: 2, pl: ["Shadow", "Ghost", "Void", "Flash", "Pulse"] },
-        { n: "TEAM 61", p: 1, pl: ["M1", "M2", "M3", "M4", "M5"] },
-        { n: "MENTALITY", p: 0, pl: ["SKV1ZERD", "Soul", "Mind", "Logic", "Focus"] }
+        { n: "PLOHISHI", p: 7, pl: ["Patemon", "Member2", "Member3", "Member4", "Member5"] },
+        { n: "QUANTUM", p: 3, pl: ["bloodshed", "matana_VOL", "Member3", "Member4", "Member5"] },
+        { n: "EVEREES", p: 2, pl: ["D1xer", "Member2", "Member3", "Member4", "Member5"] },
+        { n: "TEAM 61", p: 1, pl: ["Lov3zzy", "Member2", "Member3", "Member4", "Member5"] },
+        { n: "MENTALITY", p: 0, pl: ["SKV1ZERD", "Member2", "Member3", "Member4", "Member5"] }
     ];
 
-    function v(id) {
+    const players = [
+        { n: "1ntER", v: "1.71" },
+        { n: "antikyla", v: "1.65" },
+        { n: "weather", v: "1.43" },
+        { n: "x1no", v: "1.25" },
+        { n: "N3XXTXD", v: "1.20" }
+    ];
+
+    function v(id, btn) {
         document.querySelectorAll('.view').forEach(e => e.style.display = 'none');
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('v-' + id).style.display = 'block';
-        document.getElementById('b-' + id).classList.add('active');
-        if(id === 'teams') rt();
-        if(id === 'rank') rr();
+        btn.classList.add('active');
+        if(id === 'teams') renderT();
+        if(id === 'rank') renderR();
     }
 
-    function rt() {
-        document.getElementById('t-list').innerHTML = data.map(t => `<div class="team-card" onclick="st('${t.n}')">${t.n}</div>`).join('');
+    function renderT() {
+        document.getElementById('t-grid').innerHTML = teams.map(t => `<div class="team-card" onclick="showT('${t.n}')">${t.n}</div>`).join('');
     }
 
-    function rr() {
-        document.getElementById('r-table').innerHTML = data.sort((a,b)=>b.p-a.p).map((t,i)=>`
-            <tr class="rank-tr"><td class="rank-td">${i+1}</td><td class="rank-td">${t.n}</td><td class="rank-td">${t.p} PTS</td></tr>
+    function renderR() {
+        document.getElementById('r-table').innerHTML = teams.sort((a,b)=>b.p-a.p).map((t,i)=>`
+            <tr class="tr"><td class="td" style="width:70px;">${i+1}</td><td class="td">${t.n}</td><td class="td td-val">${t.p} PTS</td></tr>
+        `).join('');
+        document.getElementById('p-table').innerHTML = players.map((p,i)=>`
+            <tr class="tr"><td class="td" style="width:70px;">${i+1}</td><td class="td">${p.n}</td><td class="td td-val">${p.v}</td></tr>
         `).join('');
     }
 
-    function st(name) {
-        const t = data.find(x => x.n === name);
+    function showT(name) {
+        const t = teams.find(x => x.n === name);
         document.getElementById('m-tname').innerText = t.n;
         document.getElementById('m-plist').innerHTML = t.pl.map(p => `
-            <div class="p-row"><span>${p.replace(' (C)', '')}</span>${p.includes('(C)') ? '<span class="coach-tag">COACH</span>' : '<span style="color:#ff9800">●</span>'}</div>
+            <div class="player-row">
+                <span>${p.replace(' (C)', '')}</span>
+                <span class="tag ${p.includes('(C)') ? 'tag-coach' : 'tag-player'}">${p.includes('(C)') ? 'COACH' : 'PLAYER'}</span>
+            </div>
         `).join('');
-        document.getElementById('teamModal').style.display = 'flex';
+        document.getElementById('tModal').style.display = 'flex';
     }
 
-    function closeModal() { document.getElementById('teamModal').style.display = 'none'; }
+    function closeM() { document.getElementById('tModal').style.display = 'none'; }
+    window.onload = () => { renderT(); renderR(); };
 </script>
 </body>
 </html>
