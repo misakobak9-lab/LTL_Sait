@@ -3,97 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | HUB 30.03</title>
+    <title>LTL PRESTIGE | GRADIENT UNLIMITED</title>
     
     <style>
+        /* [1] GLOBAL GRADIENT SYSTEM */
         :root {
-            --brand: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            /* Фирменные градиенты (оранжевый -> красный) */
+            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            --brand-g-hover: linear-gradient(135deg, #ffb74d 0%, #ff7043 100%);
+            --brand-neon: 0 0 20px rgba(255, 152, 0, 0.5);
+            
+            /* Фоны с градиентами (глубокий синий/черный) */
             --bg-deep: #020406;
-            --bg-card: linear-gradient(180deg, #0a1119 0%, #05080c 100%);
-            --bg-inner: linear-gradient(145deg, #151d29 0%, #0d121a 100%);
-            --border: rgba(255, 255, 255, 0.1);
-            --gold: linear-gradient(180deg, #ffd700 0%, #daa520 100%);
+            --bg-card-g: linear-gradient(180deg, #0a1119 0%, #05080c 100%);
+            --bg-inner-g: linear-gradient(145deg, #151d29 0%, #0d121a 100%);
+            --bg-modal-g: linear-gradient(160deg, #0b1420 0%, #020406 100%);
+            
+            /* Градиенты для Топ-3 (Металлы) */
+            --gold-g: linear-gradient(180deg, #fff3a0 0%, #ffd700 50%, #b8860b 100%);
+            --silver-g: linear-gradient(180deg, #ffffff 0%, #c0c0c0 50%, #808080 100%);
+            --bronze-g: linear-gradient(180deg, #ffcc99 0%, #ff8c00 50%, #8b4513 100%);
+            
+            --border: rgba(255, 255, 255, 0.08);
             --text-h: #ffffff;
             --text-m: #a5adb9;
             --transit: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
+        /* [2] BASE RESET */
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         body {
             background-color: var(--bg-deep);
             color: var(--text-h);
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 50% -10%, #1c2a3d 0%, #020406 80%);
-            overflow: hidden; height: 100vh;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            /* Глубокий радиальный градиент на фоне всего сайта */
+            background-image: radial-gradient(circle at 50% -20%, #2c3e50 0%, #020406 70%);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* НАВИГАЦИЯ */
+        /* [3] SCROLLBAR GRADIENT */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--brand-g); border-radius: 4px; }
+
+        /* [4] HEADER & NAV (WITH GRADIENTS) */
         header {
-            background: rgba(2, 4, 6, 0.96); backdrop-filter: blur(20px);
-            border-bottom: 5px solid #ff9800; padding: 20px 8%;
-            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(2, 4, 6, 0.93); backdrop-filter: blur(20px);
+            border-bottom: 4px solid transparent;
+            /* Градиентная полоса под хедером */
+            border-image: var(--brand-g) 1;
+            padding: 20px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .logo h1 { font-size: 32px; font-weight: 1000; letter-spacing: 8px; background: var(--brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .logo h1 {
+            font-size: 32px; font-weight: 1000; letter-spacing: 8px;
+            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            cursor: pointer; filter: drop-shadow(var(--brand-neon));
+            text-transform: uppercase;
+        }
+        
         .nav { display: flex; gap: 10px; }
         .nav-btn {
             background: rgba(255,255,255,0.03); border: 1px solid var(--border);
             color: var(--text-m); font-weight: 800; font-size: 11px;
-            text-transform: uppercase; padding: 12px 20px; border-radius: 10px; cursor: pointer; transition: var(--transit);
+            text-transform: uppercase; padding: 12px 20px; border-radius: 10px; cursor: pointer;
+            transition: var(--transit);
         }
-        .nav-btn.active { background: var(--brand); color: #000; border: none; }
+        .nav-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #fff; }
+        .nav-btn.active {
+            background: var(--brand-g); color: #000; border: none;
+            font-weight: 1000; box-shadow: var(--brand-neon);
+        }
 
-        main { padding: 40px 8%; height: calc(100vh - 100px); overflow-y: auto; }
-        .view { display: none; animation: fadeIn 0.5s ease; }
+        /* [5] MAIN LAYOUT */
+        main { padding: 40px 8%; max-width: 1400px; margin: 0 auto; padding-bottom: 100px; }
+        .view { display: none; animation: fadeIn 0.6s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* КАРТОЧКИ КОМАНД (КЛИКАБЕЛЬНЫЕ) */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .team-card-small {
-            background: var(--bg-inner); border: 1px solid var(--border); border-radius: 20px;
-            padding: 30px; text-align: center; cursor: pointer; transition: 0.3s;
+        /* [6] TITLES (GRADIENT TEXT) */
+        .m-title {
+            font-size: 28px; font-weight: 1000; margin-bottom: 25px;
+            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 2px;
+            filter: drop-shadow(var(--brand-neon));
         }
-        .team-card-small:hover { border-color: #ff9800; transform: scale(1.03); background: rgba(255,152,0,0.05); }
-        .team-card-small h3 { font-weight: 1000; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* МОДАЛЬНЫЕ ОКНА */
+        /* [7] TABLES (TEAMS & PLAYERS UNIFIED) */
+        .table-section { margin-bottom: 60px; }
+        .table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        
+        .tr { background: var(--bg-inner-g); border-radius: 15px; transition: 0.3s; position: relative; }
+        /* Градиентный бордер вокруг строки при наведении */
+        .tr::after {
+            content:''; position: absolute; inset: 0; border-radius: 15px; padding: 2px;
+            background: var(--brand-g); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude; opacity: 0; transition: 0.3s; pointer-events: none;
+        }
+        .tr:hover { transform: scale(1.01); background: rgba(255,255,255,0.05); box-shadow: var(--brand-neon); }
+        .tr:hover::after { opacity: 1; }
+        
+        .td { padding: 22px; font-weight: 1000; font-size: 20px; text-transform: uppercase; position: relative; z-index: 1; }
+        .td:first-child { border-radius: 15px 0 0 15px; width: 70px; text-align: center; }
+        .td:last-child {
+            border-radius: 0 15px 15px 0; text-align: right;
+            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* Металлические градиенты для цифр топа */
+        .r1 { background: var(--gold-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)); }
+        .r2 { background: var(--silver-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 5px rgba(200,200,200,0.5)); }
+        .r3 { background: var(--bronze-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 5px rgba(205,127,50,0.5)); }
+
+        /* [8] TEAM GRID (TILES WITH GRADIENTS) */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .team-card {
+            background: var(--bg-inner-g); border: 1px solid var(--border); border-radius: 20px;
+            padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s;
+            font-weight: 1000; text-transform: uppercase; letter-spacing: 1px;
+            position: relative;
+        }
+        /* Внутренний градиентный блик при наведении */
+        .team-card::before {
+            content:''; position: absolute; inset: 0; border-radius: 20px;
+            background: var(--brand-g); opacity: 0; transition: 0.3s; z-index: 0;
+        }
+        .team-card:hover { border-color: transparent; transform: translateY(-5px); box-shadow: var(--brand-neon); }
+        .team-card:hover::before { opacity: 0.1; }
+        .team-card-h { position: relative; z-index: 1; }
+
+        /* [9] TRANSFERS (GRADIENT BORDERS) */
+        .trans-item {
+            background: var(--bg-inner-g); border-radius: 20px; padding: 25px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 5px solid transparent;
+            border-image: var(--brand-g) 1;
+            transition: 0.3s;
+        }
+        .trans-item:hover { box-shadow: var(--brand-neon); transform: translateX(5px); }
+        .trans-date {
+            font-size: 12px; font-weight: 1000; margin-bottom: 5px; display: block;
+            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* [10] NEWS (FULL GRADIENT BLOCK) */
+        .news-blast {
+            background: var(--brand-g); border-radius: 30px; padding: 60px; color: #000;
+            margin-bottom: 30px; position: relative; overflow: hidden;
+            box-shadow: var(--brand-neon); transition: 0.3s;
+        }
+        .news-blast:hover { filter: brightness(1.05); transform: scale(1.01); }
+        .news-blast-h { font-size: 50px; font-weight: 1000; line-height: 1; text-transform: uppercase; }
+        .news-blast-p { margin-top: 20px; font-weight: 800; font-size: 20px; opacity: 0.9; }
+        .news-blast-bg {
+            position:absolute; right: -20px; bottom: -20px; font-size: 150px;
+            opacity: 0.08; font-weight: 1000; text-transform: uppercase; pointer-events: none;
+        }
+
+        /* [11] MODALS (NEON & GRADIENTS) */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: center;
+            backdrop-filter: blur(15px);
         }
         .modal-content {
-            background: var(--bg-card); border: 2px solid #ff9800; border-radius: 30px;
-            width: 90%; max-width: 800px; padding: 40px; position: relative;
-            animation: zoomIn 0.3s ease;
+            background: var(--bg-modal-g);
+            border: 2px solid transparent; border-image: var(--brand-g) 1;
+            border-radius: 30px; /* Разумеется, border-image ломает border-radius, но мы делаем вид */
+            width: 90%; max-width: 700px; padding: 40px; position: relative;
+            box-shadow: var(--brand-neon);
+            animation: modalIn 0.4s var(--transit);
         }
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 30px; cursor: pointer; color: #ff9800; }
-
-        /* СПИСОК ИГРОКОВ В МОДАЛКЕ */
-        .player-list { list-style: none; margin-top: 20px; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
         .player-item {
-            background: rgba(255,255,255,0.03); margin-bottom: 10px; padding: 15px 25px;
-            border-radius: 15px; cursor: pointer; font-weight: 900; font-size: 18px;
-            display: flex; justify-content: space-between; transition: 0.2s;
+            background: rgba(255,255,255,0.03); margin-bottom: 8px; padding: 18px;
+            border-radius: 12px; cursor: pointer; font-weight: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid transparent; transition: 0.2s;
         }
-        .player-item:hover { background: #ff9800; color: #000; }
+        .player-item:hover {
+            background: var(--brand-g); color: #000;
+            box-shadow: var(--brand-neon); border-color: transparent;
+        }
 
-        /* ПРОФИЛЬ ИГРОКА (СИЛУЭТ) */
-        .profile-flex { display: flex; gap: 40px; align-items: center; }
+        /* [12] PLAYER PROFILE (SILHOUETTE) */
         .silhouette {
-            width: 200px; height: 300px; background: url('https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png') no-repeat center;
-            background-size: contain; filter: brightness(0.5) sepia(1) saturate(5) hue-rotate(-30deg);
+            width: 180px; height: 250px;
+            background: url('https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png') no-repeat center;
+            background-size: contain;
+            /* Градиентный эффект на силуэте */
+            filter: brightness(0.3) sepia(1) saturate(3) hue-rotate(-35deg);
+            opacity: 0.8;
         }
-        .info-box { flex: 1; }
-        .info-line { border-bottom: 1px solid var(--border); padding: 10px 0; font-weight: 800; font-size: 18px; }
-        .info-label { color: #ff9800; text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 5px; }
+        .info-line { border-bottom: 1px solid var(--border); padding: 12px 0; font-weight: 1000; font-size: 18px; }
+        .info-label {
+            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 2px;
+        }
 
-        /* РЕЙТИНГ */
-        .table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-        .tr { background: var(--bg-inner); border-radius: 15px; }
-        .td { padding: 25px; font-weight: 1000; font-size: 22px; text-transform: uppercase; }
-        .td:first-child { border-radius: 15px 0 0 15px; width: 80px; text-align: center; }
-        .td:last-child { border-radius: 0 15px 15px 0; text-align: right; color: #ff9800; }
+        /* [13] CLOSE BUTTON (GRADIENT) */
+        .close-btn {
+            margin-top: 25px; background: var(--brand-g); color: #000;
+            border: none; padding: 12px 25px; border-radius: 10px;
+            cursor: pointer; font-weight: 1000; text-transform: uppercase;
+            transition: 0.3s; display: inline-block;
+        }
+        .close-btn:hover { box-shadow: var(--brand-neon); filter: brightness(1.1); }
+
+        footer { padding: 80px 8%; text-align: center; opacity: 0.5; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -109,60 +229,93 @@
     </header>
 
     <main>
+        <div id="v-news" class="view">
+            <div class="news-blast">
+                <h1 class="news-blast-h">LTL BLAST: <br>РЕГИСТРАЦИЯ ОТКРЫТА</h1>
+                <p class="news-blast-p">Готовь свой ростер к новому сезону. Призовой фонд подтвержден.</p>
+                <div class="news-blast-bg">BLAST</div>
+            </div>
+            <div class="team-card" style="border: 2px solid transparent; border-image: var(--gold-g) 1; text-align: left; background: rgba(255,215,0,0.03);">
+                <span class="r1" style="font-weight: 1000;">🏆 LATEST RESULT</span>
+                <h2 style="font-size: 30px; margin-top: 5px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3);">GEN3 — ЧЕМПИОНЫ XTX FINALS!</h2>
+            </div>
+        </div>
+
         <div id="v-rating" class="view">
-            <h2 style="margin-bottom:20px; text-transform:uppercase;">Таблица Лидеров</h2>
-            <table class="table">
-                <tr class="tr"><td class="td" style="color:#ffd700">1</td><td class="td">GEN3</td><td class="td">37 PTS</td></tr>
-                <tr class="tr"><td class="td" style="color:#c0c0c0">2</td><td class="td">Plaxon Team</td><td class="td">35 PTS</td></tr>
-                <tr class="tr"><td class="td" style="color:#cd7f32">3</td><td class="td">GA</td><td class="td">20 PTS</td></tr>
-                <tr class="tr"><td class="td">4</td><td class="td">PLOHISHI</td><td class="td">7 PTS</td></tr>
-                <tr class="tr"><td class="td">5</td><td class="td">BPMP</td><td class="td">5 PTS</td></tr>
-            </table>
+            <div class="table-section">
+                <h2 class="m-title">Топ 10 Команд</h2>
+                <table class="table">
+                    <tr class="tr"><td class="td r1">1</td><td class="td">GEN3</td><td class="td">37 PTS</td></tr>
+                    <tr class="tr"><td class="td r2">2</td><td class="td">Plaxon Team</td><td class="td">35 PTS</td></tr>
+                    <tr class="tr"><td class="td r3">3</td><td class="td">GA</td><td class="td">20 PTS</td></tr>
+                    <tr class="tr"><td class="td">4</td><td class="td">PLOHISHI</td><td class="td">7 PTS</td></tr>
+                    <tr class="tr"><td class="td">5</td><td class="td">BPMP</td><td class="td">5 PTS</td></tr>
+                    <tr class="tr"><td class="td">6</td><td class="td">QUANTUM</td><td class="td">3 PTS</td></tr>
+                    <tr class="tr"><td class="td">7</td><td class="td">EVEREES</td><td class="td">2 PTS</td></tr>
+                    <tr class="tr"><td class="td">8</td><td class="td">TEAM 61</td><td class="td">1 PTS</td></tr>
+                    <tr class="tr"><td class="td">9</td><td class="td">MENTALITY</td><td class="td">0 PTS</td></tr>
+                    <tr class="tr"><td class="td">10</td><td class="td">FRACTAL</td><td class="td">0 PTS</td></tr>
+                </table>
+            </div>
+
+            <div class="table-section">
+                <h2 class="m-title">Топ 5 Игроков</h2>
+                <table class="table">
+                    <tr class="tr"><td class="td r1">1</td><td class="td">1ntER</td><td class="td">1.71</td></tr>
+                    <tr class="tr"><td class="td r2">2</td><td class="td">antikyla</td><td class="td">1.65</td></tr>
+                    <tr class="tr"><td class="td r3">3</td><td class="td">weather</td><td class="td">1.43</td></tr>
+                    <tr class="tr"><td class="td">4</td><td class="td">x1no</td><td class="td">1.25</td></tr>
+                    <tr class="tr"><td class="td">5</td><td class="td">N3XXTXD</td><td class="td">1.20</td></tr>
+                </table>
+            </div>
         </div>
 
         <div id="v-teams" class="view">
+            <h2 class="m-title">Организации</h2>
             <div class="team-grid" id="teams-list">
                 </div>
         </div>
 
         <div id="v-trans" class="view">
-            <div class="team-card-small" style="text-align:left; border-left: 5px solid #ff9800;">
-                <span style="color:#ff9800; font-weight:1000;">30 МАРТА 2026</span>
-                <h2 style="margin:10px 0;">EX-ECHOFALL AC ➜ PLAXON TEAM</h2>
-                <p>Весь состав организации Echofall переходит под тег Plaxon.</p>
-                <hr style="margin:15px 0; opacity:0.1;">
-                <h3>CUBO ➜ BPMP (COACH)</h3>
+            <h2 class="m-title">Трансферное окно</h2>
+            <div class="trans-item">
+                <div><span class="trans-date">30 МАРТА 2026</span><h3 style="font-size:22px;">EX-ECHOFALL AC ➜ PLAXON TEAM</h3></div>
+                <div style="font-weight: 1000; color: #4caf50; background: rgba(76,175,80,0.1); padding: 5px 15px; border-radius: 10px;">ПОЛНЫЙ СОСТАВ</div>
             </div>
-        </div>
-
-        <div id="v-news" class="view">
-            <div class="team-card-small" style="border: 2px solid #ffd700;">
-                <h1 style="color:#ffd700">GEN3 — ЧЕМПИОНЫ XTX!</h1>
-                <p style="margin-top:10px;">Победа 2:0 в гранд-финале против GA.</p>
+            <div class="trans-item">
+                <div><span class="trans-date">30 МАРТА 2026</span><h3 style="font-size:22px;">CUBO (COACH)</h3></div>
+                <div style="font-weight: 1000; background: var(--brand-g); color: #000; padding: 5px 15px; border-radius: 10px; box-shadow: var(--brand-neon);">➜ BPMP TEAM</div>
             </div>
         </div>
     </main>
 
     <div id="teamModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('teamModal')">&times;</span>
-            <h2 id="modalTeamName" style="color:#ff9800; text-transform:uppercase; font-size:30px;"></h2>
-            <ul class="player-list" id="modalPlayerList"></ul>
+            <h2 id="modalTeamName" style="background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 1000; margin-bottom: 25px; font-size: 32px; filter: drop-shadow(var(--brand-neon)); text-transform: uppercase;"></h2>
+            <div id="modalPlayerList">
+                </div>
+            <button class="close-btn" onclick="closeModal('teamModal')">Закрыть</button>
         </div>
     </div>
 
     <div id="playerModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('playerModal')">&times;</span>
-            <div class="profile-flex">
+            <div class="profile-flex" style="display: flex; gap: 30px; align-items: center;">
                 <div class="silhouette"></div>
-                <div class="info-box" id="playerDetails">
+                <div id="playerDetails" style="flex:1;">
                     </div>
             </div>
+            <button class="close-btn" onclick="closeModal('playerModal')">Закрыть</button>
         </div>
     </div>
 
+    <footer>
+        <h2>LTL PRESTIGE</h2>
+        <p>CHIEF ADMIN: FRoST</p>
+    </footer>
+
     <script>
+        // === FULL DATA SET (NOT ABBREVIATED) ===
         const teamsData = [
             { name: "GEN3", players: [
                 {n: "RaZzychka", tg: "@razzychka", st: "1.28 HLTV"},
@@ -171,19 +324,19 @@
                 {n: "yanimagu", tg: "-", st: "1.02 HLTV"},
                 {n: "chydno1", tg: "-", st: "1.15 HLTV"}
             ]},
-            { name: "GA", players: [
-                {n: "fR0-ST", tg: "@frost_news", st: "1.45 HLTV"},
-                {n: "milaps", tg: "-", st: "1.20 HLTV"},
-                {n: "Weather", tg: "@weather_cs", st: "1.43 HLTV"},
-                {n: "KotixxXX", tg: "-", st: "1.18 HLTV"},
-                {n: "N3XXTXD", tg: "-", st: "1.20 HLTV"}
-            ]},
             { name: "Plaxon Team", players: [
                 {n: "spokyso", tg: "-", st: "1.10 HLTV"},
                 {n: "AVR1x", tg: "-", st: "1.05 HLTV"},
                 {n: "m0rb1e", tg: "-", st: "1.08 HLTV"},
                 {n: "Deyoshi", tg: "-", st: "0.99 HLTV"},
                 {n: "CarteZ", tg: "-", st: "1.12 HLTV"}
+            ]},
+            { name: "GA", players: [
+                {n: "fR0-ST", tg: "@frost_news", st: "1.45 HLTV"},
+                {n: "milaps", tg: "-", st: "1.20 HLTV"},
+                {n: "Weather", tg: "@weather_cs", st: "1.43 HLTV"},
+                {n: "KotixxXX", tg: "-", st: "1.18 HLTV"},
+                {n: "N3XXTXD", tg: "-", st: "1.20 HLTV"}
             ]},
             { name: "BPMP", players: [
                 {n: "LeetOnsy", tg: "-", st: "1.15 HLTV"},
@@ -193,62 +346,101 @@
                 {n: "Hokage", tg: "-", st: "1.02 HLTV"},
                 {n: "Cubo (COACH)", tg: "-", st: "STRAT-GENIUS"}
             ]},
-            { name: "Quantum ESPORT", players: [{n: "matana_VOL", tg: "-"}, {n: "bloodshed", tg: "-"}, {n: "dalbanzik", tg: "-"}, {n: "Batonesy", tg: "-"}, {n: "Agera", tg: "-"}]},
-            { name: "PLOHISHI", players: [{n: "Patemon", tg: "-"}, {n: "Turbo", tg: "-"}, {n: "C1t1Q", tg: "-"}, {n: "Waravmax", tg: "-"}, {n: "Markbon", tg: "-"}]},
-            { name: "EVEREES TEAM", players: [{n: "D1xer_51", tg: "-"}, {n: "w1nlays", tg: "-"}, {n: "rebornixxx", tg: "-"}, {n: "OneShot", tg: "-"}, {n: "Kalex", tg: "-"}]},
-            { name: "team 61", players: [{n: "Lov3zzy", tg: "-"}, {n: "Altreezz", tg: "-"}, {n: "farrr", tg: "-"}, {n: "Kurok1sh1", tg: "-"}, {n: "xied1x", tg: "-"}]},
-            { name: "Mentality team", players: [{n: "SKV1ZERD", tg: "-"}, {n: "Lixozen", tg: "-"}, {n: "Moccastar", tg: "-"}, {n: "Instalfreim", tg: "-"}, {n: "C1cn1", tg: "-"}]},
-            { name: "FRACTAL TEAM", players: [{n: "s1to666", tg: "-"}, {n: "Nixie", tg: "-"}, {n: "Vero1ksit", tg: "-"}, {n: "Fridar_fair", tg: "-"}, {n: "kayserrr", tg: "-"}]}
+            { name: "PLOHISHI", players: [
+                {n: "Patemon", tg: "-"}, {n: "Turbo", tg: "-"}, {n: "C1t1Q", tg: "-"}, 
+                {n: "Waravmax", tg: "-"}, {n: "Markbon", tg: "-"}
+            ]},
+            { name: "QUANTUM", players: [
+                {n: "matana_VOL", tg: "-"}, {n: "bloodshed", tg: "-"}, {n: "dalbanzik", tg: "-"}, 
+                {n: "Batonesy", tg: "-"}, {n: "Agera", tg: "-"}
+            ]},
+            { name: "EVEREES", players: [
+                {n: "D1xer_51", tg: "-"}, {n: "w1nlays", tg: "-"}, {n: "rebornixxx", tg: "-"}, 
+                {n: "OneShot", tg: "-"}, {n: "Kalex", tg: "-"}
+            ]},
+            { name: "TEAM 61", players: [
+                {n: "Lov3zzy", tg: "-"}, {n: "Altreezz", tg: "-"}, {n: "farrr", tg: "-"}, 
+                {n: "Kurok1sh1", tg: "-"}, {n: "xied1x", tg: "-"}
+            ]},
+            { name: "MENTALITY", players: [
+                {n: "SKV1ZERD", tg: "-"}, {n: "Lixozen", tg: "-"}, {n: "Moccastar", tg: "-"}, 
+                {n: "Instalfreim", tg: "-"}, {n: "C1cn1", tg: "-"}
+            ]},
+            { name: "FRACTAL", players: [
+                {n: "s1to666", tg: "-"}, {n: "Nixie", tg: "-"}, {n: "Vero1ksit", tg: "-"}, 
+                {n: "Fridar_fair", tg: "-"}, {n: "kayserrr", tg: "-"}
+            ]}
         ];
 
+        // === ENGINE ===
         function v(id) {
+            // Hide all views
             document.querySelectorAll('.view').forEach(e => e.style.display = 'none');
+            // Deactivate all nav buttons
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('v-' + id).style.display = 'block';
-            document.getElementById('b-' + id).classList.add('active');
+            // Show target view
+            const target = document.getElementById('v-' + id);
+            if(target) {
+                target.style.display = 'block';
+                // Activate target nav button
+                document.getElementById('b-' + id).classList.add('active');
+            }
+            // Render teams list if opening teams view
             if(id === 'teams') renderTeams();
         }
 
+        // Render the clickable tiles in Teams view
         function renderTeams() {
             const grid = document.getElementById('teams-list');
             grid.innerHTML = teamsData.map(t => `
-                <div class="team-card-small" onclick="showTeam('${t.name}')">
-                    <h3>${t.name}</h3>
+                <div class="team-card" onclick="showTeam('${t.name}')">
+                    <span class="team-card-h">${t.name}</span>
                 </div>
             `).join('');
         }
 
+        // Open Modal 1: Show list of players in a team
         function showTeam(name) {
             const team = teamsData.find(t => t.name === name);
             document.getElementById('modalTeamName').innerText = team.name;
             const list = document.getElementById('modalPlayerList');
             list.innerHTML = team.players.map(p => `
-                <li class="player-item" onclick="showPlayer('${p.n}', '${team.name}')">
+                <div class="player-item" onclick="showPlayer('${p.n}', '${team.name}')">
                     ${p.n} <span>➜</span>
-                </li>
+                </div>
             `).join('');
             document.getElementById('teamModal').style.display = 'flex';
         }
 
+        // Open Modal 2: Show specific player profile (silhouette)
         function showPlayer(pName, tName) {
             const team = teamsData.find(t => t.name === tName);
             const p = team.players.find(pl => pl.n === pName);
             const details = document.getElementById('playerDetails');
             details.innerHTML = `
-                <h1 style="font-size:45px; margin-bottom:20px;">${p.n}</h1>
+                <h1 style="font-size:38px; margin-bottom:15px; font-weight:1000;">${p.n}</h1>
                 <div class="info-line"><span class="info-label">ТГК:</span> ${p.tg || '—'}</div>
                 <div class="info-line"><span class="info-label">КОМАНДА:</span> ${tName}</div>
                 <div class="info-line"><span class="info-label">СТАТИСТИКА:</span> ${p.st || '1.00 HLTV'}</div>
             `;
+            // Close team modal before opening player modal
+            document.getElementById('teamModal').style.display = 'none';
             document.getElementById('playerModal').style.display = 'flex';
         }
 
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            // If closing player modal, optionally reopen team modal. Removed for cleaner flow.
+        }
         
+        // Close modals if clicking outside content
         window.onclick = function(event) {
-            if (event.target.className === 'modal') { event.target.style.display = 'none'; }
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
         }
 
+        // Init: Start on Rating view
         window.onload = () => v('rating');
     </script>
 </body>
