@@ -3,30 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | ULTIMATE GRADIENT</title>
+    <title>LTL PRESTIGE | PROFESSIONAL HUB</title>
     <style>
         :root {
-            /* Фирменный оранжевый неон */
             --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
-            --brand-neon: 0 0 25px rgba(255, 152, 0, 0.4);
-            
-            /* Фоны и карточки */
+            --brand-neon: 0 0 35px rgba(255, 87, 34, 0.6);
             --bg-deep: #020406;
             --bg-card: linear-gradient(180deg, #0d1520 0%, #05080c 100%);
             --bg-inner: linear-gradient(145deg, #1a2433 0%, #0d121a 100%);
-            
-            /* Роли */
-            --coach-g: linear-gradient(90deg, #4caf50, #81c784);
-            --sub-g: linear-gradient(90deg, #2196f3, #64b5f6);
-            
-            /* Металлы для Топа */
+            --coach-g: linear-gradient(90deg, #4caf50, #1b5e20);
             --gold-g: linear-gradient(180deg, #fff3a0 0%, #ffd700 100%);
             --silver-g: linear-gradient(180deg, #ffffff 0%, #c0c0c0 100%);
             --bronze-g: linear-gradient(180deg, #ffcc99 0%, #ff8c00 100%);
-            
             --text-h: #ffffff;
             --text-m: #a5adb9;
-            --transit: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -34,59 +24,51 @@
             background-color: var(--bg-deep);
             color: var(--text-h);
             font-family: 'Inter', sans-serif;
-            /* Радиальный градиент подложки */
-            background-image: radial-gradient(circle at 50% -10%, #253952 0%, #020406 80%);
+            background-image: radial-gradient(circle at 50% -10%, #253952 0%, #020406 90%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
-        /* HEADER */
         header {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(2, 4, 6, 0.9); backdrop-filter: blur(25px);
-            border-bottom: 3px solid transparent; border-image: var(--brand-g) 1;
+            background: rgba(2, 4, 6, 0.95); backdrop-filter: blur(30px);
+            border-bottom: 4px solid transparent; border-image: var(--brand-g) 1;
             padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
         }
         .logo h1 { 
-            font-size: 32px; font-weight: 1000; letter-spacing: 6px; 
+            font-size: 34px; font-weight: 1000; letter-spacing: 6px; 
             background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            filter: drop-shadow(var(--brand-neon));
+            filter: drop-shadow(var(--brand-neon)); cursor: pointer;
         }
 
-        .nav { display: flex; gap: 12px; }
         .nav-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-m); font-weight: 800; font-size: 11px;
-            text-transform: uppercase; padding: 12px 22px; border-radius: 12px; cursor: pointer; transition: var(--transit);
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-m); font-weight: 1000; font-size: 12px; text-transform: uppercase;
+            padding: 14px 24px; border-radius: 12px; cursor: pointer; transition: 0.3s;
         }
-        .nav-btn.active { 
-            background: var(--brand-g); color: #000; border: none; 
-            box-shadow: var(--brand-neon); font-weight: 1000; 
-        }
+        .nav-btn.active { background: var(--brand-g); color: #000; border: none; box-shadow: var(--brand-neon); }
 
         main { padding: 40px 8%; max-width: 1400px; margin: 0 auto; }
         .view { display: none; animation: slideIn 0.5s ease forwards; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        /* ТАБЛИЦЫ С ГРАДИЕНТНЫМИ СТРОКАМИ */
         .m-title { 
-            font-size: 32px; font-weight: 1000; margin-bottom: 30px; 
+            font-size: 36px; font-weight: 1000; margin-bottom: 30px; 
             background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            text-transform: uppercase; letter-spacing: 2px;
+            text-transform: uppercase; letter-spacing: 3px;
         }
-        .table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+
+        /* ТАБЛИЦЫ */
+        .table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
         .tr { 
-            background: var(--bg-inner); border-radius: 18px; transition: var(--transit); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            background: var(--bg-inner); border-radius: 20px; transition: 0.3s; 
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .tr:hover { 
-            transform: scale(1.02) translateY(-2px); 
-            background: linear-gradient(90deg, rgba(255,152,0,0.1), transparent);
-            box-shadow: var(--brand-neon);
-        }
-        .td { padding: 25px; font-weight: 1000; font-size: 20px; text-transform: uppercase; }
-        .td:first-child { border-radius: 18px 0 0 18px; width: 80px; text-align: center; }
+        .tr:hover { transform: scale(1.02); box-shadow: var(--brand-neon); border-color: #ff5722; }
+        .td { padding: 25px; font-weight: 1000; font-size: 22px; text-transform: uppercase; }
+        .td:first-child { border-radius: 20px 0 0 20px; width: 80px; text-align: center; }
         .td:last-child { 
-            border-radius: 0 18px 18px 0; text-align: right; 
+            border-radius: 0 20px 20px 0; text-align: right; 
             background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
         }
 
@@ -95,63 +77,32 @@
         .r3 { background: var(--bronze-g) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent; }
 
         /* КАРТОЧКИ КОМАНД */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .team-card {
-            background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px;
-            padding: 50px 20px; text-align: center; cursor: pointer; transition: var(--transit); 
-            font-weight: 1000; text-transform: uppercase; letter-spacing: 2px;
-            position: relative; overflow: hidden;
+            background: var(--bg-card); border-radius: 25px; padding: 60px 30px; text-align: center;
+            cursor: pointer; transition: 0.3s; font-weight: 1000; text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.1); font-size: 20px;
         }
-        .team-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-        .team-card:hover::before { left: 100%; }
         .team-card:hover { transform: translateY(-10px); border-color: #ff9800; box-shadow: var(--brand-neon); }
-
-        /* ТЕГИ РОЛЕЙ */
-        .role-tag {
-            font-size: 10px; padding: 4px 10px; border-radius: 6px; 
-            color: #000; font-weight: 1000; margin-left: 10px;
-        }
-        .role-coach { background: var(--coach-g); }
-        .role-sub { background: var(--sub-g); }
 
         /* МОДАЛКИ */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.97); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.98); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(20px);
         }
         .modal-content {
-            background: var(--bg-card); border: 2px solid #ff9800; border-radius: 35px;
-            width: 90%; max-width: 750px; padding: 50px; position: relative; box-shadow: var(--brand-neon);
+            background: var(--bg-card); border: 2px solid #ff5722; border-radius: 40px;
+            width: 90%; max-width: 700px; padding: 50px; position: relative; box-shadow: var(--brand-neon);
         }
         .player-item {
-            background: rgba(255,255,255,0.02); margin-bottom: 12px; padding: 20px;
-            border-radius: 15px; cursor: pointer; font-weight: 1000; display: flex; 
-            justify-content: space-between; align-items: center; border: 1px solid transparent;
-            transition: 0.2s;
+            background: rgba(255,255,255,0.03); margin-bottom: 12px; padding: 22px; border-radius: 15px;
+            cursor: pointer; font-weight: 1000; display: flex; justify-content: space-between; transition: 0.3s;
         }
-        .player-item:hover { 
-            background: var(--brand-g); color: #000; border-color: transparent;
-            transform: scale(1.02); 
-        }
+        .player-item:hover { background: var(--brand-g); color: #000; transform: translateX(10px); }
+        .role-tag { font-size: 10px; padding: 5px 10px; border-radius: 6px; background: var(--coach-g); color: #fff; margin-left: 10px; }
 
-        /* ПРОФИЛЬ */
-        .silhouette {
-            width: 200px; height: 280px; 
-            background: url('https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png') no-repeat center/contain;
-            filter: brightness(0.4) sepia(1) saturate(3) hue-rotate(-30deg);
-        }
-        .info-line { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 15px 0; font-weight: 1000; font-size: 20px; }
-        .info-label { background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 12px; text-transform: uppercase; }
-
-        .close-btn { 
-            background: var(--brand-g); border: none; color: #000; font-weight: 1000; 
-            padding: 15px 30px; border-radius: 12px; cursor: pointer; margin-top: 30px; 
-            text-transform: uppercase; width: 100%;
-        }
+        .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 18px; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 25px; text-transform: uppercase; }
+        .silhouette { width: 180px; height: 250px; background: url('https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png') no-repeat center/contain; filter: brightness(0.3) sepia(1) saturate(4) hue-rotate(-30deg); }
     </style>
 </head>
 <body>
@@ -159,95 +110,53 @@
     <header>
         <div class="logo" onclick="v('rating')"><h1>LTL-PRESTIGE</h1></div>
         <nav class="nav">
-            <button class="nav-btn" id="b-news" onclick="v('news')">Новости</button>
             <button class="nav-btn" id="b-rating" onclick="v('rating')">Рейтинг</button>
             <button class="nav-btn" id="b-teams" onclick="v('teams')">Команды</button>
-            <button class="nav-btn" id="b-trans" onclick="v('trans')">Трансферы</button>
         </nav>
     </header>
 
     <main>
         <div id="v-rating" class="view">
-            <h2 class="m-title">Рейтинг Организаций</h2>
+            <h2 class="m-title">Top 10 Rankings</h2>
             <table class="table" id="rating-table"></table>
-
-            <h2 class="m-title" style="margin-top: 60px;">Лучшие Игроки Сезона</h2>
+            
+            <h2 class="m-title" style="margin-top: 60px;">Top 5 Players</h2>
             <table class="table" id="player-top-table"></table>
         </div>
 
         <div id="v-teams" class="view">
-            <h2 class="m-title">Активные Ростеры</h2>
+            <h2 class="m-title">Organisations</h2>
             <div class="team-grid" id="teams-list"></div>
-        </div>
-
-        <div id="v-news" class="view">
-            <div class="team-card" style="text-align: left; background: var(--brand-g); color: #000; padding: 60px;">
-                <h1 style="font-size: 45px;">LTL BLAST: <br>СКОРО НАЧАЛО</h1>
-                <p style="font-weight: 800; margin-top: 15px;">Следите за анонсами в ТГ</p>
-            </div>
-        </div>
-
-        <div id="v-trans" class="view">
-            <h2 class="m-title">Последние изменения</h2>
-            <div class="tr" style="padding: 30px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <span style="color: #ff9800; font-size: 12px; font-weight: 1000;">30.03.2026</span>
-                    <h3 style="font-size: 22px;">ECHOFALL AC ➜ PLAXON TEAM</h3>
-                </div>
-                <div style="background: var(--brand-g); color: #000; padding: 8px 15px; border-radius: 10px; font-weight: 1000;">DONE</div>
-            </div>
         </div>
     </main>
 
-    <div id="teamModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTeamName" style="background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 35px; margin-bottom: 25px; font-weight: 1000;"></h2>
-            <div id="modalPlayerList" style="max-height: 400px; overflow-y: auto;"></div>
-            <button onclick="closeModal('teamModal')" class="close-btn">Вернуться</button>
-        </div>
-    </div>
-
-    <div id="playerModal" class="modal">
-        <div class="modal-content">
-            <div style="display:flex; gap:40px; align-items:center;">
-                <div class="silhouette"></div>
-                <div id="playerDetails" style="flex:1;"></div>
-            </div>
-            <button onclick="closeModal('playerModal')" class="close-btn">Закрыть профиль</button>
-        </div>
-    </div>
+    <div id="teamModal" class="modal"><div class="modal-content"><h2 id="modalTeamName" style="background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:40px; margin-bottom:30px; font-weight:1000;"></h2><div id="modalPlayerList"></div><button onclick="closeModal('teamModal')" class="close-btn">Return</button></div></div>
+    <div id="playerModal" class="modal"><div class="modal-content"><div style="display:flex; gap:40px; align-items:center;"><div class="silhouette"></div><div id="playerDetails" style="flex:1;"></div></div><button onclick="closeModal('playerModal')" class="close-btn">Back</button></div></div>
 
     <script>
-        // ДАННЫЕ С ТРЕНЕРАМИ И ЗАМЕНАМИ
         const teamsData = [
             { name: "GEN3", pts: 37, players: [
-                {n: "RaZzychka", r: "MAIN", st: "1.28"}, {n: "Gho1l", r: "MAIN"}, {n: "pupap1", r: "MAIN"}, 
-                {n: "yanimagu", r: "MAIN"}, {n: "chydno1", r: "MAIN"}, {n: "MaRs", r: "COACH"}, {n: "Sova", r: "SUB"}
+                {n: "RaZzychka", r: "MAIN", st: "1.28"}, {n: "Gho1l", r: "MAIN"}, {n: "pupap1", r: "MAIN"}, {n: "yanimagu", r: "MAIN"}, {n: "chydno1", r: "MAIN"}, {n: "MaRs", r: "COACH"}
             ]},
-            { name: "Plaxon Team", pts: 35, players: [
-                {n: "spokyso", r: "MAIN"}, {n: "AVR1x", r: "MAIN"}, {n: "m0rb1e", r: "MAIN"}, 
-                {n: "Deyoshi", r: "MAIN"}, {n: "CarteZ", r: "MAIN"}, {n: "Kensi", r: "COACH"}
+            { name: "ex-Echofall ac", pts: 35, players: [
+                {n: "spokyso", r: "MAIN"}, {n: "AVR1x", r: "MAIN"}, {n: "m0rb1e", r: "MAIN"}, {n: "Deyoshi", r: "MAIN"}, {n: "CarteZ", r: "MAIN"}, {n: "Kensi", r: "COACH"}
             ]},
-            { name: "GA", pts: 20, players: [
-                {n: "fR0-ST", r: "MAIN", st: "1.45"}, {n: "Weather", r: "MAIN", st: "1.43"}, 
-                {n: "milaps", r: "MAIN"}, {n: "KotixxXX", r: "MAIN"}, {n: "N3XXTXD", r: "MAIN"}, 
-                {n: "Trener_GA", r: "COACH"}, {n: "Rezervist", r: "SUB"}
+            { name: "GENERATION ACADEMY", pts: 20, players: [
+                {n: "FRoST", r: "MAIN", st: "1.45"}, {n: "Weather", r: "MAIN", st: "1.43"}, {n: "N3XXT", r: "MAIN"}, {n: "Kot1x", r: "MAIN"}, {n: "Gofan", r: "MAIN"}
             ]},
             { name: "BPMP", pts: 5, players: [
-                {n: "LeetOnsy", r: "MAIN"}, {n: "wanter", r: "MAIN"}, {n: "W1rr0U", r: "MAIN"}, 
-                {n: "Gofan!", r: "MAIN"}, {n: "Hokage", r: "MAIN"}, {n: "Cubo", r: "COACH"}
+                {n: "LeetOnsy", r: "MAIN"}, {n: "wanter", r: "MAIN"}, {n: "W1rr0ux", r: "MAIN"}, {n: "Hokage", r: "MAIN"}, {n: "Cubo", r: "COACH"}
             ]},
-            { name: "PLOHISHI", pts: 7, players: [{n: "Patemon", r: "MAIN"}, {n: "Coach_P", r: "COACH"}]},
-            { name: "QUANTUM", pts: 3, players: [{n: "Batonesy", r: "MAIN"}]},
-            { name: "EVEREES", pts: 2, players: [{n: "OneShot", r: "MAIN"}]},
+            { name: "ECHOFALL", pts: 0, players: [{n: "TBA", r: "MAIN"}]},
+            { name: "PLOHISHI", pts: 7, players: [{n: "Patemon", r: "MAIN"}]},
+            { name: "QUANTUM", pts: 3, players: [{n: "bloodshed", r: "MAIN"}]},
+            { name: "EVEREES", pts: 2, players: [{n: "D1xer", r: "MAIN"}]},
             { name: "TEAM 61", pts: 1, players: [{n: "Lov3zzy", r: "MAIN"}]},
-            { name: "MENTALITY", pts: 0, players: [{n: "SKV1ZERD", r: "MAIN"}]},
-            { name: "ECHOFALL", pts: 0, players: [{n: "TBA", r: "MAIN"}]}
+            { name: "MENTALITY", pts: 0, players: [{n: "SKV1ZERD", r: "MAIN"}]}
         ];
 
         const topPlayers = [
-            {n: "1ntER", val: "1.71"}, {n: "antikyla", val: "1.65"}, 
-            {n: "weather", val: "1.43"}, {n: "x1no", val: "1.25"}, {n: "N3XXTXD", val: "1.20"}
+            {n: "1ntER", val: "1.71"}, {n: "antikyla", val: "1.65"}, {n: "weather", val: "1.43"}, {n: "x1no", val: "1.25"}, {n: "N3XXTXD", val: "1.20"}
         ];
 
         function v(id) {
@@ -260,31 +169,16 @@
         }
 
         function renderRating() {
-            // Команды
-            const tTable = document.getElementById('rating-table');
-            tTable.innerHTML = teamsData.sort((a,b) => b.pts - a.pts).map((t, i) => `
-                <tr class="tr">
-                    <td class="td ${i<3 ? 'r'+(i+1) : ''}">${i+1}</td>
-                    <td class="td">${t.name}</td>
-                    <td class="td">${t.pts} PTS</td>
-                </tr>
+            document.getElementById('rating-table').innerHTML = teamsData.sort((a,b) => b.pts - a.pts).map((t, i) => `
+                <tr class="tr"><td class="td ${i<3 ? 'r'+(i+1) : ''}">${i+1}</td><td class="td">${t.name}</td><td class="td">${t.pts} PTS</td></tr>
             `).join('');
-            
-            // Игроки
-            const pTable = document.getElementById('player-top-table');
-            pTable.innerHTML = topPlayers.map((p, i) => `
-                <tr class="tr">
-                    <td class="td ${i<3 ? 'r'+(i+1) : ''}">${i+1}</td>
-                    <td class="td">${p.n}</td>
-                    <td class="td">${p.val}</td>
-                </tr>
+            document.getElementById('player-top-table').innerHTML = topPlayers.map((p, i) => `
+                <tr class="tr"><td class="td ${i<3 ? 'r'+(i+1) : ''}">${i+1}</td><td class="td">${p.n}</td><td class="td">${p.val}</td></tr>
             `).join('');
         }
 
         function renderTeams() {
-            document.getElementById('teams-list').innerHTML = teamsData.map(t => `
-                <div class="team-card" onclick="showTeam('${t.name}')">${t.name}</div>
-            `).join('');
+            document.getElementById('teams-list').innerHTML = teamsData.map(t => `<div class="team-card" onclick="showTeam('${t.name}')">${t.name}</div>`).join('');
         }
 
         function showTeam(name) {
@@ -292,8 +186,8 @@
             document.getElementById('modalTeamName').innerText = team.name;
             document.getElementById('modalPlayerList').innerHTML = team.players.map(p => `
                 <div class="player-item" onclick="showPlayer('${p.n}', '${team.name}')">
-                    <span>${p.n} ${p.r !== 'MAIN' ? `<span class="role-tag role-${p.r.toLowerCase()}">${p.r}</span>` : ''}</span>
-                    <span style="color:#ff9800">➔</span>
+                    <span>${p.n} ${p.r === 'COACH' ? '<span class="role-tag">COACH</span>' : ''}</span>
+                    <span style="color:#ff9800">➜</span>
                 </div>
             `).join('');
             document.getElementById('teamModal').style.display = 'flex';
@@ -303,16 +197,14 @@
             const team = teamsData.find(t => t.name === tName);
             const p = team.players.find(pl => pl.n === pName);
             document.getElementById('playerDetails').innerHTML = `
-                <h1 style="font-size:42px; font-weight:1000; margin-bottom:10px;">${p.n}</h1>
-                <div class="info-line"><span class="info-label">Должность:</span> ${p.r === 'COACH' ? 'ТРЕНЕР (COACH)' : p.r === 'SUB' ? 'ЗАПАСНОЙ (SUB)' : 'ОСНОВНОЙ СОСТАВ'}</div>
-                <div class="info-line"><span class="info-label">Клуб:</span> ${tName}</div>
-                <div class="info-line"><span class="info-label">Рейтинг:</span> ${p.st || '1.00'} HLTV</div>
+                <h1 style="font-size:45px; font-weight:1000; margin-bottom:10px;">${p.n}</h1>
+                <div style="font-size:20px; color:#ff9800; margin-bottom:25px; font-weight:800;">${tName}</div>
+                <div style="background:var(--brand-g); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:28px; font-weight:1000;">${p.st || '1.00'} HLTV</div>
             `;
             document.getElementById('playerModal').style.display = 'flex';
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        window.onclick = (e) => { if(e.target.className === 'modal') closeModal(e.target.id); }
         window.onload = () => v('rating');
     </script>
 </body>
