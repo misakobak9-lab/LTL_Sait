@@ -3,53 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | FULL DATABASE</title>
+    <title>LTL PRESTIGE | ULTIMATE HUB</title>
     <style>
         :root {
-            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
-            --brand-neon: 0 0 35px rgba(255, 87, 34, 0.6);
+            --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 50%, #e91e63 100%);
+            --brand-neon: 0 0 40px rgba(255, 87, 34, 0.7);
             --bg-deep: #020406;
-            --glass: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255, 255, 255, 0.03);
             --text-h: #ffffff;
-            --text-m: #a5adb9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-deep); color: var(--text-h); background: radial-gradient(circle at 50% -20%, #1e2a3a 0%, #020406 80%); background-attachment: fixed; }
+        
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-h); 
+            background: linear-gradient(45deg, #020406, #0d1117, #020406);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            background-attachment: fixed; 
+        }
+
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         header {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(2, 4, 6, 0.9); backdrop-filter: blur(20px);
-            border-bottom: 2px solid transparent; border-image: var(--brand-g) 1;
-            padding: 15px 8%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2, 4, 6, 0.85); backdrop-filter: blur(30px);
+            border-bottom: 3px solid transparent; border-image: var(--brand-g) 1;
+            padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
         }
 
-        .logo h1 { font-size: 28px; font-weight: 1000; letter-spacing: 4px; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo h1 { 
+            font-size: 32px; font-weight: 1000; letter-spacing: 6px; 
+            background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            filter: drop-shadow(var(--brand-neon));
+        }
 
-        .nav-btn { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: var(--text-m); font-weight: 900; font-size: 10px; text-transform: uppercase; padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-left: 8px; }
-        .nav-btn.active { background: var(--brand-g); color: #000; border: none; box-shadow: var(--brand-neon); }
+        .nav-btn { 
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1); 
+            color: #fff; font-weight: 900; font-size: 11px; text-transform: uppercase; 
+            padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: 0.4s; margin-left: 10px; 
+        }
+        .nav-btn.active { background: var(--brand-g); color: #000; border: none; box-shadow: var(--brand-neon); transform: scale(1.1); }
 
-        main { padding: 30px 8%; max-width: 1200px; margin: 0 auto; }
-        .view { display: none; animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        main { padding: 40px 8%; max-width: 1300px; margin: 0 auto; }
+        .view { display: none; animation: slideUp 0.5s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .m-title { font-size: 24px; font-weight: 1000; margin: 30px 0 15px; text-transform: uppercase; color: #ff9800; }
+        .m-title { font-size: 30px; font-weight: 1000; margin: 40px 0 20px; text-transform: uppercase; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
 
-        .table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        .tr { background: var(--glass); transition: 0.2s; cursor: pointer; }
-        .tr:hover { background: rgba(255,255,255,0.1); transform: scale(1.01); box-shadow: var(--brand-neon); }
-        .td { padding: 18px; font-weight: 900; text-transform: uppercase; }
-        .td-val { text-align: right; color: #ff9800; }
+        /* ТАБЛИЦЫ С ГРАДИЕНТОМ */
+        .table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+        .tr { background: var(--glass); transition: 0.3s; cursor: pointer; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .tr:hover { background: rgba(255,255,255,0.08); transform: translateX(10px); border-left: 5px solid #ff5722; box-shadow: var(--brand-neon); }
+        .td { padding: 22px; font-weight: 900; text-transform: uppercase; font-size: 16px; }
+        .td-val { text-align: right; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .card { background: var(--glass); border-radius: 15px; padding: 40px 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; font-weight: 1000; cursor: pointer; }
-        .card:hover { border-color: #ff9800; box-shadow: var(--brand-neon); transform: translateY(-5px); }
+        /* КОМАНДЫ ГРИД */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
+        .card { 
+            background: var(--glass); border-radius: 25px; padding: 50px 20px; text-align: center; 
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s; font-weight: 1000; cursor: pointer; 
+            text-transform: uppercase; position: relative; overflow: hidden;
+        }
+        .card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s; }
+        .card:hover::before { left: 100%; }
+        .card:hover { border-color: #ff9800; box-shadow: var(--brand-neon); transform: translateY(-10px); background: rgba(255,255,255,0.05); }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: #0a0c10; border: 2px solid #ff5722; border-radius: 20px; width: 90%; max-width: 450px; padding: 30px; box-shadow: var(--brand-neon); }
-        .p-row { background: rgba(255,255,255,0.03); padding: 15px; margin-bottom: 6px; border-radius: 10px; display: flex; justify-content: space-between; font-weight: 900; cursor: pointer; transition: 0.2s; }
-        .p-row:hover { background: rgba(255,255,255,0.1); border-left: 4px solid #ff9800; }
-        .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; }
+        /* МОДАЛКА */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(20px); }
+        .modal-content { 
+            background: #0a0c10; border: 3px solid transparent; border-image: var(--brand-g) 1; border-radius: 2px; 
+            width: 90%; max-width: 500px; padding: 40px; box-shadow: var(--brand-neon); 
+        }
+        .p-row { 
+            background: rgba(255,255,255,0.04); padding: 18px; margin-bottom: 10px; 
+            border-radius: 12px; display: flex; justify-content: space-between; 
+            font-weight: 900; cursor: pointer; transition: 0.3s;
+        }
+        .p-row:hover { background: var(--brand-g); color: #000; transform: scale(1.03); }
+        .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 20px; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -66,10 +99,10 @@
 
 <main>
     <div id="v-home" class="view" style="display: block;">
-        <h2 class="m-title">Новости</h2>
-        <div style="background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,152,0,0.3);">
-            <h3 style="color:#ff9800; margin-bottom:10px;">LTL 🤝 SIXEN NEWS</h3>
-            <p style="color: var(--text-m); font-weight: 700;">Официальное партнерство подтверждено! Ждем совместных ивентов.</p>
+        <h2 class="m-title">Последние новости</h2>
+        <div style="background: var(--brand-g); padding: 50px; border-radius: 30px; color: #000; text-align: center; box-shadow: var(--brand-neon); margin-bottom: 30px;">
+            <h2 style="font-size: 42px; font-weight: 1000;">LTL 🤝 SIXEN NEWS</h2>
+            <p style="font-weight: 900; letter-spacing: 2px; margin-top: 10px;">EXPANDING THE HORIZONS</p>
         </div>
     </div>
 
@@ -79,7 +112,7 @@
     </div>
 
     <div id="v-transfers" class="view">
-        <h2 class="m-title">Transfer Window</h2>
+        <h2 class="m-title">Свежие Трансферы</h2>
         <table class="table">
             <tr class="tr" onclick="sp('Vero1ksit', 'DONE', 'Fractal Team')">
                 <td class="td">Vero1ksit ➔ Fractal Team</td>
@@ -93,29 +126,33 @@
     </div>
 
     <div id="v-rank" class="view">
-        <h2 class="m-title">Рейтинг команд</h2>
+        <h2 class="m-title">Топ Команд</h2>
         <table class="table" id="r-table"></table>
+        
+        <h2 class="m-title" style="margin-top: 60px;">Рейтинг Игроков</h2>
+        <table class="table" id="p-table"></table>
     </div>
 </main>
 
-<div id="tModal" class="modal"><div class="modal-content"><h2 id="m-tname" style="color:#ff9800; margin-bottom:15px; text-transform: uppercase;"></h2><div id="m-plist"></div><button onclick="closeM()" class="close-btn">ЗАКРЫТЬ</button></div></div>
+<div id="tModal" class="modal"><div class="modal-content"><h2 id="m-tname" style="color:#ff9800; font-size:32px; margin-bottom:25px; font-weight:1000; text-align:center; text-transform: uppercase;"></h2><div id="m-plist"></div><button onclick="closeM()" class="close-btn">Вернуться</button></div></div>
 
 <script>
     const teams = [
         { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"] },
         { n: "NUST ORGANIZATIONS", p: 0, pl: ["Sasha_sakin (test)"] },
-        { n: "Quantum ESPORT", p: 18, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"], coach: "ottykpok", sub: ["H2Olazzz", "LiL baton", "toff"] },
         { n: "GEN3", p: 37, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"], sub: ["FOsor31", "Tapik", "ka1yat0"] },
         { n: "Plaxon Team", p: 35, pl: ["1ntER", "soj", "antikyla", "x1no"] },
         { n: "GA", p: 20, pl: ["FRoST", "milaps", "Weather", "KotixxXX", "N3XXTXD"] },
+        { n: "Quantum ESPORT", p: 18, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"], coach: "ottykpok", sub: ["H2Olazzz", "LiL baton", "toff"] },
         { n: "ECHOFALL", p: 15, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"], sub: ["luvmenight"] },
         { n: "PLOHISHI", p: 7, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"], sub: ["Savimen23", "Samson"] },
         { n: "BPMP", p: 5, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"], coach: "Cubo" },
         { n: "EVEREES TEAM", p: 2, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"], coach: "Mif", sub: ["H0sh1nooo", "Lolixx"] },
         { n: "team 61", p: 1, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"] },
-        { n: "Mentality team", p: 0, pl: ["SKV1ZERD", "Lixozen", "Moccastar", "Instalfreim", "C1cn1"] },
         { n: "FRACTAL TEAM", p: 0, pl: ["s1to666", "Nixie", "Vero1ksit", "Fridar_fair", "kayserrr"], coach: "damo4ka" }
     ];
+
+    const playerStats = { "1ntER": "1.71", "antikyla": "1.65", "Weather": "1.43", "x1no": "1.25", "N3XXTXD": "1.20" };
 
     function v(id, btn) {
         document.querySelectorAll('.view').forEach(e => e.style.display = 'none');
@@ -132,21 +169,26 @@
 
     function rr() {
         document.getElementById('r-table').innerHTML = [...teams].sort((a,b)=>b.p-a.p).map((t,i)=>`<tr class="tr" onclick="st('${t.n}')"><td class="td">${i+1}</td><td class="td">${t.n}</td><td class="td td-val">${t.p} PTS</td></tr>`).join('');
+        const topP = Object.entries(playerStats).sort((a,b)=>b[1]-a[1]);
+        document.getElementById('p-table').innerHTML = topP.map((p,i)=>`<tr class="tr" onclick="sp('${p[0]}','${p[1]}','PRO')"><td class="td">${i+1}</td><td class="td">${p[0]}</td><td class="td td-val">${p[1]}</td></tr>`).join('');
     }
 
     function st(n) {
         const t = teams.find(x => x.n === n);
         document.getElementById('m-tname').innerText = t.n;
-        let h = t.pl.map(p => `<div class="p-row"><span>${p}</span></div>`).join('');
-        if(t.coach) h += `<div class="p-row" style="color:#4caf50"><span>${t.coach}</span><span>COACH</span></div>`;
-        if(t.sub) h += t.sub.map(s => `<div class="p-row" style="opacity:0.6"><span>${s}</span><span>SUB</span></div>`).join('');
+        let h = t.pl.map(p => {
+            const val = playerStats[p] || "1.00";
+            return `<div class="p-row" onclick="sp('${p}','${val}','${t.n}')"><span>${p}</span><span style="color:#ff9800">${val}</span></div>`;
+        }).join('');
+        if(t.coach) h += `<div class="p-row" style="color:#4caf50" onclick="sp('${t.coach}','COACH','${t.n}')"><span>${t.coach}</span><span>COACH</span></div>`;
+        if(t.sub) h += t.sub.map(s => `<div class="p-row" style="opacity:0.6" onclick="sp('${s}','SUB','${t.n}')"><span>${s}</span><span>SUB</span></div>`).join('');
         document.getElementById('m-plist').innerHTML = h;
         document.getElementById('tModal').style.display = 'flex';
     }
 
     function sp(n, v, t) {
         document.getElementById('m-tname').innerText = n;
-        document.getElementById('m-plist').innerHTML = `<div class="p-row"><span>Status</span><span>${v}</span></div><div class="p-row"><span>Team</span><span>${t}</span></div>`;
+        document.getElementById('m-plist').innerHTML = `<div class="p-row"><span>Rating / Status</span><span>${v}</span></div><div class="p-row"><span>Команда</span><span>${t}</span></div>`;
         document.getElementById('tModal').style.display = 'flex';
     }
 
