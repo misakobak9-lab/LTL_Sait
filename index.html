@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTL PRESTIGE | ULTIMATE HUB</title>
+    <title>LTL PRESTIGE | BLAST EDITION</title>
     <style>
         :root {
             --brand-g: linear-gradient(135deg, #ff9800 0%, #ff5722 50%, #e91e63 100%);
@@ -52,25 +52,20 @@
 
         .m-title { font-size: 30px; font-weight: 1000; margin: 40px 0 20px; text-transform: uppercase; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
 
-        /* ТАБЛИЦЫ С ГРАДИЕНТОМ */
         .table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
         .tr { background: var(--glass); transition: 0.3s; cursor: pointer; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
         .tr:hover { background: rgba(255,255,255,0.08); transform: translateX(10px); border-left: 5px solid #ff5722; box-shadow: var(--brand-neon); }
         .td { padding: 22px; font-weight: 900; text-transform: uppercase; font-size: 16px; }
         .td-val { text-align: right; background: var(--brand-g); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; }
 
-        /* КОМАНДЫ ГРИД */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
         .card { 
             background: var(--glass); border-radius: 25px; padding: 50px 20px; text-align: center; 
             border: 1px solid rgba(255,255,255,0.1); transition: 0.4s; font-weight: 1000; cursor: pointer; 
             text-transform: uppercase; position: relative; overflow: hidden;
         }
-        .card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s; }
-        .card:hover::before { left: 100%; }
         .card:hover { border-color: #ff9800; box-shadow: var(--brand-neon); transform: translateY(-10px); background: rgba(255,255,255,0.05); }
 
-        /* МОДАЛКА */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(20px); }
         .modal-content { 
             background: #0a0c10; border: 3px solid transparent; border-image: var(--brand-g) 1; border-radius: 2px; 
@@ -83,6 +78,8 @@
         }
         .p-row:hover { background: var(--brand-g); color: #000; transform: scale(1.03); }
         .close-btn { background: var(--brand-g); color: #000; border: none; font-weight: 1000; padding: 20px; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 20px; text-transform: uppercase; }
+        
+        .win-badge { background: #4caf50; color: #fff; padding: 4px 10px; border-radius: 5px; font-size: 12px; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -101,9 +98,17 @@
     <div id="v-home" class="view" style="display: block;">
         <h2 class="m-title">Последние новости</h2>
         <div style="background: var(--brand-g); padding: 50px; border-radius: 30px; color: #000; text-align: center; box-shadow: var(--brand-neon); margin-bottom: 30px;">
-            <h2 style="font-size: 42px; font-weight: 1000;">LTL 🤝 SIXEN NEWS</h2>
-            <p style="font-weight: 900; letter-spacing: 2px; margin-top: 10px;">EXPANDING THE HORIZONS</p>
+            <h2 style="font-size: 42px; font-weight: 1000;">LTL BLAST START! 🚀</h2>
+            <p style="font-weight: 900; letter-spacing: 2px; margin-top: 10px;">ТУРНИР НАЧАЛСЯ — СЛЕДИТЕ ЗА ОБНОВЛЕНИЯМИ</p>
         </div>
+        
+        <h2 class="m-title">Последние Матчи</h2>
+        <table class="table">
+            <tr class="tr">
+                <td class="td">GA <span class="win-badge">WIN</span> vs FRACTAL TEAM</td>
+                <td class="td td-val">2:0</td>
+            </tr>
+        </table>
     </div>
 
     <div id="v-teams" class="view">
@@ -112,14 +117,14 @@
     </div>
 
     <div id="v-transfers" class="view">
-        <h2 class="m-title">Свежие Трансферы</h2>
+        <h2 class="m-title">Transfer Window</h2>
         <table class="table">
-            <tr class="tr" onclick="sp('Vero1ksit', 'DONE', 'Fractal Team')">
-                <td class="td">Vero1ksit ➔ Fractal Team</td>
+            <tr class="tr" onclick="sp('FullZ3r0', 'DONE', 'GA')">
+                <td class="td">FullZ3r0 ➔ GA</td>
                 <td class="td td-val">OFFICIAL</td>
             </tr>
-            <tr class="tr" onclick="sp('Cubo', 'COACH', 'BPMP')">
-                <td class="td">Cubo ➔ BPMP (Coach)</td>
+            <tr class="tr" onclick="sp('Vero1ksit', 'DONE', 'Fractal Team')">
+                <td class="td">Vero1ksit ➔ Fractal Team</td>
                 <td class="td td-val">OFFICIAL</td>
             </tr>
         </table>
@@ -129,7 +134,7 @@
         <h2 class="m-title">Топ Команд</h2>
         <table class="table" id="r-table"></table>
         
-        <h2 class="m-title" style="margin-top: 60px;">Рейтинг Игроков</h2>
+        <h2 class="m-title" style="margin-top: 60px;">Рейтинг Игроков (Top 5)</h2>
         <table class="table" id="p-table"></table>
     </div>
 </main>
@@ -138,21 +143,23 @@
 
 <script>
     const teams = [
-        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"] },
-        { n: "NUST ORGANIZATIONS", p: 0, pl: ["Sasha_sakin (test)"] },
-        { n: "GEN3", p: 37, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"], sub: ["FOsor31", "Tapik", "ka1yat0"] },
+        { n: "GEN3", p: 37, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"] },
         { n: "Plaxon Team", p: 35, pl: ["1ntER", "soj", "antikyla", "x1no"] },
-        { n: "GA", p: 20, pl: ["FRoST", "milaps", "Weather", "KotixxXX", "N3XXTXD"] },
-        { n: "Quantum ESPORT", p: 18, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"], coach: "ottykpok", sub: ["H2Olazzz", "LiL baton", "toff"] },
-        { n: "ECHOFALL", p: 15, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"], sub: ["luvmenight"] },
-        { n: "PLOHISHI", p: 7, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"], sub: ["Savimen23", "Samson"] },
-        { n: "BPMP", p: 5, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"], coach: "Cubo" },
-        { n: "EVEREES TEAM", p: 2, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"], coach: "Mif", sub: ["H0sh1nooo", "Lolixx"] },
-        { n: "team 61", p: 1, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"] },
-        { n: "FRACTAL TEAM", p: 0, pl: ["s1to666", "Nixie", "Vero1ksit", "Fridar_fair", "kayserrr"], coach: "damo4ka" }
+        { n: "GA", p: 28, pl: ["FRoST", "m1laps", "FullZ3r0", "Kot1x*", "N3XXT", "Weather"] },
+        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"] },
+        { n: "Quantum ESPORT", p: 18, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"] },
+        { n: "ECHOFALL", p: 15, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"] },
+        { n: "FRACTAL TEAM", p: 0, pl: ["s1to666", "Nixie", "Vero1ksit", "Fridar_fair", "kayserrr"] }
     ];
 
-    const playerStats = { "1ntER": "1.71", "antikyla": "1.65", "Weather": "1.43", "x1no": "1.25", "N3XXTXD": "1.20" };
+    // Среднее арифметическое новых результатов и старых (приблизительно)
+    const playerStats = { 
+        "N3XXT": "1.70", 
+        "m1laps": "1.51", 
+        "FullZ3r0": "1.48",
+        "1ntER": "1.45",
+        "antikyla": "1.40"
+    };
 
     function v(id, btn) {
         document.querySelectorAll('.view').forEach(e => e.style.display = 'none');
@@ -180,15 +187,13 @@
             const val = playerStats[p] || "1.00";
             return `<div class="p-row" onclick="sp('${p}','${val}','${t.n}')"><span>${p}</span><span style="color:#ff9800">${val}</span></div>`;
         }).join('');
-        if(t.coach) h += `<div class="p-row" style="color:#4caf50" onclick="sp('${t.coach}','COACH','${t.n}')"><span>${t.coach}</span><span>COACH</span></div>`;
-        if(t.sub) h += t.sub.map(s => `<div class="p-row" style="opacity:0.6" onclick="sp('${s}','SUB','${t.n}')"><span>${s}</span><span>SUB</span></div>`).join('');
         document.getElementById('m-plist').innerHTML = h;
         document.getElementById('tModal').style.display = 'flex';
     }
 
     function sp(n, v, t) {
         document.getElementById('m-tname').innerText = n;
-        document.getElementById('m-plist').innerHTML = `<div class="p-row"><span>Rating / Status</span><span>${v}</span></div><div class="p-row"><span>Команда</span><span>${t}</span></div>`;
+        document.getElementById('m-plist').innerHTML = `<div class="p-row"><span>Rating</span><span>${v}</span></div><div class="p-row"><span>Команда</span><span>${t}</span></div>`;
         document.getElementById('tModal').style.display = 'flex';
     }
 
