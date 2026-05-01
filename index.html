@@ -6,12 +6,12 @@
     <title>LTL.com | Official</title>
     <style>
         :root {
-            /* Белый градиент и акцентные цвета */
             --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
             --accent: #2d3436;
             --sub-text: #636e72;
             --card-bg: rgba(255, 255, 255, 0.8);
             --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --green: #00b894;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -25,29 +25,11 @@
             align-items: center;
         }
 
-        header {
-            width: 100%;
-            padding: 40px 8%;
-            text-align: center;
-        }
+        header { padding: 40px 8%; text-align: center; }
+        .logo { font-size: 42px; font-weight: 900; letter-spacing: -1px; color: var(--accent); text-decoration: none; }
+        .logo span { color: var(--green); }
 
-        .logo {
-            font-size: 42px;
-            font-weight: 900;
-            letter-spacing: -1px;
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .logo span { color: #00b894; } /* Небольшой цветовой акцент для точки */
-
-        main {
-            flex: 1;
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-            padding-top: 50px;
-        }
+        main { flex: 1; width: 90%; max-width: 600px; text-align: center; padding-top: 50px; }
 
         .dev-badge {
             display: inline-block;
@@ -64,7 +46,7 @@
         h2 { font-size: 32px; margin-bottom: 15px; font-weight: 800; }
         p { color: var(--sub-text); margin-bottom: 40px; line-height: 1.6; }
 
-        /* Секция предложки */
+        /* Форма предложки */
         .suggestion-box {
             background: var(--card-bg);
             padding: 30px;
@@ -74,27 +56,22 @@
             backdrop-filter: blur(10px);
         }
 
-        .suggestion-box h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
+        .suggestion-box h3 { font-size: 18px; margin-bottom: 20px; font-weight: 700; }
 
-        textarea {
+        input, textarea {
             width: 100%;
-            height: 120px;
             padding: 15px;
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #dfe6e9;
             background: #f9f9f9;
-            resize: none;
             font-size: 14px;
             margin-bottom: 15px;
             outline: none;
             transition: 0.3s;
         }
 
-        textarea:focus { border-color: #00b894; background: #fff; }
+        textarea { height: 120px; resize: none; }
+        input:focus, textarea:focus { border-color: var(--green); background: #fff; }
 
         .send-btn {
             background: var(--accent);
@@ -110,11 +87,7 @@
 
         .send-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        footer {
-            padding: 40px;
-            font-size: 13px;
-            color: #b2bec3;
-        }
+        footer { padding: 40px; font-size: 13px; color: #b2bec3; }
     </style>
 </head>
 <body>
@@ -126,33 +99,23 @@
 <main>
     <div class="dev-badge">Status: Maintenance</div>
     <h2>В разработке</h2>
-    <p>Мы полностью переосмысляем платформу. Скоро здесь появятся обновленные рейтинги, новости и система трансферов.</p>
+    <p>Мы переезжаем на новый дизайн. Есть идеи по функционалу? Напиши нам!</p>
 
-    <!-- Секция предложки -->
+    <!-- Форма отправки на почту -->
     <div class="suggestion-box">
-        <h3>Есть идея или новость?</h3>
-        <textarea id="suggestText" placeholder="Напиши нам что-нибудь..."></textarea>
-        <button class="send-btn" onclick="sendIdea()">Отправить предложение</button>
+        <h3>Предложить идею</h3>
+        <!-- Замени ЗДЕСЬ_БУДЕТ_ТВОЙ_ID на ID от Formspree -->
+        <form action="https://formspree.io/f/ЗДЕСЬ_БУДЕТ_ТВОЙ_ID" method="POST">
+            <input type="email" name="email" placeholder="Твой Email (для обратной связи)" required>
+            <textarea name="message" placeholder="Опиши свою идею или новость..." required></textarea>
+            <button type="submit" class="send-btn">Отправить на почту</button>
+        </form>
     </div>
 </main>
 
 <footer>
-    &copy; 2026 LTL Community. All rights reserved.
+    &copy; 2026 LTL Community | misakobak9@gmail.com
 </footer>
-
-<script>
-    function sendIdea() {
-        const text = document.getElementById('suggestText').value;
-        if(text.trim() === "") {
-            alert("Сначала напиши что-нибудь!");
-            return;
-        }
-        
-        // Тут можно будет подключить твоего бота позже
-        alert("Спасибо! Твоя идея получена и будет передана админам LTL.com.");
-        document.getElementById('suggestText').value = "";
-    }
-</script>
 
 </body>
 </html>
