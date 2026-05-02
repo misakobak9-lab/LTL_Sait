@@ -14,111 +14,38 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--accent); min-height: 100vh; display: flex; flex-direction: column; }
 
-        body { 
-            background: var(--bg); 
-            color: var(--accent); 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Навигация */
-        header {
-            padding: 30px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
+        header { padding: 30px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; z-index: 10; }
         .logo { font-size: 26px; font-weight: 900; color: var(--accent); text-decoration: none; }
         .logo span { color: var(--green); }
 
         nav { display: flex; gap: 20px; }
-        .nav-link {
-            text-decoration: none;
-            color: var(--sub-text);
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
+        .nav-link { text-decoration: none; color: var(--sub-text); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
         .nav-link:hover, .nav-link.active { color: var(--accent); }
 
-        /* Контент */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px;
-        }
-
+        main { flex: 1; padding: 40px 8%; max-width: 1000px; margin: 0 auto; width: 100%; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .dev-text {
-            font-size: 48px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-        }
+        .dev-header { text-align: center; margin-bottom: 40px; }
+        .dev-text { font-size: 32px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
+        .sub-dev { color: var(--sub-text); font-size: 14px; }
 
-        .sub-dev {
-            color: var(--sub-text);
-            font-size: 16px;
-            margin-bottom: 40px;
-        }
+        /* Таблицы рейтинга */
+        .ranking-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .ranking-table th { text-align: left; padding: 15px; border-bottom: 2px solid var(--accent); font-size: 12px; text-transform: uppercase; color: var(--sub-text); }
+        .ranking-table td { padding: 15px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        .rank-val { text-align: right; color: var(--green); font-weight: 800; }
 
-        /* Форма */
-        .suggestion-box {
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #fafafa;
-            margin-bottom: 10px;
-            outline: none;
-        }
-
+        .suggestion-box { margin: 60px auto; max-width: 400px; padding: 30px; border: 1px solid var(--border); border-radius: 20px; text-align: center; }
+        input, textarea { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid var(--border); background: #fafafa; margin-bottom: 10px; outline: none; }
         textarea { height: 80px; resize: none; }
+        .send-btn { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; }
 
-        .send-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        .send-btn:hover { opacity: 0.8; }
-
-        footer {
-            padding: 30px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--sub-text);
-            border-top: 1px solid var(--border);
-        }
+        footer { padding: 30px; text-align: center; font-size: 12px; color: var(--sub-text); border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -126,71 +53,107 @@
 <header>
     <a href="#" class="logo" onclick="showTab('main')">LTL<span>.</span>com</a>
     <nav>
-        <a href="#" class="nav-link" onclick="showTab('teams')">Команды</a>
-        <a href="#" class="nav-link" onclick="showTab('players')">Игроки</a>
-        <a href="#" class="nav-link" onclick="showTab('transfers')">Трансферы</a>
-        <a href="#" class="nav-link" onclick="showTab('news')">Новости</a>
-        <a href="#" class="nav-link" onclick="showTab('tournaments')">Турниры</a>
+        <a class="nav-link" onclick="showTab('teams')">Команды</a>
+        <a class="nav-link" onclick="showTab('players')">Игроки</a>
+        <a class="nav-link" onclick="showTab('transfers')">Трансферы</a>
+        <a class="nav-link" onclick="showTab('news')">Новости</a>
+        <a class="nav-link" onclick="showTab('tournaments')">Турниры</a>
     </nav>
 </header>
 
 <main>
-    <!-- Содержимое всех вкладок одинаковое по твоему запросу -->
     <div id="tab-main" class="tab-content active">
-        <h1 class="dev-text">Вкладка в разработке</h1>
-        <p class="sub-dev">LTL.com | Скоро здесь будет контент</p>
+        <div class="dev-header">
+            <h1 class="dev-text">Вкладка в разработке</h1>
+            <p class="sub-dev">LTL.com | Главная страница платформы</p>
+        </div>
     </div>
 
+    <!-- Рейтинг команд -->
     <div id="tab-teams" class="tab-content">
-        <h1 class="dev-text">Вкладка в разработке</h1>
-        <p class="sub-dev">Раздел «Команды» наполняется данными</p>
+        <div class="dev-header">
+            <h1 class="dev-text">Команды</h1>
+            <p class="sub-dev">Рейтинг организаций (PTS)</p>
+        </div>
+        <table class="ranking-table" id="teams-list"></table>
     </div>
 
+    <!-- Рейтинг игроков -->
     <div id="tab-players" class="tab-content">
-        <h1 class="dev-text">Вкладка в разработке</h1>
-        <p class="sub-dev">Статистика игроков станет доступна позже</p>
+        <div class="dev-header">
+            <h1 class="dev-text">Игроки</h1>
+            <p class="sub-dev">Индивидуальный рейтинг (Rating 2.0)</p>
+        </div>
+        <table class="ranking-table" id="players-list"></table>
     </div>
 
+    <!-- Остальные вкладки остаются заглушками -->
     <div id="tab-transfers" class="tab-content">
-        <h1 class="dev-text">Вкладка в разработке</h1>
-        <p class="sub-dev">Трансферное окно временно закрыто</p>
+        <h1 class="dev-text" style="text-align:center">Вкладка в разработке</h1>
     </div>
-
     <div id="tab-news" class="tab-content">
-        <h1 class="dev-text">Вкладка в разработке</h1>
-        <p class="sub-dev">Свежие новости готовятся к выпуску</p>
+        <h1 class="dev-text" style="text-align:center">Вкладка в разработке</h1>
     </div>
-
     <div id="tab-tournaments" class="tab-content">
-        <h1 class="dev-text">Вкладка в разработке</h1>
-        <p class="sub-dev">Расписание турниров появится в ближайшее время</p>
+        <h1 class="dev-text" style="text-align:center">Вкладка в разработке</h1>
     </div>
 
-    <!-- Форма обратной связи -->
     <div class="suggestion-box">
+        <h3 style="margin-bottom:15px">Есть предложение?</h3>
         <form action="https://formspree.io/f/ЗДЕСЬ_ТВОЙ_ID" method="POST">
-            <input type="email" name="email" placeholder="Твой почтовый ящик" required>
-            <textarea name="message" placeholder="Твое предложение для LTL.com" required></textarea>
-            <button type="submit" class="send-btn">Отправить на почту</button>
+            <input type="email" name="email" placeholder="Твой email" required>
+            <textarea name="message" placeholder="Идея для LTL.com" required></textarea>
+            <button type="submit" class="send-btn">Отправить misakobak9@gmail.com</button>
         </form>
     </div>
 </main>
 
-<footer>
-    &copy; 2026 LTL.com | Обратная связь: misakobak9@gmail.com
-</footer>
+<footer>&copy; 2026 LTL.com</footer>
 
 <script>
-    function showTab(tabId) {
+    // База данных: GA без Weather
+    const data = [
+        { n: "GA", p: 0, pl: ["N3XXT", "m1laps", "FullZ3r0", "fR0-sT", "Kot1x*"] },
+        { n: "GEN3", p: 0, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"] },
+        { n: "Plaxon Team", p: 0, pl: ["1ntER", "soj", "antikyla", "x1no"] },
+        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"] },
+        { n: "NUST", p: 0, pl: ["Sasha_sakin"] },
+        { n: "Quantum ESPORT", p: 0, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"] },
+        { n: "ECHOFALL", p: 0, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"] },
+        { n: "PLOHISHI", p: 0, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"] },
+        { n: "BPMP", p: 0, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"] },
+        { n: "EVEREES TEAM", p: 0, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"] },
+        { n: "team 61", p: 0, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"] },
+        { n: "Mentality team", p: 0, pl: ["SKV1ZERD", "Lixozen", "Moccastar", "Instalfreim", "C1cn1"] },
+        { n: "FRACTAL TEAM", p: 0, pl: ["N1xie", "Fridar_fair", "kayserrr", "s1to666", "Vero1ksit"] }
+    ];
+
+    function showTab(id) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById('tab-' + id).classList.add('active');
         
-        document.getElementById('tab-' + tabId).classList.add('active');
-        if(event.currentTarget.classList.contains('nav-link')) {
-            event.currentTarget.classList.add('active');
-        }
+        if (id === 'teams') renderTeams();
+        if (id === 'players') renderPlayers();
+    }
+
+    function renderTeams() {
+        let html = `<tr><th>#</th><th>Команда</th><th class="rank-val">PTS</th></tr>`;
+        data.forEach((t, i) => {
+            html += `<tr><td>${i+1}</td><td>${t.n}</td><td class="rank-val">${t.p}</td></tr>`;
+        });
+        document.getElementById('teams-list').innerHTML = html;
+    }
+
+    function renderPlayers() {
+        let html = `<tr><th>Игрок</th><th>Команда</th><th class="rank-val">Rating</th></tr>`;
+        data.forEach(t => {
+            t.pl.forEach(p => {
+                html += `<tr><td>${p}</td><td style="color:#888; font-size:12px">${t.n}</td><td class="rank-val">1.00</td></tr>`;
+            });
+        });
+        document.getElementById('players-list').innerHTML = html;
     }
 </script>
-
 </body>
 </html>
