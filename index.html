@@ -11,17 +11,18 @@
             --sub-text: #888888;
             --border: #eeeeee;
             --green: #00b894;
+            --overlay: rgba(255, 255, 255, 0.98);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--accent); min-height: 100vh; display: flex; flex-direction: column; }
+        body { background: var(--bg); color: var(--accent); min-height: 100vh; overflow-x: hidden; }
 
-        header { padding: 30px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: #fff; z-index: 10; }
-        .logo { font-size: 26px; font-weight: 900; color: var(--accent); text-decoration: none; }
+        header { padding: 30px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: #fff; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 26px; font-weight: 900; color: var(--accent); text-decoration: none; cursor: pointer; }
         .logo span { color: var(--green); }
 
         nav { display: flex; gap: 20px; }
-        .nav-link { text-decoration: none; color: var(--sub-text); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
+        .nav-link { text-decoration: none; color: var(--sub-text); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
         .nav-link:hover, .nav-link.active { color: var(--accent); }
 
         main { flex: 1; padding: 40px 8%; max-width: 1000px; margin: 0 auto; width: 100%; }
@@ -30,28 +31,65 @@
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .dev-header { text-align: center; margin-bottom: 40px; }
-        .dev-text { font-size: 32px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
-        .sub-dev { color: var(--sub-text); font-size: 14px; }
-
-        /* Таблицы рейтинга */
+        /* Таблицы */
         .ranking-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .ranking-table th { text-align: left; padding: 15px; border-bottom: 2px solid var(--accent); font-size: 12px; text-transform: uppercase; color: var(--sub-text); }
+        .ranking-table th { text-align: left; padding: 15px; border-bottom: 2px solid var(--accent); font-size: 12px; color: var(--sub-text); }
         .ranking-table td { padding: 15px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        .team-row { cursor: pointer; transition: 0.2s; }
+        .team-row:hover { background: #f9f9f9; }
         .rank-val { text-align: right; color: var(--green); font-weight: 800; }
 
-        .suggestion-box { margin: 60px auto; max-width: 400px; padding: 30px; border: 1px solid var(--border); border-radius: 20px; text-align: center; }
-        input, textarea { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid var(--border); background: #fafafa; margin-bottom: 10px; outline: none; }
-        textarea { height: 80px; resize: none; }
-        .send-btn { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; }
+        /* Модальное окно на весь экран */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--overlay);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 60px 8%;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        footer { padding: 30px; text-align: center; font-size: 12px; color: var(--sub-text); border-top: 1px solid var(--border); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .close-modal {
+            position: fixed;
+            top: 30px; right: 8%;
+            font-size: 40px; font-weight: 200;
+            cursor: pointer; color: var(--accent);
+        }
+
+        .modal-header { text-align: center; margin-bottom: 50px; }
+        .modal-team-name { font-size: 64px; font-weight: 900; text-transform: uppercase; }
+        .modal-team-top { color: var(--green); font-size: 18px; font-weight: 700; margin-top: 10px; }
+
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+        .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; }
+        .player-card { text-align: center; }
+        .silhouette {
+            width: 100px; height: 120px;
+            background: #f0f0f0;
+            margin: 0 auto 15px;
+            border-radius: 15px;
+            display: flex; align-items: flex-end; justify-content: center;
+            overflow: hidden;
+        }
+        .silhouette svg { width: 80%; height: 80%; fill: #ccc; }
+        .p-name { font-size: 14px; font-weight: 800; }
+        .p-rank { font-size: 12px; color: var(--green); font-weight: 700; }
+
+        .achievements h3 { margin-bottom: 20px; font-size: 20px; border-left: 4px solid var(--green); padding-left: 15px; }
+        .ach-item { margin-bottom: 15px; font-weight: 500; color: var(--sub-text); }
+
+        .suggestion-box { margin-top: 60px; padding: 30px; border: 1px solid var(--border); border-radius: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="#" class="logo" onclick="showTab('main')">LTL<span>.</span>com</a>
+    <a class="logo" onclick="showTab('main')">LTL<span>.</span>com</a>
     <nav>
         <a class="nav-link" onclick="showTab('teams')">Команды</a>
         <a class="nav-link" onclick="showTab('players')">Игроки</a>
@@ -63,76 +101,59 @@
 
 <main>
     <div id="tab-main" class="tab-content active">
-        <div class="dev-header">
-            <h1 class="dev-text">Вкладка в разработке</h1>
-            <p class="sub-dev">LTL.com | Главная страница платформы</p>
-        </div>
+        <h1 style="text-align:center; margin-top: 50px;">LTL Community Platform</h1>
+        <p style="text-align:center; color: var(--sub-text);">Нажмите на вкладку "Команды", чтобы увидеть рейтинг и составы.</p>
     </div>
 
-    <!-- Рейтинг команд -->
     <div id="tab-teams" class="tab-content">
-        <div class="dev-header">
-            <h1 class="dev-text">Команды</h1>
-            <p class="sub-dev">Рейтинг организаций (PTS)</p>
-        </div>
         <table class="ranking-table" id="teams-list"></table>
     </div>
 
-    <!-- Рейтинг игроков -->
     <div id="tab-players" class="tab-content">
-        <div class="dev-header">
-            <h1 class="dev-text">Игроки</h1>
-            <p class="sub-dev">Индивидуальный рейтинг (Rating 2.0)</p>
-        </div>
         <table class="ranking-table" id="players-list"></table>
     </div>
 
-    <!-- Остальные вкладки остаются заглушками -->
-    <div id="tab-transfers" class="tab-content">
-        <h1 class="dev-text" style="text-align:center">Вкладка в разработке</h1>
-    </div>
-    <div id="tab-news" class="tab-content">
-        <h1 class="dev-text" style="text-align:center">Вкладка в разработке</h1>
-    </div>
-    <div id="tab-tournaments" class="tab-content">
-        <h1 class="dev-text" style="text-align:center">Вкладка в разработке</h1>
-    </div>
+    <!-- Заглушки -->
+    <div id="tab-transfers" class="tab-content"><h2 style="text-align:center">Трансферы в разработке</h2></div>
+    <div id="tab-news" class="tab-content"><h2 style="text-align:center">Новости в разработке</h2></div>
+    <div id="tab-tournaments" class="tab-content"><h2 style="text-align:center">Турниры в разработке</h2></div>
 
     <div class="suggestion-box">
-        <h3 style="margin-bottom:15px">Есть предложение?</h3>
         <form action="https://formspree.io/f/ЗДЕСЬ_ТВОЙ_ID" method="POST">
-            <input type="email" name="email" placeholder="Твой email" required>
-            <textarea name="message" placeholder="Идея для LTL.com" required></textarea>
-            <button type="submit" class="send-btn">Отправить misakobak9@gmail.com</button>
+            <input type="email" name="email" placeholder="Email" required style="width:100%; padding:10px; margin-bottom:10px;">
+            <textarea name="message" placeholder="Предложение" required style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
+            <button type="submit" style="width:100%; padding:10px; background:var(--accent); color:#fff; border:none; border-radius:5px; cursor:pointer;">Отправить</button>
         </form>
     </div>
 </main>
 
-<footer>&copy; 2026 LTL.com</footer>
+<!-- Модальное окно -->
+<div id="teamModal" class="modal">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <div id="modal-content"></div>
+</div>
 
 <script>
-    // База данных: GA без Weather
     const data = [
-        { n: "GA", p: 0, pl: ["N3XXT", "m1laps", "FullZ3r0", "fR0-sT", "Kot1x*"] },
-        { n: "GEN3", p: 0, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"] },
-        { n: "Plaxon Team", p: 0, pl: ["1ntER", "soj", "antikyla", "x1no"] },
-        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"] },
-        { n: "NUST", p: 0, pl: ["Sasha_sakin"] },
-        { n: "Quantum ESPORT", p: 0, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"] },
-        { n: "ECHOFALL", p: 0, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"] },
-        { n: "PLOHISHI", p: 0, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"] },
-        { n: "BPMP", p: 0, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"] },
-        { n: "EVEREES TEAM", p: 0, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"] },
-        { n: "team 61", p: 0, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"] },
-        { n: "Mentality team", p: 0, pl: ["SKV1ZERD", "Lixozen", "Moccastar", "Instalfreim", "C1cn1"] },
-        { n: "FRACTAL TEAM", p: 0, pl: ["N1xie", "Fridar_fair", "kayserrr", "s1to666", "Vero1ksit"] }
+        { n: "GA", p: 0, pl: ["N3XXT", "m1laps", "FullZ3r0", "fR0-sT", "Kot1x*"], ach: ["Топ-1 LTL Season 1 (Coming Soon)", "Финалисты Open Qualifiers"] },
+        { n: "GEN3", p: 0, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"], ach: ["Участники группового этапа"] },
+        { n: "Plaxon Team", p: 0, pl: ["1ntER", "soj", "antikyla", "x1no"], ach: ["Новая организация"] },
+        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"], ach: ["Стабильный состав"] },
+        { n: "NUST", p: 0, pl: ["Sasha_sakin"], ach: ["В поиске состава"] },
+        { n: "Quantum ESPORT", p: 0, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"], ach: ["Агрессивный плейстайл"] },
+        { n: "ECHOFALL", p: 0, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"], ach: ["Топ-4 квалификаций"] },
+        { n: "PLOHISHI", p: 0, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"], ach: ["Олдскул состав"] },
+        { n: "BPMP", p: 0, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"], ach: ["Темные лошадки"] },
+        { n: "EVEREES TEAM", p: 0, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"], ach: ["Young talents"] },
+        { n: "team 61", p: 0, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"], ach: ["Региональный топ"] },
+        { n: "Mentality team", p: 0, pl: ["SKV1ZERD", "Lixozen", "Moccastar", "Instalfreim", "C1cn1"], ach: ["Железная дисциплина"] },
+        { n: "FRACTAL TEAM", p: 0, pl: ["N1xie", "Fridar_fair", "kayserrr", "s1to666", "Vero1ksit"], ach: ["Взрывной потенциал"] }
     ];
 
     function showTab(id) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         document.getElementById('tab-' + id).classList.add('active');
-        
         if (id === 'teams') renderTeams();
         if (id === 'players') renderPlayers();
     }
@@ -140,7 +161,7 @@
     function renderTeams() {
         let html = `<tr><th>#</th><th>Команда</th><th class="rank-val">PTS</th></tr>`;
         data.forEach((t, i) => {
-            html += `<tr><td>${i+1}</td><td>${t.n}</td><td class="rank-val">${t.p}</td></tr>`;
+            html += `<tr class="team-row" onclick="openTeam('${t.n}', ${i+1})"><td>${i+1}</td><td>${t.n}</td><td class="rank-val">${t.p}</td></tr>`;
         });
         document.getElementById('teams-list').innerHTML = html;
     }
@@ -153,6 +174,52 @@
             });
         });
         document.getElementById('players-list').innerHTML = html;
+    }
+
+    function openTeam(name, rank) {
+        const team = data.find(t => t.n === name);
+        const modal = document.getElementById('teamModal');
+        const content = document.getElementById('modal-content');
+
+        let playersHtml = '';
+        team.pl.forEach(p => {
+            playersHtml += `
+                <div class="player-card">
+                    <div class="silhouette">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <div class="p-name">${p}</div>
+                    <div class="p-rank">1.00</div>
+                </div>
+            `;
+        });
+
+        let achHtml = team.ach.map(a => `<div class="ach-item">• ${a}</div>`).join('');
+
+        content.innerHTML = `
+            <div class="modal-header">
+                <h1 class="modal-team-name">${team.n}</h1>
+                <p class="modal-team-top">МЕСТО В ТОПЕ: #${rank}</p>
+            </div>
+            <div class="modal-grid">
+                <div class="roster">
+                    <h3 style="margin-bottom:25px; text-transform:uppercase; font-size:14px; letter-spacing:1px;">Активный состав</h3>
+                    <div class="roster-grid">${playersHtml}</div>
+                </div>
+                <div class="achievements">
+                    <h3>Достижения и инфо</h3>
+                    ${achHtml}
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('teamModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 </script>
 </body>
