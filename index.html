@@ -11,11 +11,12 @@
             --sub-text: #888888;
             --border: #eeeeee;
             --green: #00b894;
+            --hover-bg: #f8f9fa; /* Цвет подсветки */
             --overlay: rgba(255, 255, 255, 0.98);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--accent); min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--accent); min-height: 100vh; }
 
         header { padding: 30px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: #fff; position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 26px; font-weight: 900; color: var(--accent); text-decoration: none; cursor: pointer; }
@@ -27,19 +28,22 @@
 
         main { flex: 1; padding: 40px 8%; max-width: 1000px; margin: 0 auto; width: 100%; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Таблицы */
+        /* Таблица команд с подсветкой */
         .ranking-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .ranking-table th { text-align: left; padding: 15px; border-bottom: 2px solid var(--accent); font-size: 12px; color: var(--sub-text); }
-        .ranking-table td { padding: 15px; border-bottom: 1px solid var(--border); font-weight: 600; }
-        .team-row { cursor: pointer; transition: 0.2s; }
-        .team-row:hover { background: #f9f9f9; }
+        .ranking-table td { padding: 15px; border-bottom: 1px solid var(--border); font-weight: 600; transition: background 0.2s ease; }
+        
+        /* Эффект подсветки при наведении */
+        .team-row { cursor: pointer; }
+        .team-row:hover td { background: var(--hover-bg); color: var(--green); }
+        
         .rank-val { text-align: right; color: var(--green); font-weight: 800; }
 
-        /* Модальное окно на весь экран */
+        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -52,38 +56,36 @@
         }
 
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .close-modal {
-            position: fixed;
-            top: 30px; right: 8%;
-            font-size: 40px; font-weight: 200;
-            cursor: pointer; color: var(--accent);
-        }
+        .close-modal { position: fixed; top: 30px; right: 8%; font-size: 40px; cursor: pointer; color: var(--accent); z-index: 1100; }
 
         .modal-header { text-align: center; margin-bottom: 50px; }
         .modal-team-name { font-size: 64px; font-weight: 900; text-transform: uppercase; }
         .modal-team-top { color: var(--green); font-size: 18px; font-weight: 700; margin-top: 10px; }
 
-        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .modal-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
 
-        .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; }
+        .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
         .player-card { text-align: center; }
+        
+        /* Силуэт на основе image_7b9c7c.png: черный на белом фоне */
         .silhouette {
-            width: 100px; height: 120px;
-            background: #f0f0f0;
+            width: 110px; height: 140px;
+            background: #ffffff;
             margin: 0 auto 15px;
-            border-radius: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
             display: flex; align-items: flex-end; justify-content: center;
             overflow: hidden;
         }
-        .silhouette svg { width: 80%; height: 80%; fill: #ccc; }
-        .p-name { font-size: 14px; font-weight: 800; }
-        .p-rank { font-size: 12px; color: var(--green); font-weight: 700; }
+        .silhouette svg { width: 90%; height: 90%; fill: #000000; } /* Черный силуэт */
+
+        .p-name { font-size: 14px; font-weight: 800; text-transform: uppercase; }
+        .p-rank { font-size: 13px; color: var(--green); font-weight: 700; }
 
         .achievements h3 { margin-bottom: 20px; font-size: 20px; border-left: 4px solid var(--green); padding-left: 15px; }
-        .ach-item { margin-bottom: 15px; font-weight: 500; color: var(--sub-text); }
+        .empty-ach { color: var(--sub-text); font-style: italic; font-size: 14px; }
 
-        .suggestion-box { margin-top: 60px; padding: 30px; border: 1px solid var(--border); border-radius: 20px; text-align: center; }
+        footer { padding: 40px; text-align: center; font-size: 12px; color: var(--sub-text); border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -101,8 +103,8 @@
 
 <main>
     <div id="tab-main" class="tab-content active">
-        <h1 style="text-align:center; margin-top: 50px;">LTL Community Platform</h1>
-        <p style="text-align:center; color: var(--sub-text);">Нажмите на вкладку "Команды", чтобы увидеть рейтинг и составы.</p>
+        <h1 style="text-align:center; margin-top: 50px;">LTL Community</h1>
+        <p style="text-align:center; color: var(--sub-text);">Перейдите во вкладку Команды для просмотра рейтинга.</p>
     </div>
 
     <div id="tab-teams" class="tab-content">
@@ -113,41 +115,32 @@
         <table class="ranking-table" id="players-list"></table>
     </div>
 
-    <!-- Заглушки -->
-    <div id="tab-transfers" class="tab-content"><h2 style="text-align:center">Трансферы в разработке</h2></div>
-    <div id="tab-news" class="tab-content"><h2 style="text-align:center">Новости в разработке</h2></div>
-    <div id="tab-tournaments" class="tab-content"><h2 style="text-align:center">Турниры в разработке</h2></div>
-
-    <div class="suggestion-box">
-        <form action="https://formspree.io/f/ЗДЕСЬ_ТВОЙ_ID" method="POST">
-            <input type="email" name="email" placeholder="Email" required style="width:100%; padding:10px; margin-bottom:10px;">
-            <textarea name="message" placeholder="Предложение" required style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
-            <button type="submit" style="width:100%; padding:10px; background:var(--accent); color:#fff; border:none; border-radius:5px; cursor:pointer;">Отправить</button>
-        </form>
-    </div>
+    <div id="tab-transfers" class="tab-content"><h2 style="text-align:center">В разработке</h2></div>
+    <div id="tab-news" class="tab-content"><h2 style="text-align:center">В разработке</h2></div>
+    <div id="tab-tournaments" class="tab-content"><h2 style="text-align:center">В разработке</h2></div>
 </main>
 
-<!-- Модальное окно -->
 <div id="teamModal" class="modal">
     <span class="close-modal" onclick="closeModal()">&times;</span>
     <div id="modal-content"></div>
 </div>
 
 <script>
+    // База данных. У GA убран Weather. Достижения пока пустые.
     const data = [
-        { n: "GA", p: 0, pl: ["N3XXT", "m1laps", "FullZ3r0", "fR0-sT", "Kot1x*"], ach: ["Топ-1 LTL Season 1 (Coming Soon)", "Финалисты Open Qualifiers"] },
-        { n: "GEN3", p: 0, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"], ach: ["Участники группового этапа"] },
-        { n: "Plaxon Team", p: 0, pl: ["1ntER", "soj", "antikyla", "x1no"], ach: ["Новая организация"] },
-        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"], ach: ["Стабильный состав"] },
-        { n: "NUST", p: 0, pl: ["Sasha_sakin"], ach: ["В поиске состава"] },
-        { n: "Quantum ESPORT", p: 0, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"], ach: ["Агрессивный плейстайл"] },
-        { n: "ECHOFALL", p: 0, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"], ach: ["Топ-4 квалификаций"] },
-        { n: "PLOHISHI", p: 0, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"], ach: ["Олдскул состав"] },
-        { n: "BPMP", p: 0, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"], ach: ["Темные лошадки"] },
-        { n: "EVEREES TEAM", p: 0, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"], ach: ["Young talents"] },
-        { n: "team 61", p: 0, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"], ach: ["Региональный топ"] },
-        { n: "Mentality team", p: 0, pl: ["SKV1ZERD", "Lixozen", "Moccastar", "Instalfreim", "C1cn1"], ach: ["Железная дисциплина"] },
-        { n: "FRACTAL TEAM", p: 0, pl: ["N1xie", "Fridar_fair", "kayserrr", "s1to666", "Vero1ksit"], ach: ["Взрывной потенциал"] }
+        { n: "GA", p: 0, pl: ["N3XXT", "m1laps", "FullZ3r0", "fR0-sT", "Kot1x*"] },
+        { n: "GEN3", p: 0, pl: ["RaZzychka", "Gho1l", "pupap1", "yanimagu", "chydno1"] },
+        { n: "Plaxon Team", p: 0, pl: ["1ntER", "soj", "antikyla", "x1no"] },
+        { n: "Ance Team", p: 0, pl: ["m1dor3", "WeyZ1", "HOLLY SHIT", "Onlys1dj", "1CE", "Rar3"] },
+        { n: "NUST", p: 0, pl: ["Sasha_sakin"] },
+        { n: "Quantum ESPORT", p: 0, pl: ["matana_VOL", "bloodshed", "dalbanzik", "Batonesy", "Agera"] },
+        { n: "ECHOFALL", p: 0, pl: ["spokyso", "AVR1x", "m0rb1e", "Deyoshi", "CarteZ"] },
+        { n: "PLOHISHI", p: 0, pl: ["Patemon", "Turbo", "C1t1Q", "Waravmax", "Markbon"] },
+        { n: "BPMP", p: 0, pl: ["LeetOnsy", "wanter", "W1rr0U", "Gofan!", "Hokage"] },
+        { n: "EVEREES TEAM", p: 0, pl: ["D1xer_51", "w1nlays", "rebornixxx", "OneShot", "Kalex"] },
+        { n: "team 61", p: 0, pl: ["Lov3zzy", "Altreezz", "farrr", "Kurok1sh1", "xied1x"] },
+        { n: "Mentality team", p: 0, pl: ["SKV1ZERD", "Lixozen", "Moccastar", "Instalfreim", "C1cn1"] },
+        { n: "FRACTAL TEAM", p: 0, pl: ["N1xie", "Fridar_fair", "kayserrr", "s1to666", "Vero1ksit"] }
     ];
 
     function showTab(id) {
@@ -159,9 +152,13 @@
     }
 
     function renderTeams() {
-        let html = `<tr><th>#</th><th>Команда</th><th class="rank-val">PTS</th></tr>`;
+        let html = `<tr><th>#</th><th>Организация</th><th class="rank-val">PTS</th></tr>`;
         data.forEach((t, i) => {
-            html += `<tr class="team-row" onclick="openTeam('${t.n}', ${i+1})"><td>${i+1}</td><td>${t.n}</td><td class="rank-val">${t.p}</td></tr>`;
+            html += `<tr class="team-row" onclick="openTeam('${t.n}', ${i+1})">
+                <td>${i+1}</td>
+                <td>${t.n}</td>
+                <td class="rank-val">${t.p}</td>
+            </tr>`;
         });
         document.getElementById('teams-list').innerHTML = html;
     }
@@ -186,6 +183,7 @@
             playersHtml += `
                 <div class="player-card">
                     <div class="silhouette">
+                        <!-- SVG силуэт на основе присланного фото -->
                         <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                     </div>
                     <div class="p-name">${p}</div>
@@ -194,21 +192,19 @@
             `;
         });
 
-        let achHtml = team.ach.map(a => `<div class="ach-item">• ${a}</div>`).join('');
-
         content.innerHTML = `
             <div class="modal-header">
                 <h1 class="modal-team-name">${team.n}</h1>
-                <p class="modal-team-top">МЕСТО В ТОПЕ: #${rank}</p>
+                <p class="modal-team-top">МЕСТО В РЕЙТИНГЕ: #${rank}</p>
             </div>
             <div class="modal-grid">
                 <div class="roster">
-                    <h3 style="margin-bottom:25px; text-transform:uppercase; font-size:14px; letter-spacing:1px;">Активный состав</h3>
+                    <h3 style="margin-bottom:20px; text-transform:uppercase; font-size:14px;">Состав</h3>
                     <div class="roster-grid">${playersHtml}</div>
                 </div>
                 <div class="achievements">
-                    <h3>Достижения и инфо</h3>
-                    ${achHtml}
+                    <h3>Достижения</h3>
+                    <p class="empty-ach">Достижений пока нет</p>
                 </div>
             </div>
         `;
@@ -222,5 +218,7 @@
         document.body.style.overflow = 'auto';
     }
 </script>
+
+<footer>&copy; 2026 LTL.com</footer>
 </body>
 </html>
