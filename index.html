@@ -193,12 +193,15 @@
             max-width: 800px;
             width: 100%;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            margin-bottom: 20px;
         }
 
         th, td {
@@ -210,6 +213,38 @@
         th {
             background-color: #f1f5f9;
             color: #1e293b;
+        }
+
+        .admin-btn {
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: background 0.2s;
+        }
+
+        .admin-btn:hover {
+            background: #334155;
+        }
+        
+        .status-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .status-badge.active {
+            background: #dcfce7;
+            color: #166534;
         }
     </style>
 </head>
@@ -280,6 +315,9 @@
 
     <div class="leaderboard-section hidden" id="tab-content-table">
         <h2>Таблица лидеров стадии</h2>
+        <div>
+            <span class="status-badge" id="stage-status">Стадия идет (Результаты скрыты / Очки: 0)</span>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -294,17 +332,22 @@
             <tbody id="leaderboard-data">
                 </tbody>
         </table>
+        
+        <button class="admin-btn" onclick="finishStage()">Завершить стадию (Посчитать очки)</button>
     </div>
 
     <script>
-        // Имитация РЕАЛЬНЫХ исходов турнира (для автоматического расчёта баллов)
+        // Имитация РЕАЛЬНЫХ исходов турнира из картинки сетки
         const REAL_RESULTS = {
             "3-0": ["LORE KEEPERS", "ROSE TEAM"],
             "pass": ["LORE KEEPERS", "ROSE TEAM", "REMAST", "VOIDFALL", "BLAIZ", "BPMP", "EVO TEAM", "PLOHISH"],
             "0-3": ["POISON CLAN", "ASL AC"]
         };
 
-        // Локальное хранилище для прогнозов пользователей
+        // Глобальный флаг завершения стадии
+        let isStageFinished = false;
+
+        // Хранилище прогнозов
         let predictionsList = [];
 
         // Переключение вкладок
@@ -372,7 +415,6 @@
 
         // Сохранение прогноза
         function savePredict() {
-            // Собираем данные из слотов
             const getTeamsFromZone = (zoneName) => {
                 const zoneSlots = document.querySelector(`.slots[data-zone="${zoneName}"]`).querySelectorAll('.slot');
                 let teams = [];
@@ -388,37 +430,44 @@
             const pPass = getTeamsFromZone('pass');
             const p03 = getTeamsFromZone('0-3');
 
-            // Проверка на заполненность (всего должно быть 2 + 6 + 2 = 10 команд)
             if (p30.length < 2 || pPass.length < 6 || p03.length < 2) {
                 alert('Пожалуйста, заполните все слоты перед сохранением!');
                 return;
             }
 
-            // Запрос никнейма
             const nickname = prompt('Введите ваш никнейм для таблицы лидеров:');
             if (!nickname || nickname.trim() === "") {
                 alert('Никнейм не может быть пустым!');
                 return;
             }
 
-            // Подсчет очков (+3 за каждое угаданное поле)
-            let score = 0;
-            
-            p30.forEach(t => { if (REAL_RESULTS['3-0'].includes(t)) score += 3; });
-            pPass.forEach(t => { if (REAL_RESULTS['pass'].includes(t)) score += 3; });
-            p03.forEach(t => { if (REAL_RESULTS['0-3'].includes(t)) score += 3; });
-
-            // Добавляем объект в общий список результатов
+            // Добавляем прогноз. Очки пока не считаем (зависят от флага финиша)
             predictionsList.push({
                 name: nickname,
+                arr30: p30,
+                arrPass: pPass,
+                arr03: p03,
                 res30: p30.join(', '),
                 resPass: pPass.join(', '),
-                res03: p03.join(', '),
-                points: score
+                res03: p03.join(', ')
             });
 
-            alert(`Прогноз игрока ${nickname} сохранен! Набрано очков: ${score}`);
-            switchTab('table'); // Перебрасываем на вкладку таблицы
+            alert(`Прогноз игрока ${nickname} успешно сохранен!`);
+            switchTab('table');
+        }
+
+        // Функция "А сейчас у всех очки посчитались"
+        function finishStage() {
+            isStageFinished = true;
+            
+            // Меняем статусную плашку
+            const badge = document.getElementById('stage-status');
+            badge.textContent = "Стадия завершена! Очки подсчитаны.";
+            badge.classList.add('active');
+
+            // Перерисовываем таблицу уже с рассчитанными баллами
+            renderLeaderboard();
+            alert('Стадия официально завершена! Очки распределены согласно исходам.');
         }
 
         // Отрисовка таблицы
@@ -426,8 +475,23 @@
             const tbody = document.getElementById('leaderboard-data');
             tbody.innerHTML = '';
 
-            // Сортируем список по убыванию очков
-            predictionsList.sort((a, b) => b.points - a.points);
+            // Рассчитываем актуальные очки для каждого в зависимости от состояния стадии
+            predictionsList.forEach(user => {
+                if (!isStageFinished) {
+                    user.points = 0; // Пока стадия идет — у всех строго 0
+                } else {
+                    let score = 0;
+                    user.arr30.forEach(t => { if (REAL_RESULTS['3-0'].includes(t)) score += 3; });
+                    user.arrPass.forEach(t => { if (REAL_RESULTS['pass'].includes(t)) score += 3; });
+                    user.arr03.forEach(t => { if (REAL_RESULTS['0-3'].includes(t)) score += 3; });
+                    user.points = score;
+                }
+            });
+
+            // Если стадия завершена, сортируем по убыванию очков
+            if (isStageFinished) {
+                predictionsList.sort((a, b) => b.points - a.points);
+            }
 
             if (predictionsList.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Будьте первым, кто сохранит прогноз!</td></tr>';
