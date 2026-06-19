@@ -2,271 +2,338 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Мини-Стратегия: Оборона 1941</title>
+    <title>Фронтовой Штаб: Тактическая Карта</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
-            background-color: #1a1a1a;
-            color: #d4d4d4;
+            background-color: #121212;
+            color: #e0e0e0;
             padding: 20px;
+            user-select: none;
         }
-        h1, h2 { color: #e0a96d; }
-        .container { display: flex; gap: 20px; }
+        h1, h2 { color: #cc9966; margin-top: 0; }
+        .wrapper { display: flex; gap: 20px; }
+        .left-side { flex: 3; display: flex; flex-direction: column; gap: 15px; }
+        .right-side { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+        
         .panel {
-            background: #2c2c2c;
-            border: 2px solid #3c3c3c;
+            background: #1c1c1c;
+            border: 2px solid #333;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 4px;
         }
-        .map-panel { flex: 2; }
-        .info-panel { flex: 1; display: flex; flex-direction: column; gap: 15px; }
-        .division-card {
-            background: #3a3a3a;
-            border: 1px solid #555;
+        
+        /* Стили карты */
+        .map-container {
+            position: relative;
+            width: 800px;
+            height: 400px;
+            background: #25282a;
+            border: 3px solid #444;
+            overflow: hidden;
+        }
+        /* Холст для рисования стрелок поверх карты */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            cursor: crosshair;
+        }
+        
+        .map-objects {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none; /* Пропускает клики на холст */
+        }
+        
+        /* Стили регионов на карте */
+        .region {
+            position: absolute;
+            border: 2px dashed #444;
             padding: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
+            box-sizing: border-box;
+            background: rgba(30, 30, 30, 0.6);
         }
-        .division-card.selected { border-color: #e0a96d; background: #4a4a4a; }
-        .map-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+        .region.city { border: 2px solid #888; background: rgba(50, 60, 70, 0.6); }
+        .region.river { border-right: 4px solid #2980b9; }
+        
+        /* Юниты */
+        .unit-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            margin: 2px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
         }
-        .cell {
+        .unit-infantry { background: #4a6741; color: #fff; }
+        .unit-armor { background: #7c5e3d; color: #fff; }
+
+        /* Интерфейс */
+        .division-item {
             background: #252525;
             border: 1px solid #444;
-            min-height: 80px;
-            padding: 5px;
-            position: relative;
-        }
-        .cell.river { border-left: 4px solid #3498db; }
-        .cell.city { background: #34495e; }
-        .cell.captured { border: 1px solid #c0392b; }
-        .btn {
-            background: #e0a96d;
-            color: #1a1a1a;
-            border: none;
             padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .division-item:hover { background: #2d2d2d; }
+        .division-item.selected { border-color: #cc9966; background: #332a20; }
+        
+        .controls { display: flex; gap: 10px; margin-bottom: 10px; }
+        .btn {
+            background: #333;
+            color: #cc9966;
+            border: 1px solid #cc9966;
+            padding: 8px 14px;
             cursor: pointer;
             font-weight: bold;
-            width: 100%;
         }
-        .btn:hover { background: #cca16e; }
-        #news-ticker {
+        .btn:hover { background: #cc9966; color: #121212; }
+        .btn.active { background: #cc9966; color: #121212; }
+        
+        #ticker {
             background: #000;
             color: #00ff00;
             padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            min-height: 40px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            border-left: 3px solid #cc9966;
         }
     </style>
 </head>
 <body>
 
-    <h1>Фронтовая Сводка: 1941</h1>
-    
-    <div id="news-ticker">> Ситуация на фронте стабильно напряженная. Командование ожидает ваших приказов.</div>
+    <h1>Штаб Главного Командования (Прототип)</h1>
+    <div id="ticker">> Разработайте план наступления. Используйте режим рисования для нанесения стрелок ударов.</div>
 
-    <div class="container">
-        <div class="panel map-panel">
-            <h2>Карта боевых действий</h2>
-            <p><small>*Синие левые границы — река (дает бонус к обороне). Темные клетки — города.</small></p>
-            <div class="map-grid" id="map"></div>
-        </div>
-
-        <div class="info-panel">
-            <div class="panel">
-                <h2>Ваши Дивизии</h2>
-                <div id="divisions-list"></div>
+    <div class="wrapper">
+        <div class="left-side">
+            <div class="controls">
+                <button class="btn active" id="mode-move" onclick="setMode('move')">Режим: Управление войсками</button>
+                <button class="btn" id="mode-draw" onclick="setMode('draw')">Режим: Рисование стрелок плана</button>
+                <button class="btn" onclick="clearCanvas()">Стереть план</button>
+                <button class="btn" style="margin-left: auto; background: #8b0000; color: #fff; border: none;" onclick="nextTurn()">Ход</button>
             </div>
             
+            <div class="map-container">
+                <div class="map-objects" id="map-regions"></div>
+                <canvas id="paintCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+
+        <div class="right-side">
             <div class="panel">
-                <h2>Действия</h2>
-                <button class="btn" onclick="nextTurn()">Завершить ход</button>
+                <h2>Ваши Силы</h2>
+                <div id="units-list"></div>
             </div>
         </div>
     </div>
 
 <script>
-// Данные карты (Упрощенная линия фронта из 5 секторов)
-const mapData = [
-    { id: 0, name: "Западный Рубеж", type: "field", river: false, enemyStrength: 80, playerDivs: [], captured: false },
-    { id: 1, name: "Минский Узел", type: "city", river: false, enemyStrength: 120, playerDivs: [], captured: false },
-    { id: 2, name: "Рубеж р. Днепр", type: "field", river: true, enemyStrength: 90, playerDivs: [], captured: false },
-    { id: 3, name: "Смоленские высоты", type: "field", river: false, enemyStrength: 100, playerDivs: [], captured: false },
-    { id: 4, name: "Киевский Укреп Район", type: "city", river: true, enemyStrength: 150, playerDivs: [], captured: false }
+// Регионы на карте (координаты X, Y, ширина, высота)
+const regions = [
+    { id: 0, name: "Белостокский выступ", x: 50, y: 50, w: 200, h: 140, type: "field", river: false, enemy: 100 },
+    { id: 1, name: "Минский укрепленный район", x: 300, y: 70, w: 220, h: 150, type: "city", river: false, enemy: 120 },
+    { id: 2, name: "Линия реки Днепр", x: 560, y: 50, w: 200, h: 300, type: "field", river: true, enemy: 80 },
+    { id: 3, name: "Брест-Литовск", x: 50, y: 230, w: 200, h: 130, type: "city", river: false, enemy: 150 },
+    { id: 4, name: "Подступы к Гомелю", x: 300, y: 250, w: 220, h: 120, type: "field", river: true, enemy: 90 }
 ];
 
-// Ваши войска
-let divisions = [
-    { id: 1, name: "19-я Стрелковая дивизия", strength: 100, supply: 100, location: 2 },
-    { id: 2, name: "100-я Ордена Ленина дивизия", strength: 100, supply: 100, location: 4 },
-    { id: 3, name: "5-й Мехкорпус (Остатки)", strength: 80, supply: 80, location: 0 }
+// Разделение войск по типам: Пехота и Техника (Танки)
+let units = [
+    { id: 1, name: "24-я Стрелковая див.", type: "infantry", strength: 100, location: 0 },
+    { id: 2, name: "44-я Стрелковая див.", type: "infantry", strength: 95, location: 3 },
+    { id: 3, name: "2-й Танковый корпус", type: "armor", strength: 80, location: 1 },
+    { id: 4, name: "5-й Танковый корпус", type: "armor", strength: 85, location: 4 }
 ];
 
-let selectedDivisionId = null;
-let currentTurn = 1;
+let selectedUnitId = null;
+let currentMode = 'move'; // 'move' или 'draw'
 
-// Инициализация игры
-function initGame() {
-    updateMapData();
-    renderMap();
-    renderDivisions();
-}
+// Настройка холста для рисования
+const canvas = document.getElementById('paintCanvas');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
 
-function updateMapData() {
-    mapData.forEach(cell => cell.playerDivs = []);
-    divisions.forEach(div => {
-        if(div.strength > 0) {
-            mapData[div.location].playerDivs.push(div);
-        }
-    });
-}
-
-// Отрисовка карты
-function renderMap() {
-    const mapEl = document.getElementById('map');
-    mapEl.innerHTML = '';
+// Логика переключения режимов
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('mode-move').classList.toggle('active', mode === 'move');
+    document.getElementById('mode-draw').classList.toggle('active', mode === 'draw');
     
-    mapData.forEach(cell => {
-        const cellDiv = document.createElement('div');
-        cellDiv.className = `cell ${cell.type === 'city' ? 'city' : ''} ${cell.river ? 'river' : ''} ${cell.captured ? 'captured' : ''}`;
-        
-        let divsText = cell.playerDivs.map(d => `• ${d.name} (${d.strength}%)`).join('<br>');
-        
-        cellDiv.innerHTML = `
-            <strong>${cell.name}</strong><br>
-            <small>Враг: ${cell.captured ? 'Занято' : cell.enemyStrength + ' сил'}</small><br>
-            <div style="margin-top:5px; font-size:12px; color:#e0a96d;">${divsText}</div>
-        `;
-        
-        // Приклик на клетку — перемещаем туда выбранную дивизию
-        cellDiv.onclick = () => {
-            if (selectedDivisionId !== null) {
-                moveDivision(selectedDivisionId, cell.id);
-            }
-        };
-        
-        mapEl.appendChild(cellDiv);
-    });
-}
-
-// Отрисовка списка дивизий
-function renderDivisions() {
-    const listEl = document.getElementById('divisions-list');
-    listEl.innerHTML = '';
-    
-    divisions.forEach(div => {
-        if (div.strength <= 0) return;
-        
-        const divCard = document.createElement('div');
-        divCard.className = `division-card ${selectedDivisionId === div.id ? 'selected' : ''}`;
-        divCard.innerHTML = `
-            <strong>${div.name}</strong><br>
-            Численность: ${div.strength}% | Снабжение: ${div.supply}%<br>
-            Позиция: ${mapData[div.location].name}
-        `;
-        
-        divCard.onclick = (e) => {
-            e.stopPropagation();
-            selectedDivisionId = selectedDivisionId === div.id ? null : div.id;
-            renderDivisions();
-        };
-        
-        listEl.appendChild(divCard);
-    });
-}
-
-// Механика перемещения
-function moveDivision(divId, targetCellId) {
-    const div = divisions.find(d => d.id === divId);
-    div.location = targetCellId;
-    selectedDivisionId = null;
-    
-    logNews(`Приказ: ${div.name} перебрасывается в сектор "${mapData[targetCellId].name}".`);
-    
-    updateMapData();
-    renderMap();
-    renderDivisions();
-}
-
-// Лог новостей
-function logNews(text) {
-    document.getElementById('news-ticker').innerText = `> ${text}`;
-}
-
-// Логика конца хода (Расчет боя и окружений)
-function nextTurn() {
-    currentTurn++;
-    
-    // 1. Проверка снабжения (простейшая симуляция окружения)
-    // Если дивизия стоит в секторе, где врагов в 2 раза больше, чем сил дивизии, снабжение падает
-    divisions.forEach(div => {
-        const cell = mapData[div.location];
-        if (cell.enemyStrength > div.strength * 1.5) {
-            div.supply -= 30;
-            logNews(`Внимание: ${div.name} под угрозой окружения! Нарушено снабжение.`);
-        } else if (div.supply < 100) {
-            div.supply = Math.min(100, div.supply + 10); // Восстановление
-        }
-        
-        if (div.supply <= 0) {
-            div.strength -= 20; // Истощение от окружения
-            logNewsКриcritical(`Катастрофа: ${div.name} истощена без боеприпасов!`);
-        }
-    });
-
-    // 2. Симуляция боев
-    mapData.forEach(cell => {
-        if (cell.playerDivs.length > 0 && !cell.captured) {
-            let totalPlayerStrength = cell.playerDivs.reduce((sum, d) => sum + d.strength, 0);
-            
-            // Бонусы местности
-            if (cell.river) totalPlayerStrength += 30; // Река помогает обороне
-            if (cell.type === 'city') totalPlayerStrength += 50; // Город — крепость
-            
-            // Расчет потерь
-            if (cell.enemyStrength > totalPlayerStrength) {
-                cell.playerDivs.forEach(d => d.strength -= 15);
-                cell.enemyStrength -= 10;
-                logNews(`Тяжелые бои в секторе ${cell.name}. Наши силы отступают.`);
-            } else {
-                cell.enemyStrength -= 20;
-                cell.playerDivs.forEach(d => d.strength -= 5);
-                logNews(`Атака врага отбита в секторе ${cell.name}!`);
-            }
-            
-            if (cell.enemyStrength <= 0) cell.enemyStrength = 0;
-        } else if (!cell.captured) {
-            // Враг продвигается, если сектор пуст
-            cell.enemyStrength += 10;
-            if (cell.enemyStrength > 130) {
-                cell.captured = true;
-                logNews(`Потерян контроль над сектором: ${cell.name}!`);
-            }
-        }
-    });
-
-    // Случайное историческое событие (как в HoI)
-    const events = [
-        "Сводка Совинформбюро: Заводы Урала удвоили выпуск танков Т-34. Пополнение прибудет позже.",
-        "Партизаны подорвали склады снабжения противника в тылу.",
-        "Осенняя распутица замедляет продвижение танковых колонн врага."
-    ];
-    if (Math.random() > 0.5) {
-        logNews(`[ИВЕНТ] ${events[Math.floor(Math.random() * events.length)]}`);
+    // Меняем доступность кликов по холсту
+    canvas.style.pointerEvents = (mode === 'draw') ? 'auto' : 'none';
+    if(mode === 'move') {
+        logNews("Режим перемещения: выберите дивизию справа и кликните по региону карты.");
+    } else {
+        logNews("Режим планирования: зажмите левую кнопку мыши на карте, чтобы нарисовать стрелки наступления.");
     }
-
-    updateMapData();
-    renderMap();
-    renderDivisions();
 }
 
-// Старт
-initGame();
+// Рисование на холсте (планирование стрелок)
+canvas.addEventListener('mousedown', (e) => {
+    if (currentMode !== 'draw') return;
+    isDrawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#ff3333';
+    ctx.lineCap = 'round';
+});
+
+canvas.addEventListener('mousemove', (e) => {
+    if (!isDrawing || currentMode !== 'draw') return;
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+});
+
+canvas.addEventListener('mouseup', () => {
+    if(isDrawing && currentMode === 'draw') {
+        // Рисуем наконечник стрелки (упрощенно — точку или засечку в конце линии)
+        ctx.fillStyle = '#ff3333';
+        ctx.arc(event.offsetX, event.offsetY, 6, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    isDrawing = false;
+});
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    logNews("Тактический план стерт.");
+}
+
+// Управление игрой
+function init() {
+    renderMap();
+    renderUnits();
+    setMode('move');
+}
+
+function renderMap() {
+    const container = document.getElementById('map-regions');
+    container.innerHTML = '';
+    
+    regions.forEach(reg => {
+        const el = document.createElement('div');
+        el.className = `region ${reg.type === 'city' ? 'city' : ''} ${reg.river ? 'river' : ''}`;
+        el.style.left = reg.x + 'px';
+        el.style.top = reg.y + 'px';
+        el.style.width = reg.w + 'px';
+        el.style.height = reg.h + 'px';
+        
+        // Собираем значки юнитов в этом регионе
+        let unitsHtml = '';
+        units.forEach(u => {
+            if(u.location === reg.id && u.strength > 0) {
+                const cls = u.type === 'armor' ? 'unit-badge unit-armor' : 'unit-badge unit-infantry';
+                const icon = u.type === 'armor' ? ' can ' : ' ⚔️ ';
+                unitsHtml += `<div class="${cls}">${icon} ${u.name} [${u.strength}%]</div>`;
+            }
+        });
+        
+        el.innerHTML = `
+            <strong style="font-size:12px;">${reg.name}</strong><br>
+            <span style="font-size:11px; color:#ff6666;">Враг: ${reg.enemy} сил</span>
+            <div style="margin-top:8px;">${unitsHtml}</div>
+        `;
+        
+        // В режиме движения регионы становятся кликабельными через подложку
+        // Чтобы обрабатывать клики, мы вешаем их на карту, но холст в режиме 'move' прозрачен для мыши
+        container.appendChild(el);
+    });
+}
+
+// Слушатель кликов по контейнеру карты для перемещения войск
+document.querySelector('.map-container').addEventListener('click', (e) => {
+    if (currentMode !== 'move' || selectedUnitId === null) return;
+    
+    // Определяем, в какой регион кликнули по координатам
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+    
+    const targetRegion = regions.find(r => 
+        clickX >= r.x && clickX <= (r.x + r.w) &&
+        clickY >= r.y && clickY <= (r.y + r.h)
+    );
+    
+    if (targetRegion) {
+        const unit = units.find(u => u.id === selectedUnitId);
+        unit.location = targetRegion.id;
+        logNews(`Приказ выполнен: ${unit.name} выдвинулась в район: ${targetRegion.name}`);
+        selectedUnitId = null;
+        renderMap();
+        renderUnits();
+    }
+});
+
+function renderUnits() {
+    const list = document.getElementById('units-list');
+    list.innerHTML = '';
+    
+    units.forEach(u => {
+        if (u.strength <= 0) return;
+        const el = document.createElement('div');
+        el.className = `division-item ${selectedUnitId === u.id ? 'selected' : ''}`;
+        
+        const typeName = u.type === 'armor' ? 'Танковая' : 'Стрелковая';
+        el.innerHTML = `
+            <strong>${u.name}</strong> (${typeName})<br>
+            <small>Боеспособность: ${u.strength}% | Район: ${regions[u.location].name}</small>
+        `;
+        
+        el.onclick = () => {
+            if(currentMode === 'move') {
+                selectedUnitId = selectedUnitId === u.id ? null : u.id;
+                renderUnits();
+            }
+        };
+        list.appendChild(el);
+    });
+}
+
+function logNews(text) {
+    document.getElementById('ticker').innerText = `> ${text}`;
+}
+
+// Расчет хода
+function nextTurn() {
+    // Симуляция столкновений в регионах
+    regions.forEach(reg => {
+        let localUnits = units.filter(u => u.location === reg.id && u.strength > 0);
+        if(localUnits.length > 0) {
+            let totalPower = 0;
+            localUnits.forEach(u => {
+                // Танки имеют повышенную силу атаки, пехота держит оборону в городах
+                let power = u.strength;
+                if(u.type === 'armor') power *= 1.4; 
+                if(u.type === 'infantry' && reg.type === 'city') power *= 1.5;
+                if(reg.type === 'river') power *= 0.8; // Штурм через реку сложнее
+                totalPower += power;
+            });
+
+            if(totalPower > reg.enemy) {
+                reg.enemy = Math.max(0, reg.enemy - Math.floor(totalPower/2));
+                localUnits.forEach(u => u.strength -= 5);
+                logNews(`Успешные боевые действия в районе ${reg.name}. Враг отступает.`);
+            } else {
+                localUnits.forEach(u => {
+                    u.strength -= u.type === 'armor' ? 15 : 10; // Танки без поддержки несут больше потерь
+                });
+                logNews(`Тяжелые оборонительные бои в районе ${reg.name}. Требуются резервы.`);
+            }
+        }
+    });
+
+    renderMap();
+    renderUnits();
+}
+
+init();
 </script>
 </body>
 </html>
