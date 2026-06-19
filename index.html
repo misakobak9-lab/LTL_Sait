@@ -18,12 +18,34 @@
 
         h1 {
             color: #1e293b;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-size: 2rem;
-            border-bottom: 3px solid #e28743;
-            padding-bottom: 5px;
+        }
+
+        /* Навигация (Вкладки) */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            background: #cbd5e1;
+            color: #334155;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #e28743;
+            color: white;
         }
 
         .container {
@@ -34,7 +56,11 @@
             justify-content: center;
         }
 
-        /* Список команд (Светлая тема) */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Панель команд */
         .teams-section {
             background: #ffffff;
             padding: 20px;
@@ -79,10 +105,6 @@
             border-color: #cbd5e1;
         }
 
-        .team-card:active {
-            cursor: grabbing;
-        }
-
         /* Зона прогнозов */
         .predict-section {
             display: flex;
@@ -108,7 +130,7 @@
         .zone.zone-0-3 { border-left: 6px solid #dc2626; }
 
         .zone h3 {
-            margin: 0 0 5px 0;
+            margin: 0;
             font-size: 1.1rem;
             color: #0f172a;
         }
@@ -117,11 +139,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-        }
-
-        /* Для зоны прохода сделаем в ряд по две, так как слотов 6 */
-        .zone-pass .slots {
-            grid-template-columns: 1fr 1fr;
         }
 
         .slot {
@@ -149,73 +166,172 @@
             border: none;
             background: #e2e8f0;
         }
+
+        .save-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: background 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #15803d;
+        }
+
+        /* Таблица лидеров */
+        .leaderboard-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
     </style>
 </head>
 <body>
 
     <h1>CS2 Pick'Em League</h1>
 
-    <div class="container">
+    <div class="tabs">
+        <button class="tab-btn active" id="btn-picks" onclick="switchTab('picks')">Прогнозы</button>
+        <button class="tab-btn" id="btn-table" onclick="switchTab('table')">Таблица результатов</button>
+    </div>
+
+    <div class="container" id="tab-content-picks">
         <div class="teams-section">
             <h3>Участники</h3>
             <div class="teams-container" id="teams-pool">
-                <div class="team-card" draggable="true" id="t1">LORE KEEPERS</div>
-                <div class="team-card" draggable="true" id="t2">BLOOD OWNER</div>
-                <div class="team-card" draggable="true" id="t3">ROSE TEAM</div>
-                <div class="team-card" draggable="true" id="t4">BPMP</div>
-                <div class="team-card" draggable="true" id="t5">REMAST</div>
-                <div class="team-card" draggable="true" id="t6">PIVOVISION</div>
-                <div class="team-card" draggable="true" id="t7">E6BLPU</div>
-                <div class="team-card" draggable="true" id="t8">BLAIZ</div>
-                <div class="team-card" draggable="true" id="t9">VOIDFALL</div>
-                <div class="team-card" draggable="true" id="t10">BAREBUH</div>
-                <div class="team-card" draggable="true" id="t11">VANITY TEAM</div>
-                <div class="team-card" draggable="true" id="t12">ASL</div>
-                <div class="team-card" draggable="true" id="t13">PLOHISH</div>
-                <div class="team-card" draggable="true" id="t14">EVO TEAM</div>
-                <div class="team-card" draggable="true" id="t15">POISON CLAN</div>
-                <div class="team-card" draggable="true" id="t16">ASL AC</div>
+                <div class="team-card" draggable="true" id="LORE KEEPERS">LORE KEEPERS</div>
+                <div class="team-card" draggable="true" id="BLOOD OWNER">BLOOD OWNER</div>
+                <div class="team-card" draggable="true" id="ROSE TEAM">ROSE TEAM</div>
+                <div class="team-card" draggable="true" id="BPMP">BPMP</div>
+                <div class="team-card" draggable="true" id="REMAST">REMAST</div>
+                <div class="team-card" draggable="true" id="PIVOVISION">PIVOVISION</div>
+                <div class="team-card" draggable="true" id="E6BLPU">E6BLPU</div>
+                <div class="team-card" draggable="true" id="BLAIZ">BLAIZ</div>
+                <div class="team-card" draggable="true" id="VOIDFALL">VOIDFALL</div>
+                <div class="team-card" draggable="true" id="BAREBUH">BAREBUH</div>
+                <div class="team-card" draggable="true" id="VANITY TEAM">VANITY TEAM</div>
+                <div class="team-card" draggable="true" id="ASL">ASL</div>
+                <div class="team-card" draggable="true" id="PLOHISH">PLOHISH</div>
+                <div class="team-card" draggable="true" id="EVO TEAM">EVO TEAM</div>
+                <div class="team-card" draggable="true" id="POISON CLAN">POISON CLAN</div>
+                <div class="team-card" draggable="true" id="ASL AC">ASL AC</div>
             </div>
         </div>
 
         <div class="predict-section">
-            
             <div class="zone zone-3-0">
                 <h3>Пройдут со счетом 3:0 (2 команды)</h3>
-                <div class="slots">
-                    <div class="slot" data-slot-id="3-0-1">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="3-0-2">Перетащите сюда</div>
+                <div class="slots" data-zone="3-0">
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
                 </div>
             </div>
 
             <div class="zone zone-pass">
                 <h3>Пройдут в следующую стадию (6 команд)</h3>
-                <div class="slots">
-                    <div class="slot" data-slot-id="pass-1">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="pass-2">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="pass-3">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="pass-4">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="pass-5">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="pass-6">Перетащите сюда</div>
+                <div class="slots" data-zone="pass">
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
                 </div>
             </div>
 
             <div class="zone zone-0-3">
                 <h3>Вылетят со счетом 0:3 (2 команды)</h3>
-                <div class="slots">
-                    <div class="slot" data-slot-id="0-3-1">Перетащите сюда</div>
-                    <div class="slot" data-slot-id="0-3-2">Перетащите сюда</div>
+                <div class="slots" data-zone="0-3">
+                    <div class="slot">Перетащите сюда</div>
+                    <div class="slot">Перетащите сюда</div>
                 </div>
             </div>
 
+            <button class="save-btn" onclick="savePredict()">Сохранить прогноз</button>
         </div>
     </div>
 
+    <div class="leaderboard-section hidden" id="tab-content-table">
+        <h2>Таблица лидеров стадии</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Место</th>
+                    <th>Никнейм</th>
+                    <th>Прогноз 3:0</th>
+                    <th>Прогноз (Проход)</th>
+                    <th>Прогноз 0:3</th>
+                    <th>Очки</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-data">
+                </tbody>
+        </table>
+    </div>
+
     <script>
+        // Имитация РЕАЛЬНЫХ исходов турнира (для автоматического расчёта баллов)
+        const REAL_RESULTS = {
+            "3-0": ["LORE KEEPERS", "ROSE TEAM"],
+            "pass": ["LORE KEEPERS", "ROSE TEAM", "REMAST", "VOIDFALL", "BLAIZ", "BPMP", "EVO TEAM", "PLOHISH"],
+            "0-3": ["POISON CLAN", "ASL AC"]
+        };
+
+        // Локальное хранилище для прогнозов пользователей
+        let predictionsList = [];
+
+        // Переключение вкладок
+        function switchTab(tab) {
+            const picksBtn = document.getElementById('btn-picks');
+            const tableBtn = document.getElementById('btn-table');
+            const picksContent = document.getElementById('tab-content-picks');
+            const tableContent = document.getElementById('tab-content-table');
+
+            if (tab === 'picks') {
+                picksBtn.classList.add('active');
+                tableBtn.classList.remove('active');
+                picksContent.classList.remove('hidden');
+                tableContent.classList.add('hidden');
+            } else {
+                tableBtn.classList.add('active');
+                picksBtn.classList.remove('active');
+                tableContent.classList.remove('hidden');
+                picksContent.classList.add('hidden');
+                renderLeaderboard();
+            }
+        }
+
+        // Логика Drag and Drop
         const cards = document.querySelectorAll('.team-card');
         const slots = document.querySelectorAll('.slot');
         const pool = document.getElementById('teams-pool');
-
         let draggedCard = null;
 
         cards.forEach(card => {
@@ -223,7 +339,6 @@
                 draggedCard = this;
                 setTimeout(() => this.style.opacity = '0.5', 0);
             });
-
             card.addEventListener('dragend', function() {
                 setTimeout(() => this.style.opacity = '1', 0);
                 draggedCard = null;
@@ -231,35 +346,21 @@
         });
 
         slots.forEach(slot => {
-            slot.addEventListener('dragover', function(e) {
-                e.preventDefault();
-            });
-
-            slot.addEventListener('dragenter', function() {
-                this.classList.add('drag-over');
-            });
-
-            slot.addEventListener('dragleave', function() {
-                this.classList.remove('drag-over');
-            });
-
+            slot.addEventListener('dragover', e => e.preventDefault());
+            slot.addEventListener('dragenter', function() { this.classList.add('drag-over'); });
+            slot.addEventListener('dragleave', function() { this.classList.remove('drag-over'); });
             slot.addEventListener('drop', function() {
                 this.classList.remove('drag-over');
-                
                 if (this.children.length > 0) {
                     pool.appendChild(this.children[0]);
                 }
-                
                 this.textContent = '';
                 this.appendChild(draggedCard);
             });
         });
 
-        pool.addEventListener('dragover', function(e) {
-            e.preventDefault();
-        });
-
-        pool.addEventListener('drop', function() {
+        pool.addEventListener('dragover', e => e.preventDefault());
+        pool.addEventListener('drop', () => {
             if (draggedCard) {
                 const parentSlot = draggedCard.parentElement;
                 pool.appendChild(draggedCard);
@@ -268,6 +369,84 @@
                 }
             }
         });
+
+        // Сохранение прогноза
+        function savePredict() {
+            // Собираем данные из слотов
+            const getTeamsFromZone = (zoneName) => {
+                const zoneSlots = document.querySelector(`.slots[data-zone="${zoneName}"]`).querySelectorAll('.slot');
+                let teams = [];
+                zoneSlots.forEach(slot => {
+                    if (slot.children.length > 0) {
+                        teams.push(slot.children[0].id);
+                    }
+                });
+                return teams;
+            };
+
+            const p30 = getTeamsFromZone('3-0');
+            const pPass = getTeamsFromZone('pass');
+            const p03 = getTeamsFromZone('0-3');
+
+            // Проверка на заполненность (всего должно быть 2 + 6 + 2 = 10 команд)
+            if (p30.length < 2 || pPass.length < 6 || p03.length < 2) {
+                alert('Пожалуйста, заполните все слоты перед сохранением!');
+                return;
+            }
+
+            // Запрос никнейма
+            const nickname = prompt('Введите ваш никнейм для таблицы лидеров:');
+            if (!nickname || nickname.trim() === "") {
+                alert('Никнейм не может быть пустым!');
+                return;
+            }
+
+            // Подсчет очков (+3 за каждое угаданное поле)
+            let score = 0;
+            
+            p30.forEach(t => { if (REAL_RESULTS['3-0'].includes(t)) score += 3; });
+            pPass.forEach(t => { if (REAL_RESULTS['pass'].includes(t)) score += 3; });
+            p03.forEach(t => { if (REAL_RESULTS['0-3'].includes(t)) score += 3; });
+
+            // Добавляем объект в общий список результатов
+            predictionsList.push({
+                name: nickname,
+                res30: p30.join(', '),
+                resPass: pPass.join(', '),
+                res03: p03.join(', '),
+                points: score
+            });
+
+            alert(`Прогноз игрока ${nickname} сохранен! Набрано очков: ${score}`);
+            switchTab('table'); // Перебрасываем на вкладку таблицы
+        }
+
+        // Отрисовка таблицы
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboard-data');
+            tbody.innerHTML = '';
+
+            // Сортируем список по убыванию очков
+            predictionsList.sort((a, b) => b.points - a.points);
+
+            if (predictionsList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Будьте первым, кто сохранит прогноз!</td></tr>';
+                return;
+            }
+
+            predictionsList.forEach((user, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${index + 1}</strong></td>
+                    <td>${user.name}</td>
+                    <td style="font-size:0.85rem; color:#16a34a;">${user.res30}</td>
+                    <td style="font-size:0.85rem; color:#2563eb;">${user.resPass}</td>
+                    <td style="font-size:0.85rem; color:#dc2626;">${user.res03}</td>
+                    <td><strong>${user.points}</strong></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
     </script>
 </body>
 </html>
