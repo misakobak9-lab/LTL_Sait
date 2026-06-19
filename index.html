@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS2-like Pick'Em League</title>
+    <title>CS2 Pick'Em League</title>
     <style>
         body {
-            background-color: #12161a;
-            color: #ffffff;
+            background-color: #f4f6f9;
+            color: #1e293b;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
@@ -17,10 +17,13 @@
         }
 
         h1 {
-            color: #e28743;
+            color: #1e293b;
             margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            font-size: 2rem;
+            border-bottom: 3px solid #e28743;
+            padding-bottom: 5px;
         }
 
         .container {
@@ -31,13 +34,14 @@
             justify-content: center;
         }
 
-        /* Список команд */
+        /* Список команд (Светлая тема) */
         .teams-section {
-            background: #1a222b;
+            background: #ffffff;
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid #2c3845;
-            min-width: 220px;
+            border: 1px solid #cbd5e1;
+            min-width: 240px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .teams-section h3 {
@@ -45,97 +49,97 @@
             border-bottom: 2px solid #e28743;
             padding-bottom: 8px;
             text-align: center;
+            color: #0f172a;
         }
 
         .teams-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 500px;
+            max-height: 550px;
             overflow-y: auto;
             padding-right: 5px;
         }
 
         .team-card {
-            background: #232d38;
+            background: #f8fafc;
             padding: 12px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: grab;
             text-align: center;
             font-weight: bold;
-            border: 1px solid #3d4f63;
-            transition: background 0.2s;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
             user-select: none;
+            color: #334155;
         }
 
         .team-card:hover {
-            background: #2f3d4c;
+            background: #edf2f7;
+            border-color: #cbd5e1;
         }
 
         .team-card:active {
             cursor: grabbing;
         }
 
-        /* Зона предикту (Сітка) */
+        /* Зона прогнозов */
         .predict-section {
             display: flex;
             flex-direction: column;
             gap: 20px;
             flex-grow: 1;
-        }
-
-        .zone-group {
-            display: flex;
-            gap: 20px;
+            max-width: 600px;
         }
 
         .zone {
-            background: #1a222b;
+            background: #ffffff;
             padding: 20px;
             border-radius: 8px;
-            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            min-width: 200px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #cbd5e1;
         }
 
-        .zone.3-0 { border: 2px solid #2e7d32; }
-        .zone.3-x { border: 2px solid #1565c0; }
-        .zone.0-3 { border: 2px solid #c62828; }
+        .zone.zone-3-0 { border-left: 6px solid #16a34a; }
+        .zone.zone-pass { border-left: 6px solid #2563eb; }
+        .zone.zone-0-3 { border-left: 6px solid #dc2626; }
 
         .zone h3 {
-            margin: 0 0 10px 0;
-            text-align: center;
+            margin: 0 0 5px 0;
             font-size: 1.1rem;
+            color: #0f172a;
         }
 
-        .zone.3-0 h3 { color: #81c784; }
-        .zone.3-x h3 { color: #64b5f6; }
-        .zone.0-3 h3 { color: #e57373; }
-
         .slots {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
+        /* Для зоны прохода сделаем в ряд по две, так как слотов 6 */
+        .zone-pass .slots {
+            grid-template-columns: 1fr 1fr;
+        }
+
         .slot {
-            background: #0f1318;
-            border: 2px dashed #3d4f63;
-            min-height: 45px;
-            border-radius: 4px;
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            min-height: 48px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #55687d;
-            font-size: 0.9rem;
+            color: #94a3b8;
+            font-size: 0.85rem;
             transition: all 0.2s;
         }
 
         .slot.drag-over {
             border-color: #e28743;
-            background: #1c1a18;
+            background: #fff7ed;
         }
 
         .slot .team-card {
@@ -143,6 +147,7 @@
             height: 100%;
             box-sizing: border-box;
             border: none;
+            background: #e2e8f0;
         }
     </style>
 </head>
@@ -152,7 +157,7 @@
 
     <div class="container">
         <div class="teams-section">
-            <h3>Учасники</h3>
+            <h3>Участники</h3>
             <div class="teams-container" id="teams-pool">
                 <div class="team-card" draggable="true" id="t1">LORE KEEPERS</div>
                 <div class="team-card" draggable="true" id="t2">BLOOD OWNER</div>
@@ -175,30 +180,31 @@
 
         <div class="predict-section">
             
-            <div class="zone 3-0">
-                <h3>Пройдуть з рахунком 3:0 (1 команда)</h3>
+            <div class="zone zone-3-0">
+                <h3>Пройдут со счетом 3:0 (2 команды)</h3>
                 <div class="slots">
-                    <div class="slot" data-slot-id="3-0-1">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="3-0-1">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="3-0-2">Перетащите сюда</div>
                 </div>
             </div>
 
-            <div class="zone 3-x">
-                <h3>Пройдуть у наступну стадію (7 команд)</h3>
+            <div class="zone zone-pass">
+                <h3>Пройдут в следующую стадию (6 команд)</h3>
                 <div class="slots">
-                    <div class="slot" data-slot-id="pass-1">Перетягніть сюди</div>
-                    <div class="slot" data-slot-id="pass-2">Перетягніть сюди</div>
-                    <div class="slot" data-slot-id="pass-3">Перетягніть сюди</div>
-                    <div class="slot" data-slot-id="pass-4">Перетягніть сюди</div>
-                    <div class="slot" data-slot-id="pass-5">Перетягніть сюди</div>
-                    <div class="slot" data-slot-id="pass-6">Перетягніть сюди</div>
-                    <div class="slot" data-slot-id="pass-7">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-1">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="pass-2">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="pass-3">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="pass-4">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="pass-5">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="pass-6">Перетащите сюда</div>
                 </div>
             </div>
 
-            <div class="zone 0-3">
-                <h3>Вилетять з рахунком 0:3 (1 команда)</h3>
+            <div class="zone zone-0-3">
+                <h3>Вылетят со счетом 0:3 (2 команды)</h3>
                 <div class="slots">
-                    <div class="slot" data-slot-id="0-3-1">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="0-3-1">Перетащите сюда</div>
+                    <div class="slot" data-slot-id="0-3-2">Перетащите сюда</div>
                 </div>
             </div>
 
@@ -240,29 +246,25 @@
             slot.addEventListener('drop', function() {
                 this.classList.remove('drag-over');
                 
-                // Якщо в слоті вже є команда, повертаємо її назад в пул
                 if (this.children.length > 0) {
                     pool.appendChild(this.children[0]);
                 }
                 
-                // Додаємо нову команду в слот
                 this.textContent = '';
                 this.appendChild(draggedCard);
             });
         });
 
-        // Можливість повернути команду назад у загальний список кліком
         pool.addEventListener('dragover', function(e) {
             e.preventDefault();
         });
 
         pool.addEventListener('drop', function() {
             if (draggedCard) {
-                // Перевіряємо батьківський елемент, щоб відновити текст "Перетягніть сюди" в порожньому слоті
                 const parentSlot = draggedCard.parentElement;
                 pool.appendChild(draggedCard);
                 if (parentSlot && parentSlot.classList.contains('slot') && parentSlot.children.length === 0) {
-                    parentSlot.textContent = 'Перетягніть сюди';
+                    parentSlot.textContent = 'Перетащите сюда';
                 }
             }
         });
