@@ -1,339 +1,271 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Фронтовой Штаб: Тактическая Карта</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2-like Pick'Em League</title>
     <style>
         body {
-            font-family: 'Courier New', monospace;
-            background-color: #121212;
-            color: #e0e0e0;
+            background-color: #12161a;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #e28743;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Список команд */
+        .teams-section {
+            background: #1a222b;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #2c3845;
+            min-width: 220px;
+        }
+
+        .teams-section h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #e28743;
+            padding-bottom: 8px;
+            text-align: center;
+        }
+
+        .teams-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .team-card {
+            background: #232d38;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: grab;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #3d4f63;
+            transition: background 0.2s;
             user-select: none;
         }
-        h1, h2 { color: #cc9966; margin-top: 0; }
-        .wrapper { display: flex; gap: 20px; }
-        .left-side { flex: 3; display: flex; flex-direction: column; gap: 15px; }
-        .right-side { flex: 1; display: flex; flex-direction: column; gap: 15px; }
-        
-        .panel {
-            background: #1c1c1c;
-            border: 2px solid #333;
-            padding: 15px;
+
+        .team-card:hover {
+            background: #2f3d4c;
+        }
+
+        .team-card:active {
+            cursor: grabbing;
+        }
+
+        /* Зона предикту (Сітка) */
+        .predict-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        .zone-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .zone {
+            background: #1a222b;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 200px;
+        }
+
+        .zone.3-0 { border: 2px solid #2e7d32; }
+        .zone.3-x { border: 2px solid #1565c0; }
+        .zone.0-3 { border: 2px solid #c62828; }
+
+        .zone h3 {
+            margin: 0 0 10px 0;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .zone.3-0 h3 { color: #81c784; }
+        .zone.3-x h3 { color: #64b5f6; }
+        .zone.0-3 h3 { color: #e57373; }
+
+        .slots {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slot {
+            background: #0f1318;
+            border: 2px dashed #3d4f63;
+            min-height: 45px;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #55687d;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        
-        /* Стили карты */
-        .map-container {
-            position: relative;
-            width: 800px;
-            height: 400px;
-            background: #25282a;
-            border: 3px solid #444;
-            overflow: hidden;
+
+        .slot.drag-over {
+            border-color: #e28743;
+            background: #1c1a18;
         }
-        /* Холст для рисования стрелок поверх карты */
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            cursor: crosshair;
-        }
-        
-        .map-objects {
-            position: absolute;
+
+        .slot .team-card {
             width: 100%;
             height: 100%;
-            z-index: 5;
-            pointer-events: none; /* Пропускает клики на холст */
-        }
-        
-        /* Стили регионов на карте */
-        .region {
-            position: absolute;
-            border: 2px dashed #444;
-            padding: 10px;
             box-sizing: border-box;
-            background: rgba(30, 30, 30, 0.6);
-        }
-        .region.city { border: 2px solid #888; background: rgba(50, 60, 70, 0.6); }
-        .region.river { border-right: 4px solid #2980b9; }
-        
-        /* Юниты */
-        .unit-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            margin: 2px;
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 3px;
-        }
-        .unit-infantry { background: #4a6741; color: #fff; }
-        .unit-armor { background: #7c5e3d; color: #fff; }
-
-        /* Интерфейс */
-        .division-item {
-            background: #252525;
-            border: 1px solid #444;
-            padding: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-        .division-item:hover { background: #2d2d2d; }
-        .division-item.selected { border-color: #cc9966; background: #332a20; }
-        
-        .controls { display: flex; gap: 10px; margin-bottom: 10px; }
-        .btn {
-            background: #333;
-            color: #cc9966;
-            border: 1px solid #cc9966;
-            padding: 8px 14px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn:hover { background: #cc9966; color: #121212; }
-        .btn.active { background: #cc9966; color: #121212; }
-        
-        #ticker {
-            background: #000;
-            color: #00ff00;
-            padding: 10px;
-            font-size: 13px;
-            margin-bottom: 15px;
-            border-left: 3px solid #cc9966;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <h1>Штаб Главного Командования (Прототип)</h1>
-    <div id="ticker">> Разработайте план наступления. Используйте режим рисования для нанесения стрелок ударов.</div>
+    <h1>CS2 Pick'Em League</h1>
 
-    <div class="wrapper">
-        <div class="left-side">
-            <div class="controls">
-                <button class="btn active" id="mode-move" onclick="setMode('move')">Режим: Управление войсками</button>
-                <button class="btn" id="mode-draw" onclick="setMode('draw')">Режим: Рисование стрелок плана</button>
-                <button class="btn" onclick="clearCanvas()">Стереть план</button>
-                <button class="btn" style="margin-left: auto; background: #8b0000; color: #fff; border: none;" onclick="nextTurn()">Ход</button>
-            </div>
-            
-            <div class="map-container">
-                <div class="map-objects" id="map-regions"></div>
-                <canvas id="paintCanvas" width="800" height="400"></canvas>
+    <div class="container">
+        <div class="teams-section">
+            <h3>Учасники</h3>
+            <div class="teams-container" id="teams-pool">
+                <div class="team-card" draggable="true" id="t1">LORE KEEPERS</div>
+                <div class="team-card" draggable="true" id="t2">BLOOD OWNER</div>
+                <div class="team-card" draggable="true" id="t3">ROSE TEAM</div>
+                <div class="team-card" draggable="true" id="t4">BPMP</div>
+                <div class="team-card" draggable="true" id="t5">REMAST</div>
+                <div class="team-card" draggable="true" id="t6">PIVOVISION</div>
+                <div class="team-card" draggable="true" id="t7">E6BLPU</div>
+                <div class="team-card" draggable="true" id="t8">BLAIZ</div>
+                <div class="team-card" draggable="true" id="t9">VOIDFALL</div>
+                <div class="team-card" draggable="true" id="t10">BAREBUH</div>
+                <div class="team-card" draggable="true" id="t11">VANITY TEAM</div>
+                <div class="team-card" draggable="true" id="t12">ASL</div>
+                <div class="team-card" draggable="true" id="t13">PLOHISH</div>
+                <div class="team-card" draggable="true" id="t14">EVO TEAM</div>
+                <div class="team-card" draggable="true" id="t15">POISON CLAN</div>
+                <div class="team-card" draggable="true" id="t16">ASL AC</div>
             </div>
         </div>
 
-        <div class="right-side">
-            <div class="panel">
-                <h2>Ваши Силы</h2>
-                <div id="units-list"></div>
+        <div class="predict-section">
+            
+            <div class="zone 3-0">
+                <h3>Пройдуть з рахунком 3:0 (1 команда)</h3>
+                <div class="slots">
+                    <div class="slot" data-slot-id="3-0-1">Перетягніть сюди</div>
+                </div>
             </div>
+
+            <div class="zone 3-x">
+                <h3>Пройдуть у наступну стадію (7 команд)</h3>
+                <div class="slots">
+                    <div class="slot" data-slot-id="pass-1">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-2">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-3">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-4">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-5">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-6">Перетягніть сюди</div>
+                    <div class="slot" data-slot-id="pass-7">Перетягніть сюди</div>
+                </div>
+            </div>
+
+            <div class="zone 0-3">
+                <h3>Вилетять з рахунком 0:3 (1 команда)</h3>
+                <div class="slots">
+                    <div class="slot" data-slot-id="0-3-1">Перетягніть сюди</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-<script>
-// Регионы на карте (координаты X, Y, ширина, высота)
-const regions = [
-    { id: 0, name: "Белостокский выступ", x: 50, y: 50, w: 200, h: 140, type: "field", river: false, enemy: 100 },
-    { id: 1, name: "Минский укрепленный район", x: 300, y: 70, w: 220, h: 150, type: "city", river: false, enemy: 120 },
-    { id: 2, name: "Линия реки Днепр", x: 560, y: 50, w: 200, h: 300, type: "field", river: true, enemy: 80 },
-    { id: 3, name: "Брест-Литовск", x: 50, y: 230, w: 200, h: 130, type: "city", river: false, enemy: 150 },
-    { id: 4, name: "Подступы к Гомелю", x: 300, y: 250, w: 220, h: 120, type: "field", river: true, enemy: 90 }
-];
+    <script>
+        const cards = document.querySelectorAll('.team-card');
+        const slots = document.querySelectorAll('.slot');
+        const pool = document.getElementById('teams-pool');
 
-// Разделение войск по типам: Пехота и Техника (Танки)
-let units = [
-    { id: 1, name: "24-я Стрелковая див.", type: "infantry", strength: 100, location: 0 },
-    { id: 2, name: "44-я Стрелковая див.", type: "infantry", strength: 95, location: 3 },
-    { id: 3, name: "2-й Танковый корпус", type: "armor", strength: 80, location: 1 },
-    { id: 4, name: "5-й Танковый корпус", type: "armor", strength: 85, location: 4 }
-];
+        let draggedCard = null;
 
-let selectedUnitId = null;
-let currentMode = 'move'; // 'move' или 'draw'
-
-// Настройка холста для рисования
-const canvas = document.getElementById('paintCanvas');
-const ctx = canvas.getContext('2d');
-let isDrawing = false;
-
-// Логика переключения режимов
-function setMode(mode) {
-    currentMode = mode;
-    document.getElementById('mode-move').classList.toggle('active', mode === 'move');
-    document.getElementById('mode-draw').classList.toggle('active', mode === 'draw');
-    
-    // Меняем доступность кликов по холсту
-    canvas.style.pointerEvents = (mode === 'draw') ? 'auto' : 'none';
-    if(mode === 'move') {
-        logNews("Режим перемещения: выберите дивизию справа и кликните по региону карты.");
-    } else {
-        logNews("Режим планирования: зажмите левую кнопку мыши на карте, чтобы нарисовать стрелки наступления.");
-    }
-}
-
-// Рисование на холсте (планирование стрелок)
-canvas.addEventListener('mousedown', (e) => {
-    if (currentMode !== 'draw') return;
-    isDrawing = true;
-    ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#ff3333';
-    ctx.lineCap = 'round';
-});
-
-canvas.addEventListener('mousemove', (e) => {
-    if (!isDrawing || currentMode !== 'draw') return;
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
-});
-
-canvas.addEventListener('mouseup', () => {
-    if(isDrawing && currentMode === 'draw') {
-        // Рисуем наконечник стрелки (упрощенно — точку или засечку в конце линии)
-        ctx.fillStyle = '#ff3333';
-        ctx.arc(event.offsetX, event.offsetY, 6, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    isDrawing = false;
-});
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    logNews("Тактический план стерт.");
-}
-
-// Управление игрой
-function init() {
-    renderMap();
-    renderUnits();
-    setMode('move');
-}
-
-function renderMap() {
-    const container = document.getElementById('map-regions');
-    container.innerHTML = '';
-    
-    regions.forEach(reg => {
-        const el = document.createElement('div');
-        el.className = `region ${reg.type === 'city' ? 'city' : ''} ${reg.river ? 'river' : ''}`;
-        el.style.left = reg.x + 'px';
-        el.style.top = reg.y + 'px';
-        el.style.width = reg.w + 'px';
-        el.style.height = reg.h + 'px';
-        
-        // Собираем значки юнитов в этом регионе
-        let unitsHtml = '';
-        units.forEach(u => {
-            if(u.location === reg.id && u.strength > 0) {
-                const cls = u.type === 'armor' ? 'unit-badge unit-armor' : 'unit-badge unit-infantry';
-                const icon = u.type === 'armor' ? ' can ' : ' ⚔️ ';
-                unitsHtml += `<div class="${cls}">${icon} ${u.name} [${u.strength}%]</div>`;
-            }
-        });
-        
-        el.innerHTML = `
-            <strong style="font-size:12px;">${reg.name}</strong><br>
-            <span style="font-size:11px; color:#ff6666;">Враг: ${reg.enemy} сил</span>
-            <div style="margin-top:8px;">${unitsHtml}</div>
-        `;
-        
-        // В режиме движения регионы становятся кликабельными через подложку
-        // Чтобы обрабатывать клики, мы вешаем их на карту, но холст в режиме 'move' прозрачен для мыши
-        container.appendChild(el);
-    });
-}
-
-// Слушатель кликов по контейнеру карты для перемещения войск
-document.querySelector('.map-container').addEventListener('click', (e) => {
-    if (currentMode !== 'move' || selectedUnitId === null) return;
-    
-    // Определяем, в какой регион кликнули по координатам
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-    
-    const targetRegion = regions.find(r => 
-        clickX >= r.x && clickX <= (r.x + r.w) &&
-        clickY >= r.y && clickY <= (r.y + r.h)
-    );
-    
-    if (targetRegion) {
-        const unit = units.find(u => u.id === selectedUnitId);
-        unit.location = targetRegion.id;
-        logNews(`Приказ выполнен: ${unit.name} выдвинулась в район: ${targetRegion.name}`);
-        selectedUnitId = null;
-        renderMap();
-        renderUnits();
-    }
-});
-
-function renderUnits() {
-    const list = document.getElementById('units-list');
-    list.innerHTML = '';
-    
-    units.forEach(u => {
-        if (u.strength <= 0) return;
-        const el = document.createElement('div');
-        el.className = `division-item ${selectedUnitId === u.id ? 'selected' : ''}`;
-        
-        const typeName = u.type === 'armor' ? 'Танковая' : 'Стрелковая';
-        el.innerHTML = `
-            <strong>${u.name}</strong> (${typeName})<br>
-            <small>Боеспособность: ${u.strength}% | Район: ${regions[u.location].name}</small>
-        `;
-        
-        el.onclick = () => {
-            if(currentMode === 'move') {
-                selectedUnitId = selectedUnitId === u.id ? null : u.id;
-                renderUnits();
-            }
-        };
-        list.appendChild(el);
-    });
-}
-
-function logNews(text) {
-    document.getElementById('ticker').innerText = `> ${text}`;
-}
-
-// Расчет хода
-function nextTurn() {
-    // Симуляция столкновений в регионах
-    regions.forEach(reg => {
-        let localUnits = units.filter(u => u.location === reg.id && u.strength > 0);
-        if(localUnits.length > 0) {
-            let totalPower = 0;
-            localUnits.forEach(u => {
-                // Танки имеют повышенную силу атаки, пехота держит оборону в городах
-                let power = u.strength;
-                if(u.type === 'armor') power *= 1.4; 
-                if(u.type === 'infantry' && reg.type === 'city') power *= 1.5;
-                if(reg.type === 'river') power *= 0.8; // Штурм через реку сложнее
-                totalPower += power;
+        cards.forEach(card => {
+            card.addEventListener('dragstart', function() {
+                draggedCard = this;
+                setTimeout(() => this.style.opacity = '0.5', 0);
             });
 
-            if(totalPower > reg.enemy) {
-                reg.enemy = Math.max(0, reg.enemy - Math.floor(totalPower/2));
-                localUnits.forEach(u => u.strength -= 5);
-                logNews(`Успешные боевые действия в районе ${reg.name}. Враг отступает.`);
-            } else {
-                localUnits.forEach(u => {
-                    u.strength -= u.type === 'armor' ? 15 : 10; // Танки без поддержки несут больше потерь
-                });
-                logNews(`Тяжелые оборонительные бои в районе ${reg.name}. Требуются резервы.`);
+            card.addEventListener('dragend', function() {
+                setTimeout(() => this.style.opacity = '1', 0);
+                draggedCard = null;
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            slot.addEventListener('dragenter', function() {
+                this.classList.add('drag-over');
+            });
+
+            slot.addEventListener('dragleave', function() {
+                this.classList.remove('drag-over');
+            });
+
+            slot.addEventListener('drop', function() {
+                this.classList.remove('drag-over');
+                
+                // Якщо в слоті вже є команда, повертаємо її назад в пул
+                if (this.children.length > 0) {
+                    pool.appendChild(this.children[0]);
+                }
+                
+                // Додаємо нову команду в слот
+                this.textContent = '';
+                this.appendChild(draggedCard);
+            });
+        });
+
+        // Можливість повернути команду назад у загальний список кліком
+        pool.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        pool.addEventListener('drop', function() {
+            if (draggedCard) {
+                // Перевіряємо батьківський елемент, щоб відновити текст "Перетягніть сюди" в порожньому слоті
+                const parentSlot = draggedCard.parentElement;
+                pool.appendChild(draggedCard);
+                if (parentSlot && parentSlot.classList.contains('slot') && parentSlot.children.length === 0) {
+                    parentSlot.textContent = 'Перетягніть сюди';
+                }
             }
-        }
-    });
-
-    renderMap();
-    renderUnits();
-}
-
-init();
-</script>
+        });
+    </script>
 </body>
 </html>
