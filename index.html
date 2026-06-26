@@ -261,22 +261,22 @@
         <div class="teams-section">
             <h3>Участники</h3>
             <div class="teams-container" id="teams-pool">
-                <div class="team-card" draggable="true" id="LORE KEEPERS">LORE KEEPERS</div>
-                <div class="team-card" draggable="true" id="BLOOD OWNER">BLOOD OWNER</div>
-                <div class="team-card" draggable="true" id="ROSE TEAM">ROSE TEAM</div>
-                <div class="team-card" draggable="true" id="BPMP">BPMP</div>
-                <div class="team-card" draggable="true" id="REMAST">REMAST</div>
-                <div class="team-card" draggable="true" id="PIVOVISION">PIVOVISION</div>
-                <div class="team-card" draggable="true" id="E6BLPU">E6BLPU</div>
-                <div class="team-card" draggable="true" id="BLAIZ">BLAIZ</div>
-                <div class="team-card" draggable="true" id="VOIDFALL">VOIDFALL</div>
+                <div class="team-card" draggable="true" id="ROSE team">ROSE team</div>
+                <div class="team-card" draggable="true" id="Voidfall">Voidfall</div>
+                <div class="team-card" draggable="true" id="Remast">Remast</div>
+                <div class="team-card" draggable="true" id="Vanity Team">Vanity Team</div>
                 <div class="team-card" draggable="true" id="BAREBUH">BAREBUH</div>
-                <div class="team-card" draggable="true" id="VANITY TEAM">VANITY TEAM</div>
-                <div class="team-card" draggable="true" id="ASL">ASL</div>
-                <div class="team-card" draggable="true" id="PLOHISH">PLOHISH</div>
-                <div class="team-card" draggable="true" id="EVO TEAM">EVO TEAM</div>
-                <div class="team-card" draggable="true" id="POISON CLAN">POISON CLAN</div>
-                <div class="team-card" draggable="true" id="ASL AC">ASL AC</div>
+                <div class="team-card" draggable="true" id="BPMP">BPMP</div>
+                <div class="team-card" draggable="true" id="Evo team">Evo team</div>
+                <div class="team-card" draggable="true" id="Blood Owner">Blood Owner</div>
+                <div class="team-card" draggable="true" id="Team serpent">Team serpent</div>
+                <div class="team-card" draggable="true" id="Vanters">Vanters</div>
+                <div class="team-card" draggable="true" id="Demon wings">Demon wings</div>
+                <div class="team-card" draggable="true" id="Reapers">Reapers</div>
+                <div class="team-card" draggable="true" id="GA">GA</div>
+                <div class="team-card" draggable="true" id="GEN3">GEN3</div>
+                <div class="team-card" draggable="true" id="VitaL Team">VitaL Team</div>
+                <div class="team-card" draggable="true" id="VitaL Yong Boys">VitaL Yong Boys</div>
             </div>
         </div>
 
@@ -316,7 +316,7 @@
     <div class="leaderboard-section hidden" id="tab-content-table">
         <h2>Таблица лидеров стадии</h2>
         <div>
-            <span class="status-badge" id="stage-status">Стадия идет (Результаты скрыты / Очки: 0)</span>
+            <span class="status-badge" id="stage-status">Стадия идет (Результаты сохранены, очки заморожены)</span>
         </div>
         <table>
             <thead>
@@ -337,20 +337,17 @@
     </div>
 
     <script>
-        // Имитация РЕАЛЬНЫХ исходов турнира из картинки сетки
+        // ВАЖНО: Сюда ты можешь вписать реальные итоги турнира для проверки очков.
+        // Сейчас я занес случайные команды из твоего списка как пример.
         const REAL_RESULTS = {
-            "3-0": ["LORE KEEPERS", "ROSE TEAM"],
-            "pass": ["LORE KEEPERS", "ROSE TEAM", "REMAST", "VOIDFALL", "BLAIZ", "BPMP", "EVO TEAM", "PLOHISH"],
-            "0-3": ["POISON CLAN", "ASL AC"]
+            "3-0": ["ROSE team", "Voidfall"],
+            "pass": ["ROSE team", "Voidfall", "Remast", "BPMP", "Evo team", "Team serpent", "Vanters", "GEN3"],
+            "0-3": ["Reapers", "VitaL Yong Boys"]
         };
 
-        // Глобальный флаг завершения стадии
         let isStageFinished = false;
-
-        // Хранилище прогнозов
         let predictionsList = [];
 
-        // Переключение вкладок
         function switchTab(tab) {
             const picksBtn = document.getElementById('btn-picks');
             const tableBtn = document.getElementById('btn-table');
@@ -371,7 +368,7 @@
             }
         }
 
-        // Логика Drag and Drop
+        // Drag and Drop логика
         const cards = document.querySelectorAll('.team-card');
         const slots = document.querySelectorAll('.slot');
         const pool = document.getElementById('teams-pool');
@@ -441,7 +438,6 @@
                 return;
             }
 
-            // Добавляем прогноз. Очки пока не считаем (зависят от флага финиша)
             predictionsList.push({
                 name: nickname,
                 arr30: p30,
@@ -449,49 +445,39 @@
                 arr03: p03,
                 res30: p30.join(', '),
                 resPass: pPass.join(', '),
-                res03: p03.join(', ')
+                res03: p03.join(', '),
+                points: 0 
             });
 
-            alert(`Прогноз игрока ${nickname} успешно сохранен!`);
+            alert(`Прогноз игрока ${nickname} успешно сохранен! Переходим к таблице.`);
             switchTab('table');
         }
 
-        // Функция "А сейчас у всех очки посчитались"
+        // Кнопка подсчета очков
         function finishStage() {
             isStageFinished = true;
             
-            // Меняем статусную плашку
             const badge = document.getElementById('stage-status');
             badge.textContent = "Стадия завершена! Очки подсчитаны.";
             badge.classList.add('active');
 
-            // Перерисовываем таблицу уже с рассчитанными баллами
+            predictionsList.forEach(user => {
+                let score = 0;
+                user.arr30.forEach(t => { if (REAL_RESULTS['3-0'].includes(t)) score += 3; });
+                user.arrPass.forEach(t => { if (REAL_RESULTS['pass'].includes(t)) score += 3; });
+                user.arr03.forEach(t => { if (REAL_RESULTS['0-3'].includes(t)) score += 3; });
+                user.points = score;
+            });
+
+            predictionsList.sort((a, b) => b.points - a.points);
+
             renderLeaderboard();
-            alert('Стадия официально завершена! Очки распределены согласно исходам.');
+            alert('Очки успешно подсчитаны! Таблица обновлена и отсортирована.');
         }
 
-        // Отрисовка таблицы
         function renderLeaderboard() {
             const tbody = document.getElementById('leaderboard-data');
             tbody.innerHTML = '';
-
-            // Рассчитываем актуальные очки для каждого в зависимости от состояния стадии
-            predictionsList.forEach(user => {
-                if (!isStageFinished) {
-                    user.points = 0; // Пока стадия идет — у всех строго 0
-                } else {
-                    let score = 0;
-                    user.arr30.forEach(t => { if (REAL_RESULTS['3-0'].includes(t)) score += 3; });
-                    user.arrPass.forEach(t => { if (REAL_RESULTS['pass'].includes(t)) score += 3; });
-                    user.arr03.forEach(t => { if (REAL_RESULTS['0-3'].includes(t)) score += 3; });
-                    user.points = score;
-                }
-            });
-
-            // Если стадия завершена, сортируем по убыванию очков
-            if (isStageFinished) {
-                predictionsList.sort((a, b) => b.points - a.points);
-            }
 
             if (predictionsList.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Будьте первым, кто сохранит прогноз!</td></tr>';
