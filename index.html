@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS2 Pick'Em League</title>
+    <title>CS2 Playoff Pick'Em</title>
     <style>
         body {
             background-color: #f4f6f9;
@@ -24,7 +24,6 @@
             font-size: 2rem;
         }
 
-        /* Навигация (Вкладки) */
         .tabs {
             display: flex;
             gap: 10px;
@@ -48,130 +47,80 @@
             color: white;
         }
 
-        .container {
+        .hidden { display: none !important; }
+
+        /* Контейнер сетки */
+        .bracket-container {
             display: flex;
             gap: 40px;
-            max-width: 1200px;
-            width: 100%;
+            align-items: center;
             justify-content: center;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Панель команд */
-        .teams-section {
             background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 12px;
             border: 1px solid #cbd5e1;
-            min-width: 240px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
-        .teams-section h3 {
-            margin-top: 0;
-            border-bottom: 2px solid #e28743;
-            padding-bottom: 8px;
-            text-align: center;
-            color: #0f172a;
-        }
-
-        .teams-container {
+        .round {
             display: flex;
             flex-direction: column;
+            justify-content: space-around;
+            height: 440px;
             gap: 10px;
-            max-height: 550px;
-            overflow-y: auto;
-            padding-right: 5px;
         }
 
-        .team-card {
-            background: #f8fafc;
-            padding: 12px;
+        .matchup {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: #f1f5f9;
+            padding: 8px;
             border-radius: 6px;
-            cursor: grab;
-            text-align: center;
-            font-weight: bold;
-            border: 1px solid #e2e8f0;
-            transition: all 0.2s;
-            user-select: none;
-            color: #334155;
-        }
-
-        .team-card:hover {
-            background: #edf2f7;
-            border-color: #cbd5e1;
-        }
-
-        /* Зона прогнозов */
-        .predict-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex-grow: 1;
-            max-width: 600px;
-        }
-
-        .zone {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border: 1px solid #cbd5e1;
-        }
-
-        .zone.zone-3-0 { border-left: 6px solid #16a34a; }
-        .zone.zone-pass { border-left: 6px solid #2563eb; }
-        .zone.zone-0-3 { border-left: 6px solid #dc2626; }
-
-        .zone h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: #0f172a;
-        }
-
-        .slots {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            width: 180px;
         }
 
         .slot {
-            background: #f1f5f9;
-            border: 2px dashed #cbd5e1;
-            min-height: 48px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-
-        .slot.drag-over {
-            border-color: #e28743;
-            background: #fff7ed;
-        }
-
-        .slot .team-card {
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            border: none;
             background: #e2e8f0;
+            padding: 8px;
+            border-radius: 4px;
+            min-height: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .slot:hover {
+            background: #cbd5e1;
+        }
+
+        .slot.selected {
+            background: #e28743;
+            color: white;
+        }
+
+        .slot select {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-weight: bold;
+            color: #1e293b;
+            font-size: 0.9rem;
+            text-align: center;
+            cursor: pointer;
         }
 
         .save-btn {
             background: #16a34a;
             color: white;
             border: none;
-            padding: 15px;
+            padding: 15px 40px;
             font-size: 1.1rem;
             font-weight: bold;
             border-radius: 8px;
@@ -180,17 +129,15 @@
             transition: background 0.2s;
         }
 
-        .save-btn:hover {
-            background: #15803d;
-        }
+        .save-btn:hover { background: #15803d; }
 
-        /* Таблица лидеров */
+        /* Таблица */
         .leaderboard-section {
             background: white;
             padding: 20px;
             border-radius: 8px;
             border: 1px solid #cbd5e1;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -210,269 +157,235 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
-        th {
-            background-color: #f1f5f9;
-            color: #1e293b;
-        }
+        th { background-color: #f1f5f9; color: #1e293b; }
 
         .admin-btn {
-            background: #475569;
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            align-self: flex-end;
-            transition: background 0.2s;
+            background: #475569; color: white; border: none; padding: 12px;
+            font-size: 0.95rem; font-weight: bold; border-radius: 6px;
+            cursor: pointer; align-self: flex-end; transition: background 0.2s;
         }
+        .admin-btn:hover { background: #334155; }
 
-        .admin-btn:hover {
-            background: #334155;
-        }
-        
         .status-badge {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
+            background: #fee2e2; color: #991b1b; padding: 4px 8px;
+            border-radius: 4px; font-size: 0.85rem; font-weight: bold;
+            display: inline-block; margin-bottom: 10px;
         }
-        .status-badge.active {
-            background: #dcfce7;
-            color: #166534;
-        }
+        .status-badge.active { background: #dcfce7; color: #166434; }
     </style>
 </head>
 <body>
 
-    <h1>CS2 Pick'Em League</h1>
+    <h1>CS2 Playoff Pick'Em</h1>
 
     <div class="tabs">
-        <button class="tab-btn active" id="btn-picks" onclick="switchTab('picks')">Прогнозы</button>
+        <button class="tab-btn active" id="btn-picks" onclick="switchTab('picks')">Сетка Прогнозов</button>
         <button class="tab-btn" id="btn-table" onclick="switchTab('table')">Таблица результатов</button>
     </div>
 
-    <div class="container" id="tab-content-picks">
-        <div class="teams-section">
-            <h3>Участники</h3>
-            <div class="teams-container" id="teams-pool">
-                <div class="team-card" draggable="true" id="ROSE team">ROSE team</div>
-                <div class="team-card" draggable="true" id="Voidfall">Voidfall</div>
-                <div class="team-card" draggable="true" id="Remast">Remast</div>
-                <div class="team-card" draggable="true" id="Vanity Team">Vanity Team</div>
-                <div class="team-card" draggable="true" id="BAREBUH">BAREBUH</div>
-                <div class="team-card" draggable="true" id="BPMP">BPMP</div>
-                <div class="team-card" draggable="true" id="Evo team">Evo team</div>
-                <div class="team-card" draggable="true" id="Blood Owner">Blood Owner</div>
-                <div class="team-card" draggable="true" id="Team serpent">Team serpent</div>
-                <div class="team-card" draggable="true" id="Vanters">Vanters</div>
-                <div class="team-card" draggable="true" id="Demon wings">Demon wings</div>
-                <div class="team-card" draggable="true" id="Reapers">Reapers</div>
-                <div class="team-card" draggable="true" id="GA">GA</div>
-                <div class="team-card" draggable="true" id="GEN3">GEN3</div>
-                <div class="team-card" draggable="true" id="VitaL Team">VitaL Team</div>
-                <div class="team-card" draggable="true" id="VitaL Yong Boys">VitaL Yong Boys</div>
+    <div id="tab-content-picks" style="display: flex; flex-direction: column; align-items: center;">
+        <div class="bracket-container">
+            
+            <div class="round">
+                <h3>1/4 Финала</h3>
+                <div class="matchup">
+                    <div class="slot"><select id="q1-1" onchange="updateMatch(1, 1)"><option value="">Выбрать</option></select></div>
+                    <div class="slot"><select id="q1-2" onchange="updateMatch(1, 2)"><option value="">Выбрать</option></select></div>
+                </div>
+                <div class="matchup">
+                    <div class="slot"><select id="q2-1" onchange="updateMatch(2, 1)"><option value="">Выбрать</option></select></div>
+                    <div class="slot"><select id="q2-2" onchange="updateMatch(2, 2)"><option value="">Выбрать</option></select></div>
+                </div>
+                <div class="matchup">
+                    <div class="slot"><select id="q3-1" onchange="updateMatch(3, 1)"><option value="">Выбрать</option></select></div>
+                    <div class="slot"><select id="q3-2" onchange="updateMatch(3, 2)"><option value="">Выбрать</option></select></div>
+                </div>
+                <div class="matchup">
+                    <div class="slot"><select id="q4-1" onchange="updateMatch(4, 1)"><option value="">Выбрать</option></select></div>
+                    <div class="slot"><select id="q4-2" onchange="updateMatch(4, 2)"><option value="">Выбрать</option></select></div>
+                </div>
             </div>
+
+            <div class="round">
+                <h3>1/2 Финала</h3>
+                <div class="matchup">
+                    <div class="slot" id="sf1-1" onclick="advanceTeam('sf1-1', 'f-1')">Ожидание...</div>
+                    <div class="slot" id="sf1-2" onclick="advanceTeam('sf1-2', 'f-1')">Ожидание...</div>
+                </div>
+                <div class="matchup">
+                    <div class="slot" id="sf2-1" onclick="advanceTeam('sf2-1', 'f-2')">Ожидание...</div>
+                    <div class="slot" id="sf2-2" onclick="advanceTeam('sf2-2', 'f-2')">Ожидание...</div>
+                </div>
+            </div>
+
+            <div class="round">
+                <h3>Финал</h3>
+                <div class="matchup">
+                    <div class="slot" id="f-1" onclick="advanceTeam('f-1', 'champion')">Ожидание...</div>
+                    <div class="slot" id="f-2" onclick="advanceTeam('f-2', 'champion')">Ожидание...</div>
+                </div>
+            </div>
+
+            <div class="round">
+                <h3>Чемпион</h3>
+                <div class="matchup" style="border-color: #e28743;">
+                    <div class="slot" id="champion" style="background: #fff7ed; color: #e28743;">Победитель</div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="predict-section">
-            <div class="zone zone-3-0">
-                <h3>Пройдут со счетом 3:0 (2 команды)</h3>
-                <div class="slots" data-zone="3-0">
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                </div>
-            </div>
-
-            <div class="zone zone-pass">
-                <h3>Пройдут в следующую стадию (6 команд)</h3>
-                <div class="slots" data-zone="pass">
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                </div>
-            </div>
-
-            <div class="zone zone-0-3">
-                <h3>Вылетят со счетом 0:3 (2 команды)</h3>
-                <div class="slots" data-zone="0-3">
-                    <div class="slot">Перетащите сюда</div>
-                    <div class="slot">Перетащите сюда</div>
-                </div>
-            </div>
-
-            <button class="save-btn" onclick="savePredict()">Сохранить прогноз</button>
-        </div>
+        <button class="save-btn" onclick="savePredict()">Сохранить сетку</button>
     </div>
 
     <div class="leaderboard-section hidden" id="tab-content-table">
-        <h2>Таблица лидеров стадии</h2>
+        <h2>Таблица лидеров плей-офф</h2>
         <div>
-            <span class="status-badge" id="stage-status">Стадия идет (Результаты сохранены, очки заморожены)</span>
+            <span class="status-badge" id="stage-status">Плей-офф идет (Очки заморожены)</span>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>Место</th>
                     <th>Никнейм</th>
-                    <th>Прогноз 3:0</th>
-                    <th>Прогноз (Проход)</th>
-                    <th>Прогноз 0:3</th>
+                    <th>Полуфиналисты</th>
+                    <th>Финалисты</th>
+                    <th>Чемпион</th>
                     <th>Очки</th>
                 </tr>
             </thead>
-            <tbody id="leaderboard-data">
-                </tbody>
+            <tbody id="leaderboard-data"></tbody>
         </table>
         
         <button class="admin-btn" onclick="finishStage()">Завершить стадию (Посчитать очки)</button>
     </div>
 
     <script>
-        // ВАЖНО: Сюда ты можешь вписать реальные итоги турнира для проверки очков.
-        // Сейчас я занес случайные команды из твоего списка как пример.
-        const REAL_RESULTS = {
-            "3-0": ["ROSE team", "Voidfall"],
-            "pass": ["ROSE team", "Voidfall", "Remast", "BPMP", "Evo team", "Team serpent", "Vanters", "GEN3"],
-            "0-3": ["Reapers", "VitaL Yong Boys"]
+        // Список твоих 16 команд для выпадающего списка в 1/4
+        const ALL_TEAMS = [
+            "ROSE team", "Voidfall", "Remast", "Vanity Team", "BAREBUH", "BPMP", "Evo team", "Blood Owner",
+            "Team serpent", "Vanters", "Demon wings", "Reapers", "GA", "GEN3", "VitaL Team", "VitaL Yong Boys"
+        ];
+
+        // РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ (Замени на настоящие, когда турнир закончится)
+        const REAL_PLAYOFF = {
+            semi: ["ROSE team", "Voidfall", "BPMP", "GA"],
+            final: ["ROSE team", "GA"],
+            champion: "ROSE team"
         };
 
         let isStageFinished = false;
         let predictionsList = [];
 
-        function switchTab(tab) {
-            const picksBtn = document.getElementById('btn-picks');
-            const tableBtn = document.getElementById('btn-table');
-            const picksContent = document.getElementById('tab-content-picks');
-            const tableContent = document.getElementById('tab-content-table');
+        // Заполняем селекторы четвертьфинала командами
+        window.onload = function() {
+            const selects = document.querySelectorAll('select');
+            selects.forEach(sel => {
+                ALL_TEAMS.forEach(team => {
+                    let opt = document.createElement('option');
+                    opt.value = team;
+                    opt.textContent = team;
+                    sel.appendChild(opt);
+                });
+            });
+        };
 
+        function switchTab(tab) {
             if (tab === 'picks') {
-                picksBtn.classList.add('active');
-                tableBtn.classList.remove('active');
-                picksContent.classList.remove('hidden');
-                tableContent.classList.add('hidden');
+                document.getElementById('btn-picks').classList.add('active');
+                document.getElementById('btn-table').classList.remove('active');
+                document.getElementById('tab-content-picks').classList.remove('hidden');
+                document.getElementById('tab-content-table').classList.add('hidden');
             } else {
-                tableBtn.classList.add('active');
-                picksBtn.classList.remove('active');
-                tableContent.classList.remove('hidden');
-                picksContent.classList.add('hidden');
+                document.getElementById('btn-table').classList.add('active');
+                document.getElementById('btn-picks').classList.remove('active');
+                document.getElementById('tab-content-table').classList.remove('hidden');
+                document.getElementById('tab-content-picks').classList.add('hidden');
                 renderLeaderboard();
             }
         }
 
-        // Drag and Drop логика
-        const cards = document.querySelectorAll('.team-card');
-        const slots = document.querySelectorAll('.slot');
-        const pool = document.getElementById('teams-pool');
-        let draggedCard = null;
+        // Логика автоматического переноса из выпадающего списка в полуфинал
+        function updateMatch(matchNum, slotNum) {
+            const val = document.getElementById(`q${matchNum}-${slotNum}`).value;
+            const targetId = `sf${Math.ceil(matchNum/2)}-${matchNum % 2 === 0 ? 2 : 1}`;
+            
+            // Очищаем зависимые слоты при изменении
+            document.getElementById(targetId).textContent = val || "Ожидание...";
+            document.getElementById(targetId).classList.remove('selected');
+        }
 
-        cards.forEach(card => {
-            card.addEventListener('dragstart', function() {
-                draggedCard = this;
-                setTimeout(() => this.style.opacity = '0.5', 0);
-            });
-            card.addEventListener('dragend', function() {
-                setTimeout(() => this.style.opacity = '1', 0);
-                draggedCard = null;
-            });
-        });
+        // Клик для продвижения команды дальше по сетке
+        function advanceTeam(currentId, nextId) {
+            const teamName = document.getElementById(currentId).textContent;
+            if (teamName === "Ожидание..." || teamName === "") return;
 
-        slots.forEach(slot => {
-            slot.addEventListener('dragover', e => e.preventDefault());
-            slot.addEventListener('dragenter', function() { this.classList.add('drag-over'); });
-            slot.addEventListener('dragleave', function() { this.classList.remove('drag-over'); });
-            slot.addEventListener('drop', function() {
-                this.classList.remove('drag-over');
-                if (this.children.length > 0) {
-                    pool.appendChild(this.children[0]);
-                }
-                this.textContent = '';
-                this.appendChild(draggedCard);
-            });
-        });
+            // Подсвечиваем выбор
+            const parent = document.getElementById(currentId).parentElement;
+            parent.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+            document.getElementById(currentId).classList.add('selected');
 
-        pool.addEventListener('dragover', e => e.preventDefault());
-        pool.addEventListener('drop', () => {
-            if (draggedCard) {
-                const parentSlot = draggedCard.parentElement;
-                pool.appendChild(draggedCard);
-                if (parentSlot && parentSlot.classList.contains('slot') && parentSlot.children.length === 0) {
-                    parentSlot.textContent = 'Перетащите сюда';
-                }
+            // Переносим в следующий раунд
+            const nextSlot = document.getElementById(nextId);
+            nextSlot.textContent = teamName;
+            nextSlot.classList.remove('selected');
+
+            // Если поменяли финалиста, очищаем чемпиона
+            if (nextId.startsWith('f-')) {
+                document.getElementById('champion').textContent = "Победитель";
             }
-        });
+        }
 
-        // Сохранение прогноза
+        // Сохранение результатов
         function savePredict() {
-            const getTeamsFromZone = (zoneName) => {
-                const zoneSlots = document.querySelector(`.slots[data-zone="${zoneName}"]`).querySelectorAll('.slot');
-                let teams = [];
-                zoneSlots.forEach(slot => {
-                    if (slot.children.length > 0) {
-                        teams.push(slot.children[0].id);
-                    }
-                });
-                return teams;
-            };
+            const sf = [
+                document.getElementById('sf1-1').textContent, document.getElementById('sf1-2').textContent,
+                document.getElementById('sf2-1').textContent, document.getElementById('sf2-2').textContent
+            ];
+            const f = [document.getElementById('f-1').textContent, document.getElementById('f-2').textContent];
+            const champ = document.getElementById('champion').textContent;
 
-            const p30 = getTeamsFromZone('3-0');
-            const pPass = getTeamsFromZone('pass');
-            const p03 = getTeamsFromZone('0-3');
-
-            if (p30.length < 2 || pPass.length < 6 || p03.length < 2) {
-                alert('Пожалуйста, заполните все слоты перед сохранением!');
+            if (sf.includes("Ожидание...") || f.includes("Ожидание...") || champ === "Победитель") {
+                alert("Заполните всю сетку до конца (выберите победителей кликами)!");
                 return;
             }
 
-            const nickname = prompt('Введите ваш никнейм для таблицы лидеров:');
+            const nickname = prompt('Введите ваш никнейм:');
             if (!nickname || nickname.trim() === "") {
-                alert('Никнейм не может быть пустым!');
+                alert('Никнейм пустой!');
                 return;
             }
 
             predictionsList.push({
                 name: nickname,
-                arr30: p30,
-                arrPass: pPass,
-                arr03: p03,
-                res30: p30.join(', '),
-                resPass: pPass.join(', '),
-                res03: p03.join(', '),
-                points: 0 
+                semi: sf,
+                final: f,
+                champion: champ,
+                points: 0
             });
 
-            alert(`Прогноз игрока ${nickname} успешно сохранен! Переходим к таблице.`);
+            alert(`Сетка игрока ${nickname} сохранена!`);
             switchTab('table');
         }
 
-        // Кнопка подсчета очков
+        // Расчет очков админом
         function finishStage() {
             isStageFinished = true;
-            
-            const badge = document.getElementById('stage-status');
-            badge.textContent = "Стадия завершена! Очки подсчитаны.";
-            badge.classList.add('active');
+            document.getElementById('stage-status').textContent = "Стадия завершена! Очки подсчитаны.";
+            document.getElementById('stage-status').classList.add('active');
 
             predictionsList.forEach(user => {
                 let score = 0;
-                user.arr30.forEach(t => { if (REAL_RESULTS['3-0'].includes(t)) score += 3; });
-                user.arrPass.forEach(t => { if (REAL_RESULTS['pass'].includes(t)) score += 3; });
-                user.arr03.forEach(t => { if (REAL_RESULTS['0-3'].includes(t)) score += 3; });
+                // +3 за каждого угаданного полуфиналиста, финалиста и чемпиона
+                user.semi.forEach(t => { if(REAL_PLAYOFF.semi.includes(t)) score += 3; });
+                user.final.forEach(t => { if(REAL_RESULTS = REAL_PLAYOFF.final.includes(t)) score += 3; });
+                if(user.champion === REAL_PLAYOFF.champion) score += 3;
+
                 user.points = score;
             });
 
             predictionsList.sort((a, b) => b.points - a.points);
-
             renderLeaderboard();
-            alert('Очки успешно подсчитаны! Таблица обновлена и отсортирована.');
         }
 
         function renderLeaderboard() {
@@ -480,7 +393,7 @@
             tbody.innerHTML = '';
 
             if (predictionsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Будьте первым, кто сохранит прогноз!</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Заполните сетку!</td></tr>';
                 return;
             }
 
@@ -489,9 +402,9 @@
                 tr.innerHTML = `
                     <td><strong>${index + 1}</strong></td>
                     <td>${user.name}</td>
-                    <td style="font-size:0.85rem; color:#16a34a;">${user.res30}</td>
-                    <td style="font-size:0.85rem; color:#2563eb;">${user.resPass}</td>
-                    <td style="font-size:0.85rem; color:#dc2626;">${user.res03}</td>
+                    <td style="color:#2563eb; font-size:0.85rem;">${user.semi.join(', ')}</td>
+                    <td style="color:#16a34a; font-size:0.85rem;">${user.final.join(', ')}</td>
+                    <td style="color:#e28743; font-weight:bold;">${user.champion}</td>
                     <td><strong>${user.points}</strong></td>
                 `;
                 tbody.appendChild(tr);
