@@ -6,9 +6,9 @@
     <title>CS2 Playoff Pick'Em</title>
     <style>
         body {
-            background-color: #f4f6f9;
-            color: #1e293b;
-            font-family: 'Arial', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -17,150 +17,226 @@
         }
 
         h1 {
-            color: #1e293b;
-            margin-bottom: 15px;
+            color: #1e3a8a;
+            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-size: 2rem;
+            font-weight: 800;
+            border-bottom: 4px solid #2563eb;
+            padding-bottom: 10px;
         }
 
+        /* Навигация (Вкладки) */
         .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 30px;
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
 
         .tab-btn {
-            background: #cbd5e1;
-            color: #334155;
+            background: transparent;
+            color: #64748b;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 24px;
             font-size: 1rem;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #2563eb;
+            background: #f1f5f9;
         }
 
         .tab-btn.active {
-            background: #e28743;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
         }
 
         .hidden { display: none !important; }
 
-        /* Контейнер сетки */
+        /* Контейнер идеальной сетки */
         .bracket-container {
             display: flex;
-            gap: 40px;
-            align-items: center;
+            gap: 30px;
+            align-items: stretch;
             justify-content: center;
             background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            padding: 40px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            border-top: 6px solid #2563eb; /* Синяя полоса сверху */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            min-width: 850px;
         }
 
         .round {
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            height: 440px;
-            gap: 10px;
+            width: 200px;
+        }
+
+        .round-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 6px;
+        }
+
+        .matchup-list {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            flex-grow: 1;
         }
 
         .matchup {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            background: #f1f5f9;
-            padding: 8px;
-            border-radius: 6px;
+            gap: 6px;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
             border: 1px solid #cbd5e1;
-            width: 180px;
+            border-left: 4px solid #3b82f6; /* Синяя полоса у каждого матча */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            margin: 15px 0;
         }
 
         .slot {
-            background: #e2e8f0;
-            padding: 8px;
-            border-radius: 4px;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
             min-height: 20px;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 0.9rem;
-            color: #475569;
+            color: #334155;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             user-select: none;
+            border: 1px solid #e2e8f0;
         }
 
         .slot:hover {
-            background: #cbd5e1;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-color: #7dd3fc;
         }
 
         .slot.selected {
-            background: #e28743;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
+            border-color: #1d4ed8;
+            box-shadow: 0 2px 4px rgba(29, 78, 216, 0.2);
         }
 
+        /* Кнопка сохранить */
         .save-btn {
-            background: #16a34a;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 16px 48px;
             font-size: 1.1rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            transition: all 0.2s ease;
         }
 
-        .save-btn:hover { background: #15803d; }
+        .save-btn:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+        }
 
         /* Таблица */
         .leaderboard-section {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            max-width: 900px;
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            border-top: 6px solid #2563eb;
+            max-width: 950px;
             width: 100%;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
+        }
+
+        .leaderboard-section h2 {
+            color: #1e3a8a;
+            margin-top: 0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         th, td {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
         }
 
-        th { background-color: #f1f5f9; color: #1e293b; }
+        th { 
+            background-color: #f1f5f9; 
+            color: #1e3a8a;
+            font-weight: 800;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
 
         .admin-btn {
-            background: #475569; color: white; border: none; padding: 12px;
-            font-size: 0.95rem; font-weight: bold; border-radius: 6px;
-            cursor: pointer; align-self: flex-end; transition: background 0.2s;
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: all 0.2s;
         }
         .admin-btn:hover { background: #334155; }
 
         .status-badge {
-            background: #fee2e2; color: #991b1b; padding: 4px 8px;
-            border-radius: 4px; font-size: 0.85rem; font-weight: bold;
-            display: inline-block; margin-bottom: 10px;
+            background: #e0f2fe; 
+            color: #0369a1; 
+            padding: 6px 12px;
+            border-radius: 6px; 
+            font-size: 0.85rem; 
+            font-weight: bold;
+            display: inline-block; 
+            margin-bottom: 15px;
+            border: 1px solid #bae6fd;
         }
-        .status-badge.active { background: #dcfce7; color: #166434; }
+        .status-badge.active { 
+            background: #dcfce7; 
+            color: #166534; 
+            border-color: #bbf7d0;
+        }
     </style>
 </head>
 <body>
@@ -172,53 +248,61 @@
         <button class="tab-btn" id="btn-table" onclick="switchTab('table')">Таблица результатов</button>
     </div>
 
-    <div id="tab-content-picks" style="display: flex; flex-direction: column; align-items: center;">
+    <div id="tab-content-picks" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <div class="bracket-container">
             
             <div class="round">
-                <h3>1/4 Финала</h3>
-                <div class="matchup">
-                    <div class="slot" id="q1-1" onclick="advanceTeam('q1-1', 'sf1-1')">Vanters</div>
-                    <div class="slot" id="q1-2" onclick="advanceTeam('q1-2', 'sf1-1')">Vanity Team</div>
-                </div>
-                <div class="matchup">
-                    <div class="slot" id="q2-1" onclick="advanceTeam('q2-1', 'sf1-2')">Voidfall</div>
-                    <div class="slot" id="q2-2" onclick="advanceTeam('q2-2', 'sf1-2')">GEN3</div>
-                </div>
-                <div class="matchup">
-                    <div class="slot" id="q3-1" onclick="advanceTeam('q3-1', 'sf2-1')">GA</div>
-                    <div class="slot" id="q3-2" onclick="advanceTeam('q3-2', 'sf2-1')">Reapers</div>
-                </div>
-                <div class="matchup">
-                    <div class="slot" id="q4-1" onclick="advanceTeam('q4-1', 'sf2-2')">Barebuh</div>
-                    <div class="slot" id="q4-2" onclick="advanceTeam('q4-2', 'sf2-2')">Demon wings</div>
-                </div>
-            </div>
-
-            <div class="round">
-                <h3>1/2 Финала</h3>
-                <div class="matchup">
-                    <div class="slot" id="sf1-1" onclick="advanceTeam('sf1-1', 'f-1')">Ожидание...</div>
-                    <div class="slot" id="sf1-2" onclick="advanceTeam('sf1-2', 'f-1')">Ожидание...</div>
-                </div>
-                <div class="matchup">
-                    <div class="slot" id="sf2-1" onclick="advanceTeam('sf2-1', 'f-2')">Ожидание...</div>
-                    <div class="slot" id="sf2-2" onclick="advanceTeam('sf2-2', 'f-2')">Ожидание...</div>
+                <div class="round-title">1/4 Финала</div>
+                <div class="matchup-list">
+                    <div class="matchup">
+                        <div class="slot" id="q1-1" onclick="advanceTeam('q1-1', 'sf1-1')">Vanters</div>
+                        <div class="slot" id="q1-2" onclick="advanceTeam('q1-2', 'sf1-1')">Vanity Team</div>
+                    </div>
+                    <div class="matchup">
+                        <div class="slot" id="q2-1" onclick="advanceTeam('q2-1', 'sf1-2')">Voidfall</div>
+                        <div class="slot" id="q2-2" onclick="advanceTeam('q2-2', 'sf1-2')">GEN3</div>
+                    </div>
+                    <div class="matchup">
+                        <div class="slot" id="q3-1" onclick="advanceTeam('q3-1', 'sf2-1')">GA</div>
+                        <div class="slot" id="q3-2" onclick="advanceTeam('q3-2', 'sf2-1')">Reapers</div>
+                    </div>
+                    <div class="matchup">
+                        <div class="slot" id="q4-1" onclick="advanceTeam('q4-1', 'sf2-2')">Barebuh</div>
+                        <div class="slot" id="q4-2" onclick="advanceTeam('q4-2', 'sf2-2')">Demon wings</div>
+                    </div>
                 </div>
             </div>
 
             <div class="round">
-                <h3>Финал</h3>
-                <div class="matchup">
-                    <div class="slot" id="f-1" onclick="advanceTeam('f-1', 'champion')">Ожидание...</div>
-                    <div class="slot" id="f-2" onclick="advanceTeam('f-2', 'champion')">Ожидание...</div>
+                <div class="round-title">1/2 Финала</div>
+                <div class="matchup-list">
+                    <div class="matchup" style="margin: 60px 0;">
+                        <div class="slot" id="sf1-1" onclick="advanceTeam('sf1-1', 'f-1')">Ожидание...</div>
+                        <div class="slot" id="sf1-2" onclick="advanceTeam('sf1-2', 'f-1')">Ожидание...</div>
+                    </div>
+                    <div class="matchup" style="margin: 60px 0;">
+                        <div class="slot" id="sf2-1" onclick="advanceTeam('sf2-1', 'f-2')">Ожидание...</div>
+                        <div class="slot" id="sf2-2" onclick="advanceTeam('sf2-2', 'f-2')">Ожидание...</div>
+                    </div>
                 </div>
             </div>
 
             <div class="round">
-                <h3>Чемпион</h3>
-                <div class="matchup" style="border-color: #e28743;">
-                    <div class="slot" id="champion" style="background: #fff7ed; color: #e28743;">Победитель</div>
+                <div class="round-title">Финал</div>
+                <div class="matchup-list">
+                    <div class="matchup" style="margin: 140px 0;">
+                        <div class="slot" id="f-1" onclick="advanceTeam('f-1', 'champion')">Ожидание...</div>
+                        <div class="slot" id="f-2" onclick="advanceTeam('f-2', 'champion')">Ожидание...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="round">
+                <div class="round-title">Чемпион</div>
+                <div class="matchup-list">
+                    <div class="matchup" style="border-left: 4px solid #e28743; margin: 160px 0;">
+                        <div class="slot" id="champion" style="background: #fff7ed; color: #e28743; border-color: #fed7aa;">Победитель</div>
+                    </div>
                 </div>
             </div>
 
@@ -230,7 +314,7 @@
     <div class="leaderboard-section hidden" id="tab-content-table">
         <h2>Таблица лидеров плей-офф</h2>
         <div>
-            <span class="status-badge" id="stage-status">Плей-офф идет (Очки заморожены)</span>
+            <span class="status-badge" id="stage-status">Плей-офф идет (Очки заморожены до завершения)</span>
         </div>
         <table>
             <thead>
@@ -250,7 +334,7 @@
     </div>
 
     <script>
-        // РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ (Замени на настоящие, когда плей-офф закончится, чтобы начислить баллы)
+        // РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ (Поменяй на правильные команды по окончании турнира)
         const REAL_PLAYOFF = {
             semi: ["Vanters", "Voidfall", "GA", "Barebuh"],
             final: ["Voidfall", "GA"],
@@ -275,35 +359,28 @@
             }
         }
 
-        // Клик для продвижения команды дальше по сетке
         function advanceTeam(currentId, nextId) {
             const teamName = document.getElementById(currentId).textContent;
             if (teamName === "Ожидание..." || teamName === "") return;
 
-            // Подсвечиваем выбор в текущей паре
             const parent = document.getElementById(currentId).parentElement;
             parent.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
             document.getElementById(currentId).classList.add('selected');
 
-            // Переносим в следующий раунд
             const nextSlot = document.getElementById(nextId);
             nextSlot.textContent = teamName;
             nextSlot.classList.remove('selected');
 
-            // Очищаем последующие этапы, если ветка изменилась
             if (nextId.startsWith('sf')) {
-                // Если изменился полуфиналист, сбрасываем финал этой ветки и чемпиона
                 const branchNum = nextId.split('-')[0].replace('sf', '');
                 document.getElementById(`f-${branchNum}`).textContent = "Ожидание...";
                 document.getElementById(`f-${branchNum}`).classList.remove('selected');
                 document.getElementById('champion').textContent = "Победитель";
             } else if (nextId.startsWith('f-')) {
-                // Если изменился финалист, сбрасываем чемпиона
                 document.getElementById('champion').textContent = "Победитель";
             }
         }
 
-        // Сохранение результатов
         function savePredict() {
             const sf = [
                 document.getElementById('sf1-1').textContent, document.getElementById('sf1-2').textContent,
@@ -313,7 +390,7 @@
             const champ = document.getElementById('champion').textContent;
 
             if (sf.includes("Ожидание...") || f.includes("Ожидание...") || champ === "Победитель") {
-                alert("Заполните всю сетку до конца перед сохранением!");
+                alert("Пожалуйста, заполните всю сетку до конца перед сохранением!");
                 return;
             }
 
@@ -331,29 +408,27 @@
                 points: 0
             });
 
-            alert(`Сетка игрока ${nickname} сохранена!`);
+            alert(`Сетка игрока ${nickname} сохранена в таблице!`);
             switchTab('table');
         }
 
-        // Расчет очков админом
         function finishStage() {
             isStageFinished = true;
-            document.getElementById('stage-status').textContent = "Стадия завершена! Очки подсчитаны.";
-            document.getElementById('stage-status').classList.add('active');
+            const badge = document.getElementById('stage-status');
+            badge.textContent = "Стадия завершена! Очки подсчитаны.";
+            badge.classList.add('active');
 
             predictionsList.forEach(user => {
                 let score = 0;
-                // +3 за каждого угаданного полуфиналиста, финалиста и чемпиона
                 user.semi.forEach(t => { if(REAL_PLAYOFF.semi.includes(t)) score += 3; });
                 user.final.forEach(t => { if(REAL_PLAYOFF.final.includes(t)) score += 3; });
                 if(user.champion === REAL_PLAYOFF.champion) score += 3;
-
                 user.points = score;
             });
 
             predictionsList.sort((a, b) => b.points - a.points);
             renderLeaderboard();
-            alert('Очки посчитаны и таблица отсортирована!');
+            alert('Все очки автоматически обновлены!');
         }
 
         function renderLeaderboard() {
@@ -361,7 +436,7 @@
             tbody.innerHTML = '';
 
             if (predictionsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Прогнозов пока нет.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Заполните прогнозы на первой вкладке!</td></tr>';
                 return;
             }
 
@@ -370,8 +445,8 @@
                 tr.innerHTML = `
                     <td><strong>${index + 1}</strong></td>
                     <td>${user.name}</td>
-                    <td style="color:#2563eb; font-size:0.85rem;">${user.semi.join(', ')}</td>
-                    <td style="color:#16a34a; font-size:0.85rem;">${user.final.join(', ')}</td>
+                    <td style="color:#2563eb; font-size:0.85rem; font-weight: 600;">${user.semi.join(', ')}</td>
+                    <td style="color:#16a34a; font-size:0.85rem; font-weight: 600;">${user.final.join(', ')}</td>
                     <td style="color:#e28743; font-weight:bold;">${user.champion}</td>
                     <td><strong>${user.points}</strong></td>
                 `;
