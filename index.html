@@ -105,17 +105,6 @@
             color: white;
         }
 
-        .slot select {
-            width: 100%;
-            border: none;
-            background: transparent;
-            font-weight: bold;
-            color: #1e293b;
-            font-size: 0.9rem;
-            text-align: center;
-            cursor: pointer;
-        }
-
         .save-btn {
             background: #16a34a;
             color: white;
@@ -189,20 +178,20 @@
             <div class="round">
                 <h3>1/4 Финала</h3>
                 <div class="matchup">
-                    <div class="slot"><select id="q1-1" onchange="updateMatch(1, 1)"><option value="">Выбрать</option></select></div>
-                    <div class="slot"><select id="q1-2" onchange="updateMatch(1, 2)"><option value="">Выбрать</option></select></div>
+                    <div class="slot" id="q1-1" onclick="advanceTeam('q1-1', 'sf1-1')">Vanters</div>
+                    <div class="slot" id="q1-2" onclick="advanceTeam('q1-2', 'sf1-1')">Vanity Team</div>
                 </div>
                 <div class="matchup">
-                    <div class="slot"><select id="q2-1" onchange="updateMatch(2, 1)"><option value="">Выбрать</option></select></div>
-                    <div class="slot"><select id="q2-2" onchange="updateMatch(2, 2)"><option value="">Выбрать</option></select></div>
+                    <div class="slot" id="q2-1" onclick="advanceTeam('q2-1', 'sf1-2')">Voidfall</div>
+                    <div class="slot" id="q2-2" onclick="advanceTeam('q2-2', 'sf1-2')">GEN3</div>
                 </div>
                 <div class="matchup">
-                    <div class="slot"><select id="q3-1" onchange="updateMatch(3, 1)"><option value="">Выбрать</option></select></div>
-                    <div class="slot"><select id="q3-2" onchange="updateMatch(3, 2)"><option value="">Выбрать</option></select></div>
+                    <div class="slot" id="q3-1" onclick="advanceTeam('q3-1', 'sf2-1')">GA</div>
+                    <div class="slot" id="q3-2" onclick="advanceTeam('q3-2', 'sf2-1')">Reapers</div>
                 </div>
                 <div class="matchup">
-                    <div class="slot"><select id="q4-1" onchange="updateMatch(4, 1)"><option value="">Выбрать</option></select></div>
-                    <div class="slot"><select id="q4-2" onchange="updateMatch(4, 2)"><option value="">Выбрать</option></select></div>
+                    <div class="slot" id="q4-1" onclick="advanceTeam('q4-1', 'sf2-2')">Barebuh</div>
+                    <div class="slot" id="q4-2" onclick="advanceTeam('q4-2', 'sf2-2')">Demon wings</div>
                 </div>
             </div>
 
@@ -261,34 +250,15 @@
     </div>
 
     <script>
-        // Список твоих 16 команд для выпадающего списка в 1/4
-        const ALL_TEAMS = [
-            "ROSE team", "Voidfall", "Remast", "Vanity Team", "BAREBUH", "BPMP", "Evo team", "Blood Owner",
-            "Team serpent", "Vanters", "Demon wings", "Reapers", "GA", "GEN3", "VitaL Team", "VitaL Yong Boys"
-        ];
-
-        // РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ (Замени на настоящие, когда турнир закончится)
+        // РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ (Замени на настоящие, когда плей-офф закончится, чтобы начислить баллы)
         const REAL_PLAYOFF = {
-            semi: ["ROSE team", "Voidfall", "BPMP", "GA"],
-            final: ["ROSE team", "GA"],
-            champion: "ROSE team"
+            semi: ["Vanters", "Voidfall", "GA", "Barebuh"],
+            final: ["Voidfall", "GA"],
+            champion: "GA"
         };
 
         let isStageFinished = false;
         let predictionsList = [];
-
-        // Заполняем селекторы четвертьфинала командами
-        window.onload = function() {
-            const selects = document.querySelectorAll('select');
-            selects.forEach(sel => {
-                ALL_TEAMS.forEach(team => {
-                    let opt = document.createElement('option');
-                    opt.value = team;
-                    opt.textContent = team;
-                    sel.appendChild(opt);
-                });
-            });
-        };
 
         function switchTab(tab) {
             if (tab === 'picks') {
@@ -305,22 +275,12 @@
             }
         }
 
-        // Логика автоматического переноса из выпадающего списка в полуфинал
-        function updateMatch(matchNum, slotNum) {
-            const val = document.getElementById(`q${matchNum}-${slotNum}`).value;
-            const targetId = `sf${Math.ceil(matchNum/2)}-${matchNum % 2 === 0 ? 2 : 1}`;
-            
-            // Очищаем зависимые слоты при изменении
-            document.getElementById(targetId).textContent = val || "Ожидание...";
-            document.getElementById(targetId).classList.remove('selected');
-        }
-
         // Клик для продвижения команды дальше по сетке
         function advanceTeam(currentId, nextId) {
             const teamName = document.getElementById(currentId).textContent;
             if (teamName === "Ожидание..." || teamName === "") return;
 
-            // Подсвечиваем выбор
+            // Подсвечиваем выбор в текущей паре
             const parent = document.getElementById(currentId).parentElement;
             parent.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
             document.getElementById(currentId).classList.add('selected');
@@ -330,8 +290,15 @@
             nextSlot.textContent = teamName;
             nextSlot.classList.remove('selected');
 
-            // Если поменяли финалиста, очищаем чемпиона
-            if (nextId.startsWith('f-')) {
+            // Очищаем последующие этапы, если ветка изменилась
+            if (nextId.startsWith('sf')) {
+                // Если изменился полуфиналист, сбрасываем финал этой ветки и чемпиона
+                const branchNum = nextId.split('-')[0].replace('sf', '');
+                document.getElementById(`f-${branchNum}`).textContent = "Ожидание...";
+                document.getElementById(`f-${branchNum}`).classList.remove('selected');
+                document.getElementById('champion').textContent = "Победитель";
+            } else if (nextId.startsWith('f-')) {
+                // Если изменился финалист, сбрасываем чемпиона
                 document.getElementById('champion').textContent = "Победитель";
             }
         }
@@ -346,13 +313,13 @@
             const champ = document.getElementById('champion').textContent;
 
             if (sf.includes("Ожидание...") || f.includes("Ожидание...") || champ === "Победитель") {
-                alert("Заполните всю сетку до конца (выберите победителей кликами)!");
+                alert("Заполните всю сетку до конца перед сохранением!");
                 return;
             }
 
             const nickname = prompt('Введите ваш никнейм:');
             if (!nickname || nickname.trim() === "") {
-                alert('Никнейм пустой!');
+                alert('Никнейм не может быть пустым!');
                 return;
             }
 
@@ -378,7 +345,7 @@
                 let score = 0;
                 // +3 за каждого угаданного полуфиналиста, финалиста и чемпиона
                 user.semi.forEach(t => { if(REAL_PLAYOFF.semi.includes(t)) score += 3; });
-                user.final.forEach(t => { if(REAL_RESULTS = REAL_PLAYOFF.final.includes(t)) score += 3; });
+                user.final.forEach(t => { if(REAL_PLAYOFF.final.includes(t)) score += 3; });
                 if(user.champion === REAL_PLAYOFF.champion) score += 3;
 
                 user.points = score;
@@ -386,6 +353,7 @@
 
             predictionsList.sort((a, b) => b.points - a.points);
             renderLeaderboard();
+            alert('Очки посчитаны и таблица отсортирована!');
         }
 
         function renderLeaderboard() {
@@ -393,7 +361,7 @@
             tbody.innerHTML = '';
 
             if (predictionsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Заполните сетку!</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Таблица пуста. Прогнозов пока нет.</td></tr>';
                 return;
             }
 
